@@ -15,9 +15,12 @@
  */
 package org.terasoluna.tourreservation.domain.repository.customer;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.terasoluna.tourreservation.domain.model.Customer;
 
-public interface CustomerRepository extends JpaRepository<Customer, String> {
+public interface CustomerRepository {
+
+	Customer findOne(String customerCode);
+	
+	void create(Customer customer);
 
 }

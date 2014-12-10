@@ -15,19 +15,23 @@
  */
 package org.terasoluna.tourreservation.domain.repository.tourinfo;
 
-import javax.persistence.LockModeType;
+import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Lock;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.data.domain.Pageable;
 import org.terasoluna.tourreservation.domain.model.TourInfo;
 
-public interface TourInfoRepository extends JpaRepository<TourInfo, String>,
-                                   TourInfoRepositoryCustom {
-    
-    @Query("SELECT t FROM TourInfo t WHERE t.tourCode = :tourCode")
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    TourInfo findOneForUpdate(@Param("tourCode") String tourCode);
+public interface TourInfoRepository {
 
+    TourInfo findOne(String tourCode);
+
+    TourInfo findOneForUpdate(String tourCode);
+
+    List<TourInfo> findPageBySearchCriteria(
+            @Param("criteria") TourInfoSearchCriteria criteria,
+            @Param("pageable") Pageable pageable);
+
+    long countBySearchCriteria(
+            @Param("criteria") TourInfoSearchCriteria criteria
+            );
 }

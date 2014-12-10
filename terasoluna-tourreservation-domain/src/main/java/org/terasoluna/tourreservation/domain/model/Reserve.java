@@ -22,21 +22,6 @@ package org.terasoluna.tourreservation.domain.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-@Entity
-@Table(name = "reserve")
 public class Reserve implements Serializable {
 
     public static final String TRANSFERED = "1";
@@ -45,49 +30,22 @@ public class Reserve implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 8)
-    @Column(name = "reserve_no")
     private String reserveNo;
 
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "reserved_day")
-    @Temporal(TemporalType.DATE)
     private Date reservedDay;
 
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "adult_count")
     private int adultCount;
 
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "child_count")
     private int childCount;
 
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "transfer")
     private String transfer;
 
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "sum_price")
     private int sumPrice;
 
-    @Size(max = 1000)
-    @Column(name = "remarks")
     private String remarks;
 
-    @JoinColumn(name = "tour_code", referencedColumnName = "tour_code")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TourInfo tourInfo;
 
-    @JoinColumn(name = "customer_code", referencedColumnName = "customer_code")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Customer customer;
 
     public Reserve() {

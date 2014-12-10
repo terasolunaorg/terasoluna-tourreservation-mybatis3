@@ -77,14 +77,15 @@ public class TourInfoServiceImplTest {
         departure.setDepCode("5678");
         info.setDeparture(departure);
         info.setTourCode("12345678");
-
         mockedList.add(info);
-
-        Page<TourInfo> page = new PageImpl<TourInfo>(mockedList);
+        
+        Page<TourInfo> page = new PageImpl<TourInfo>(mockedList,pageable,1L);
 
         when(tourInfoRepository.findPageBySearchCriteria(criteria, pageable)).thenReturn(
-                page);
+                mockedList);
 
+        when(tourInfoRepository.countBySearchCriteria(criteria)).thenReturn(1L);
+        
         // run
         Page<TourInfo> result = tourInfoService.searchTour(criteria, pageable);
 

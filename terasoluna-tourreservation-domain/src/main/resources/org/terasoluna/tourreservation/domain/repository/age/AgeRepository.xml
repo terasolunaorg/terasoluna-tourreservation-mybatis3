@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.terasoluna.tourreservation.domain.repository.age.AgeRepository">
+
+    <resultMap id="ageResultMap" type="Age">
+        <id column="age_code" property="ageCode" />
+        <result column="age_name" property="ageName" />
+        <result column="age_rate" property="ageRate" />
+    </resultMap>
+
+    <select id="findOne" parameterType="string" resultMap="ageResultMap">
+        SELECT
+            age_code,
+            age_name,
+            age_rate
+        FROM
+            age
+        WHERE
+            age_code = #{ageCode}
+    </select>
+
+</mapper>

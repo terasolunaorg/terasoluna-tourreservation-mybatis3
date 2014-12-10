@@ -16,12 +16,10 @@
 package org.terasoluna.tourreservation.domain.service.customer;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.terasoluna.gfw.common.sequencer.Sequencer;
 import org.terasoluna.tourreservation.domain.model.Customer;
 import org.terasoluna.tourreservation.domain.repository.customer.CustomerRepository;
 
@@ -30,10 +28,6 @@ import org.terasoluna.tourreservation.domain.repository.customer.CustomerReposit
 public class CustomerServiceImpl implements CustomerService {
     @Inject
     CustomerRepository customerRepository;
-
-    @Inject
-    @Named("customerCodeSeq")
-    Sequencer<String> customerCodeSeq;
 
     @Inject
     PasswordEncoder passwordEncoder;
@@ -46,13 +40,12 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer register(Customer customer, String rawPassword) {
-        String customerCode = customerCodeSeq.getNext();
 
         String password = passwordEncoder.encode(rawPassword);
 
-        customer.setCustomerCode(customerCode);
         customer.setCustomerPass(password);
-        return customerRepository.save(customer);
+        customerRepository.create(customer);
+        return customer;
     }
 
 }

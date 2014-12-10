@@ -18,7 +18,6 @@ package org.terasoluna.tourreservation.domain.service.reserve;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import org.dozer.Mapper;
 import org.joda.time.DateTime;
@@ -30,9 +29,7 @@ import org.terasoluna.gfw.common.date.DateFactory;
 import org.terasoluna.gfw.common.exception.BusinessException;
 import org.terasoluna.gfw.common.exception.SystemException;
 import org.terasoluna.gfw.common.message.ResultMessages;
-import org.terasoluna.gfw.common.sequencer.Sequencer;
 import org.terasoluna.tourreservation.domain.common.constants.MessageId;
-import org.terasoluna.tourreservation.domain.model.Customer;
 import org.terasoluna.tourreservation.domain.model.Reserve;
 import org.terasoluna.tourreservation.domain.model.TourInfo;
 import org.terasoluna.tourreservation.domain.repository.reserve.ReserveRepository;
@@ -62,10 +59,6 @@ public class ReserveServiceImpl implements ReserveService {
     @Inject
     Mapper beanMapper;
 
-    @Inject
-    @Named("reserveNoSeq")
-    Sequencer<String> reserveNoSeq;
-
     @Transactional(readOnly = true)
     @Override
     public Reserve findOne(String reserveNo) {
@@ -77,8 +70,7 @@ public class ReserveServiceImpl implements ReserveService {
     @Transactional(readOnly = true)
     @Override
     public List<Reserve> findAllByCustomerCode(String customerCode) {
-        Customer customer = new Customer(customerCode);
-        List<Reserve> reserves = reserveRepository.findAllByCustomer(customer);
+        List<Reserve> reserves = reserveRepository.findAllByCustomer(customerCode);
         return reserves;
     }
 
@@ -101,7 +93,7 @@ public class ReserveServiceImpl implements ReserveService {
         int reserveMember = input.getAdultCount() + input.getChildCount();
         int aveRecMax = tourInfo.getAvaRecMax();
         // retrieve the number of current reservations
-        Long sumCount = reserveRepository.countReservedPersonSumByTourInfo(tourInfo);
+        Long sumCount = reserveRepository.countReservedPersonSumByTourInfo(tourInfo.getTourCode());
         if (sumCount == null) {
             sumCount = 0L;
         }
@@ -121,16 +113,14 @@ public class ReserveServiceImpl implements ReserveService {
         PriceCalculateOutput priceCalculateOutput = priceCalculateService
                 .calculatePrice(tourInfo.getBasePrice(), input.getAdultCount(),
                         input.getChildCount());
-        String reserveNo = reserveNoSeq.getNext();
 
         Reserve reserve = beanMapper.map(input, Reserve.class);
 
         reserve.setTourInfo(tourInfo);
         reserve.setSumPrice(priceCalculateOutput.getSumPrice());
-        reserve.setReserveNo(reserveNo);
         reserve.setReservedDay(today.toDate());
         reserve.setTransfer(Reserve.NOT_TRANSFERED);
-        reserveRepository.save(reserve);
+        reserveRepository.create(reserve);
         logger.debug("reserved {}", reserve);
 
         // * create output
@@ -197,7 +187,7 @@ public class ReserveServiceImpl implements ReserveService {
                 .getBasePrice(), input.getAdultCount(), input.getChildCount());
 
         reserve.setSumPrice(price.getSumPrice());
-        reserveRepository.save(reserve);
+        reserveRepository.update(reserve);
 
         ReservationUpdateOutput output = new ReservationUpdateOutput();
         output.setReserve(reserve);

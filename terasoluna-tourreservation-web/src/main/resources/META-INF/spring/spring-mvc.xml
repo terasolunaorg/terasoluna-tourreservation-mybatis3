@@ -56,12 +56,6 @@
 				<property name="fallbackTo" value="en" />
 			</bean>
 		</mvc:interceptor>
-		<mvc:interceptor>
-			<mvc:mapping path="/**" />
-			<mvc:exclude-mapping path="/resources/**" />
-			<bean
-				class="org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor" />
-		</mvc:interceptor>
 	</mvc:interceptors>
 
 	<bean name="requestDataValueProcessor"

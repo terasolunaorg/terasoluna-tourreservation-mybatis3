@@ -38,7 +38,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import org.terasoluna.tourreservation.domain.repository.tourinfo.TourInfoSearchCriteria;
 import org.terasoluna.tourreservation.domain.model.TourInfo;
-import org.terasoluna.tourreservation.domain.repository.tourinfo.TourInfoRepository;
+import org.terasoluna.tourreservation.domain.service.tourinfo.TourInfoService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:test-context.xml" })
@@ -47,7 +47,7 @@ import org.terasoluna.tourreservation.domain.repository.tourinfo.TourInfoReposit
 public class TourInfoRepositoryImplTest {
 
     @Inject
-    TourInfoRepository tourInfoRepository;
+    TourInfoService tourInfoService;
 
     @Inject
     NamedParameterJdbcTemplate jdbcTemplate;
@@ -115,7 +115,7 @@ public class TourInfoRepositoryImplTest {
         Pageable pageable = new PageRequest(0, 10);
 
         // run
-        Page<TourInfo> page = tourInfoRepository.findPageBySearchCriteria(criteria,
+        Page<TourInfo> page = tourInfoService.searchTour(criteria,
                 pageable);
 
         assertThat(page.getTotalPages(), is(1));
@@ -160,7 +160,7 @@ public class TourInfoRepositoryImplTest {
 
         Pageable pageable = new PageRequest(0, 10);
         // run
-        Page<TourInfo> page = tourInfoRepository.findPageBySearchCriteria(criteria,
+        Page<TourInfo> page = tourInfoService.searchTour(criteria,
                 pageable);
 
         // assert

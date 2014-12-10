@@ -85,21 +85,8 @@
         <level value="debug" />
     </logger>
 
-    <!-- for hibernate3 -->
-    <logger name="org.hibernate.transaction">
-        <level value="debug" />
-    </logger>
-
-    <!-- for hibernate4 -->
-    <logger name="org.hibernate.engine.transaction">
-        <level value="debug" />
-    </logger>
-
-    <logger name="org.hibernate.tool">
-        <level value="debug" />
-    </logger>
-
-    <logger name="org.hibernate.cfg.annotations.QueryBinder">
+    <!-- for Mybatis3 -->
+    <logger name="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <level value="debug" />
     </logger>
 

@@ -3,16 +3,15 @@ This is a reference application built completely using TERASOLUNA Global Framewo
 
 This application shows **how an IDEAL project configuration and package structure must be like.** It also shows working sample of best practices recommended in TERASOLUNA Global Framework Development Guideline.
 
-**This sample uses Spring Data JPA. MyBatis version has not been not created yet.**
+This sample uses Mybatis3.
 
-* master [![Build Status for master](https://travis-ci.org/terasolunaorg/terasoluna-tourreservation.svg?branch=master)](https://travis-ci.org/terasolunaorg/terasoluna-tourreservation)
-* 1.0.x [![Build Status for 1.0.x](https://travis-ci.org/terasolunaorg/terasoluna-tourreservation.svg?branch=1.0.x)](https://travis-ci.org/terasolunaorg/terasoluna-tourreservation)
+* master [![Build Status for master](https://travis-ci.org/terasolunaorg/terasoluna-tourreservation-mybatis3.svg?branch=master)](https://travis-ci.org/terasolunaorg/terasoluna-tourreservation-mybatis3)
 
 ### Getting started
 
 #### Download
 
-Download source code from [here](https://github.com/terasolunaorg/terasoluna-tourreservation/releases "here").
+Download source code from [here](https://github.com/terasolunaorg/terasoluna-tourreservation-mybatis3/releases "here").
 Extract the zip file at any location of choice.
 
 #### Run PostgreSQL

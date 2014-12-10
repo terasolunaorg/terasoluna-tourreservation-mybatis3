@@ -20,42 +20,16 @@
 package org.terasoluna.tourreservation.domain.model;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
-@Entity
-@Table(name = "employee")
 public class Employee implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 8)
-    @Column(name = "staff_code")
     private String staffCode;
 
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "staff_name")
     private String staffName;
 
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "staff_kana")
     private String staffKana;
 
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "staff_pass")
     private String staffPass;
 
     public Employee() {

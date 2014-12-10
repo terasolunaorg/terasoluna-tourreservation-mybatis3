@@ -20,37 +20,13 @@
 package org.terasoluna.tourreservation.domain.model;
 
 import java.io.Serializable;
-import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
-@Entity
-@Table(name = "departure")
 public class Departure implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2)
-    @Column(name = "dep_code")
     private String depCode;
 
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "dep_name")
     private String depName;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "departure")
-    private List<TourInfo> tourinfoList;
 
     public Departure() {
     }
@@ -78,14 +54,6 @@ public class Departure implements Serializable {
 
     public void setDepName(String depName) {
         this.depName = depName;
-    }
-
-    public List<TourInfo> getTourinfoList() {
-        return tourinfoList;
-    }
-
-    public void setTourinfoList(List<TourInfo> tourinfoList) {
-        this.tourinfoList = tourinfoList;
     }
 
     @Override

@@ -28,7 +28,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.terasoluna.gfw.common.sequencer.Sequencer;
 import org.terasoluna.tourreservation.domain.model.Customer;
 import org.terasoluna.tourreservation.domain.repository.customer.CustomerRepository;
 
@@ -37,8 +36,6 @@ public class CustomerServiceImplTest {
 
     CustomerRepository customerRepository;
 
-    Sequencer<String> sequencer;
-
     @SuppressWarnings("unchecked")
     @Before
     public void setUp() throws Exception {
@@ -46,8 +43,6 @@ public class CustomerServiceImplTest {
         customerRepository = mock(CustomerRepository.class);
         customerService.customerRepository = customerRepository;
         customerService.passwordEncoder = new BCryptPasswordEncoder();
-        sequencer = mock(Sequencer.class);
-        customerService.customerCodeSeq = sequencer;
     }
 
     @After
@@ -74,16 +69,14 @@ public class CustomerServiceImplTest {
     @Test
     public void testRegister01() {
         Customer c = new Customer();
-        when(sequencer.getNext()).thenReturn("12345678");
         customerService.register(c, "foo");
 
         ArgumentCaptor<Customer> customerArg = ArgumentCaptor
                 .forClass(Customer.class);
 
         verify(customerRepository, times(1))
-                .save(customerArg.capture());
+                .create(customerArg.capture());
         assertThat(customerArg.getValue(), is(c));
-        assertThat(customerArg.getValue().getCustomerCode(), is("12345678"));
         /*assertThat(customerArg.getValue().getCustomerPass(),
                 is("foo{12345678}"));*/
     }

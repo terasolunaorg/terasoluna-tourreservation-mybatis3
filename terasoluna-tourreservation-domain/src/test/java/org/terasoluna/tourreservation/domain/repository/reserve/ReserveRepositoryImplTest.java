@@ -32,7 +32,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
-import org.terasoluna.tourreservation.domain.model.Customer;
 import org.terasoluna.tourreservation.domain.model.Reserve;
 import org.terasoluna.tourreservation.domain.model.TourInfo;
 import org.terasoluna.tourreservation.domain.repository.reserve.ReserveRepository;
@@ -137,7 +136,7 @@ public class ReserveRepositoryImplTest {
 		}
 
 		// run
-		Long retValue = reserveRepository.countReservedPersonSumByTourInfo(tourInfo);
+		Long retValue = reserveRepository.countReservedPersonSumByTourInfo(tourInfo.getTourCode());
 
 		// assert
 		assertThat(retValue, is(7L));
@@ -149,7 +148,7 @@ public class ReserveRepositoryImplTest {
 		tourInfo.setTourCode("xxxxx");
 
 		// run
-		Long retValue = reserveRepository.countReservedPersonSumByTourInfo(tourInfo);
+		Long retValue = reserveRepository.countReservedPersonSumByTourInfo(tourInfo.getTourCode());
 
 		// assert
 		assertThat(retValue, is(nullValue()));
@@ -207,12 +206,9 @@ public class ReserveRepositoryImplTest {
 			jdbcTemplate.update(q, param);
 		}
 
-		Customer customer = new Customer();
-		customer.setCustomerCode(customerCode);
-
 		// run
 		List<Reserve> reservationList = reserveRepository
-				.findAllByCustomer(customer);
+				.findAllByCustomer(customerCode);
 
 		// assert
 		assertThat(reservationList, is(notNullValue()));
@@ -267,12 +263,9 @@ public class ReserveRepositoryImplTest {
 	public void testFindByCustomer02() {
 		String customerCode = "xxxxxxxx";
 
-		Customer customer = new Customer();
-		customer.setCustomerCode(customerCode);
-
 		// run
 		List<Reserve> reservationList = reserveRepository
-				.findAllByCustomer(customer);
+				.findAllByCustomer(customerCode);
 
 		assertThat(reservationList, is(notNullValue()));
 		assertThat(reservationList.size(), is(0));

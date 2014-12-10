@@ -15,9 +15,10 @@
  */
 package org.terasoluna.tourreservation.domain.repository.age;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.terasoluna.tourreservation.domain.model.Age;
 
-public interface AgeRepository extends JpaRepository<Age, String> {
+public interface AgeRepository {
+
+	Age findOne(String ageCode);
 
 }

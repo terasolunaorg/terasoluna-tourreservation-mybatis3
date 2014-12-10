@@ -41,11 +41,9 @@ import org.terasoluna.gfw.common.exception.BusinessException;
 import org.terasoluna.gfw.common.message.ResultMessageType;
 import org.terasoluna.gfw.common.message.ResultMessages;
 import static org.terasoluna.gfw.common.message.StandardResultMessageType.*;
-import org.terasoluna.gfw.common.sequencer.Sequencer;
 import org.terasoluna.tourreservation.domain.common.constants.MessageId;
 import org.terasoluna.tourreservation.domain.model.Accommodation;
 import org.terasoluna.tourreservation.domain.model.Arrival;
-import org.terasoluna.tourreservation.domain.model.Customer;
 import org.terasoluna.tourreservation.domain.model.Departure;
 import org.terasoluna.tourreservation.domain.model.Reserve;
 import org.terasoluna.tourreservation.domain.model.TourInfo;
@@ -66,8 +64,6 @@ public class ReserveServiceImplTest {
 
     DateFactory dateFactory;
 
-    Sequencer<String> sequencer;
-
     DozerBeanMapper beanMapper;
 
     DateTime now = new DateTime();
@@ -79,7 +75,6 @@ public class ReserveServiceImplTest {
         reserveRepository = mock(ReserveRepository.class);
         tourInfoSharedService = mock(TourInfoSharedService.class);
         dateFactory = mock(DateFactory.class);
-        sequencer = mock(Sequencer.class);
         priceCalculateSerivce = mock(PriceCalculateSharedSerivce.class);
 
         beanMapper = new DozerBeanMapper();
@@ -90,7 +85,6 @@ public class ReserveServiceImplTest {
         reserveService.reserveRepository = reserveRepository;
         reserveService.tourInfoSharedService = tourInfoSharedService;
         reserveService.dateFactory = dateFactory;
-        reserveService.reserveNoSeq = sequencer;
         reserveService.priceCalculateService = priceCalculateSerivce;
         reserveService.beanMapper = beanMapper;
 
@@ -130,8 +124,7 @@ public class ReserveServiceImplTest {
         tour2.setTourDays(4);
         List<Reserve> reserves = Arrays.asList(reserve1, reserve2);
 
-        Customer c = new Customer("xxxx");
-        when(reserveRepository.findAllByCustomer(c)).thenReturn(reserves);
+        when(reserveRepository.findAllByCustomer("xxxx")).thenReturn(reserves);
         when(tourInfoSharedService.isOverPaymentLimit(tour1)).thenReturn(
                 false);
         when(tourInfoSharedService.isOverPaymentLimit(tour2)).thenReturn(
@@ -146,8 +139,7 @@ public class ReserveServiceImplTest {
 
     @Test
     public void testFindByCustomerCode03() {
-        Customer c = new Customer("xxxx");
-        when(reserveRepository.findAllByCustomer(c)).thenReturn(
+        when(reserveRepository.findAllByCustomer("xxxx")).thenReturn(
                 new ArrayList<Reserve>());
         List<Reserve> result = reserveService.findAllByCustomerCode("xxxx");
         assertThat(result, is(notNullValue()));
@@ -169,8 +161,7 @@ public class ReserveServiceImplTest {
         tour.setArrival(new Arrival());
         when(tourInfoSharedService.findOne("01")).thenReturn(tour);
         when(tourInfoSharedService.findOneForUpdate("01")).thenReturn(tour);
-        when(reserveRepository.countReservedPersonSumByTourInfo(tour)).thenReturn(7L); // 1+2+7 <= 10
-        when(sequencer.getNext()).thenReturn("123456");
+        when(reserveRepository.countReservedPersonSumByTourInfo(tour.getTourCode())).thenReturn(7L); // 1+2+7 <= 10
 
         ReserveTourInput input = new ReserveTourInput();
         input.setAdultCount(1);
@@ -190,7 +181,7 @@ public class ReserveServiceImplTest {
 
         ArgumentCaptor<Reserve> capture = ArgumentCaptor
                 .forClass(Reserve.class);
-        verify(reserveRepository, atLeast(1)).save(capture.capture());
+        verify(reserveRepository, atLeast(1)).create(capture.capture());
 
         Reserve r = capture.getValue();
         assertThat(output.getReserve(), is(r));
@@ -200,7 +191,6 @@ public class ReserveServiceImplTest {
         assertThat(r.getTourInfo().getTourCode(), is("01"));
         assertThat(r.getRemarks(), is("aa"));
         assertThat(r.getTransfer(), is(Reserve.NOT_TRANSFERED));
-        assertThat(r.getReserveNo(), is("123456"));
         assertThat(r.getReservedDay(), is(now.withTime(0, 0, 0, 0).toDate()));
     }
 
@@ -220,8 +210,7 @@ public class ReserveServiceImplTest {
         tour.setAvaRecMax(10);
         when(tourInfoSharedService.findOne("01")).thenReturn(tour);
         when(tourInfoSharedService.findOneForUpdate("01")).thenReturn(tour);
-        when(reserveRepository.countReservedPersonSumByTourInfo(tour)).thenReturn(7L); // 1+2+7 <= 10
-        when(sequencer.getNext()).thenReturn("123456");
+        when(reserveRepository.countReservedPersonSumByTourInfo(tour.getTourCode())).thenReturn(7L); // 1+2+7 <= 10
 
         ReserveTourInput input = new ReserveTourInput();
         input.setAdultCount(1);
@@ -264,8 +253,7 @@ public class ReserveServiceImplTest {
         tour.setAvaRecMax(10);
         when(tourInfoSharedService.findOne("01")).thenReturn(tour);
         when(tourInfoSharedService.findOneForUpdate("01")).thenReturn(tour);
-        when(reserveRepository.countReservedPersonSumByTourInfo(tour)).thenReturn(8L); // !!1+2+8 > 10
-        when(sequencer.getNext()).thenReturn("123456");
+        when(reserveRepository.countReservedPersonSumByTourInfo(tour.getTourCode())).thenReturn(8L); // !!1+2+8 > 10
 
         ReserveTourInput input = new ReserveTourInput();
         input.setAdultCount(1);
@@ -430,7 +418,6 @@ public class ReserveServiceImplTest {
 
         when(reserveRepository.findOne("foo")).thenReturn(reserve);
         when(reserveRepository.findOneForUpdate("foo")).thenReturn(reserve);
-        when(reserveRepository.save(reserve)).thenReturn(reserve);
         // run
         ReservationUpdateOutput output = reserveService.update(input);
         assertThat(output, is(output));
