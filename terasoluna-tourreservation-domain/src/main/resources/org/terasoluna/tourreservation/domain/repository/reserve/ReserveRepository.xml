@@ -80,7 +80,7 @@
         INNER JOIN tourinfo ON reserve.tour_code = tourinfo.tour_code
         INNER JOIN customer ON reserve.customer_code = customer.customer_code
         INNER JOIN departure ON tourinfo.dep_code = departure.dep_code
-        INNER JOIN arrival On tourinfo.arr_code = arrival.arr_code
+        INNER JOIN arrival ON tourinfo.arr_code = arrival.arr_code
         WHERE
             reserve_no = #{reserveNo}
     </select>
@@ -195,7 +195,7 @@
             reserve
         LEFT JOIN tourinfo ON reserve.tour_code = tourinfo.tour_code
         LEFT JOIN departure ON tourinfo.dep_code = departure.dep_code
-        LEFT JOIN arrival On tourinfo.arr_code = arrival.arr_code
+        LEFT JOIN arrival ON tourinfo.arr_code = arrival.arr_code
         INNER JOIN customer ON reserve.customer_code = customer.customer_code
         WHERE
             reserve_no = #{reserveNo}
@@ -250,7 +250,7 @@
             reserve
         LEFT JOIN tourinfo ON reserve.tour_code = tourinfo.tour_code
         LEFT JOIN departure ON tourinfo.dep_code = departure.dep_code
-        LEFT JOIN arrival On tourinfo.arr_code = arrival.arr_code
+        LEFT JOIN arrival ON tourinfo.arr_code = arrival.arr_code
         INNER JOIN customer ON reserve.customer_code = customer.customer_code
         INNER JOIN accommodation ON accommodation.accom_code = tourinfo.accom_code
         WHERE
