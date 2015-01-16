@@ -36,7 +36,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.terasoluna.gfw.common.date.DateFactory;
+import org.terasoluna.gfw.common.date.jodatime.JodaTimeDateFactory;
 import org.terasoluna.gfw.common.exception.BusinessException;
 import org.terasoluna.gfw.common.message.ResultMessageType;
 import org.terasoluna.gfw.common.message.ResultMessages;
@@ -62,7 +62,7 @@ public class ReserveServiceImplTest {
 
     PriceCalculateSharedSerivce priceCalculateSerivce;
 
-    DateFactory dateFactory;
+    JodaTimeDateFactory dateFactory;
 
     DozerBeanMapper beanMapper;
 
@@ -74,7 +74,7 @@ public class ReserveServiceImplTest {
         reserveService = new ReserveServiceImpl();
         reserveRepository = mock(ReserveRepository.class);
         tourInfoSharedService = mock(TourInfoSharedService.class);
-        dateFactory = mock(DateFactory.class);
+        dateFactory = mock(JodaTimeDateFactory.class);
         priceCalculateSerivce = mock(PriceCalculateSharedSerivce.class);
 
         beanMapper = new DozerBeanMapper();
