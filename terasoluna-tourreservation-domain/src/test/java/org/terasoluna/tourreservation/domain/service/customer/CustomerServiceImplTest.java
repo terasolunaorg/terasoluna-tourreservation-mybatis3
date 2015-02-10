@@ -75,7 +75,7 @@ public class CustomerServiceImplTest {
                 .forClass(Customer.class);
 
         verify(customerRepository, times(1))
-                .create(customerArg.capture());
+                .insert(customerArg.capture());
         assertThat(customerArg.getValue(), is(c));
         /*assertThat(customerArg.getValue().getCustomerPass(),
                 is("foo{12345678}"));*/

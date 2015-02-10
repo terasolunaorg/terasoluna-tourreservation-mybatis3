@@ -23,9 +23,9 @@ import org.terasoluna.tourreservation.domain.model.TourInfo;
 
 public interface TourInfoRepository {
 
-    TourInfo findOne(String tourCode);
+    TourInfo findOneWithDetails(String tourCode);
 
-    TourInfo findOneForUpdate(String tourCode);
+    TourInfo findOneWithDetailsForUpdate(String tourCode);
 
     List<TourInfo> findPageBySearchCriteria(
             @Param("criteria") TourInfoSearchCriteria criteria,

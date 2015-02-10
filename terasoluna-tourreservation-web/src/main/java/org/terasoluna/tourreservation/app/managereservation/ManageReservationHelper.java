@@ -25,8 +25,10 @@ import org.dozer.Mapper;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 import org.terasoluna.tourreservation.app.common.constants.MessageId;
+import org.terasoluna.tourreservation.domain.model.Customer;
 import org.terasoluna.tourreservation.domain.model.Reserve;
 import org.terasoluna.tourreservation.domain.model.TourInfo;
+import org.terasoluna.tourreservation.domain.service.customer.CustomerService;
 import org.terasoluna.tourreservation.domain.service.reserve.ReserveService;
 import org.terasoluna.tourreservation.domain.service.tourinfo.PriceCalculateOutput;
 import org.terasoluna.tourreservation.domain.service.tourinfo.PriceCalculateSharedSerivce;
@@ -49,6 +51,9 @@ public class ManageReservationHelper {
     ReserveService reserveService;
 
     @Inject
+    CustomerService customerService;
+
+    @Inject
     Mapper dozerBeanMapper;
 
     protected String convertNightDays(int days) {
@@ -69,7 +74,7 @@ public class ManageReservationHelper {
         String customerCode = userDetails.getUsername();
 
         List<Reserve> reserves = reserveService
-                .findAllByCustomerCode(customerCode);
+                .findAllWithTourInfoByCustomer(customerCode);
 
         List<ReserveRowOutput> rows = new ArrayList<ReserveRowOutput>();
         for (Reserve reservation : reserves) {
@@ -93,7 +98,8 @@ public class ManageReservationHelper {
      * @return
      */
     public ReservationDetailOutput findDetail(String reserveNo) {
-        Reserve reserve = reserveService.findOne(reserveNo);
+        Reserve reserve = reserveService.findOneWithTourInfo(reserveNo);
+        Customer customer = customerService.findOne(reserve.getCustomer().getCustomerCode());
 
         TourInfo info = reserve.getTourInfo();
         int adultCount = reserve.getAdultCount();
@@ -107,7 +113,7 @@ public class ManageReservationHelper {
 
         // reserve related
         output.setReserve(reserve);
-        output.setCustomer(reserve.getCustomer());
+        output.setCustomer(customer);
 
         // payment related
         output.setPaymentTimeLimit(info.getPaymentLimit().toDate());

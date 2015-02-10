@@ -35,7 +35,7 @@
             customer_code = #{customerCode}
     </select>
 
-    <insert id="create" parameterType="Customer">
+    <insert id="insert" parameterType="Customer">
         <selectKey keyProperty="customerCode" resultType="string" order="BEFORE">
             SELECT TO_CHAR(nextval('CUSTOMER_CODE_SEQ'),'FM00000000') AS customerCode
         </selectKey>

@@ -44,7 +44,7 @@ public class CustomerServiceImpl implements CustomerService {
         String password = passwordEncoder.encode(rawPassword);
 
         customer.setCustomerPass(password);
-        customerRepository.create(customer);
+        customerRepository.insert(customer);
         return customer;
     }
 

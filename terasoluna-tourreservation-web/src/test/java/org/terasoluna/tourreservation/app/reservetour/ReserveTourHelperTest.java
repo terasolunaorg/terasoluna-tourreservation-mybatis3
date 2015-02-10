@@ -100,7 +100,7 @@ public class ReserveTourHelperTest {
         accommodation.setAccomCode("9012");
         tourInfo.setAccommodation(accommodation);
 
-        when(tourInfoSharedService.findOne(tourCode)).thenReturn(tourInfo);
+        when(tourInfoSharedService.findOneWithDetails(tourCode)).thenReturn(tourInfo);
 
         priceCalculateOutput = new PriceCalculateOutput();
         priceCalculateOutput.setSumPrice(100000);

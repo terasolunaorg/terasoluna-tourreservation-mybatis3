@@ -21,9 +21,9 @@ import org.terasoluna.gfw.common.exception.BusinessException;
 import org.terasoluna.tourreservation.domain.model.Reserve;
 
 public interface ReserveService {
-    Reserve findOne(String reserveNo);
+    Reserve findOneWithTourInfo(String reserveNo);
 
-    List<Reserve> findAllByCustomerCode(String customerCode);
+    List<Reserve> findAllWithTourInfoByCustomer(String customerCode);
 
     ReserveTourOutput reserve(ReserveTourInput input) throws BusinessException;
 
