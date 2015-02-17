@@ -63,11 +63,10 @@ public class ReserveServiceImpl implements ReserveService {
     @Override
     public Reserve findOneWithTourInfo(String reserveNo) {
         Reserve reserve = reserveRepository.findOne(reserveNo);
-        TourInfo touInfo;
 
         if(reserve != null){
-            touInfo = tourInfoSharedService.findOneWithDetails(reserve.getTourInfo().getTourCode());
-            reserve.setTourInfo(touInfo);
+            TourInfo tourInfo = tourInfoSharedService.findOneWithDetails(reserve.getTourInfo().getTourCode());
+            reserve.setTourInfo(tourInfo);
         }
 
         validateReservation(reserve);
