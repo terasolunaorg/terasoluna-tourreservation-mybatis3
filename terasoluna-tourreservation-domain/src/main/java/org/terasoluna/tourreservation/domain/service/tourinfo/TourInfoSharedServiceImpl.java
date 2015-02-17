@@ -41,8 +41,8 @@ public class TourInfoSharedServiceImpl implements TourInfoSharedService {
 
     @Transactional(readOnly = true)
     @Override
-    public TourInfo findOne(String tourCode) {
-        return tourInfoRepository.findOne(tourCode);
+    public TourInfo findOneWithDetails(String tourCode) {
+        return tourInfoRepository.findOneWithDetails(tourCode);
     }
 
     @Transactional(readOnly = true)
@@ -58,8 +58,8 @@ public class TourInfoSharedServiceImpl implements TourInfoSharedService {
 
     @Transactional(readOnly = true)
     @Override
-    public TourInfo findOneForUpdate(String tourCode) {
-        return tourInfoRepository.findOneForUpdate(tourCode);
+    public TourInfo findOneWithDetailsForUpdate(String tourCode) {
+        return tourInfoRepository.findOneWithDetailsForUpdate(tourCode);
     }
 
 }

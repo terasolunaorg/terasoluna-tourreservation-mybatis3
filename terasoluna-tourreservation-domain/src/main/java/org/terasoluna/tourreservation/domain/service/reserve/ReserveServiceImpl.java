@@ -61,23 +61,30 @@ public class ReserveServiceImpl implements ReserveService {
 
     @Transactional(readOnly = true)
     @Override
-    public Reserve findOne(String reserveNo) {
+    public Reserve findOneWithTourInfo(String reserveNo) {
         Reserve reserve = reserveRepository.findOne(reserveNo);
+
+        if(reserve != null){
+            TourInfo tourInfo = tourInfoSharedService.findOneWithDetails(reserve.getTourInfo().getTourCode());
+            reserve.setTourInfo(tourInfo);
+        }
+
         validateReservation(reserve);
+
         return reserve;
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<Reserve> findAllByCustomerCode(String customerCode) {
-        List<Reserve> reserves = reserveRepository.findAllByCustomer(customerCode);
+    public List<Reserve> findAllWithTourInfoByCustomer(String customerCode) {
+        List<Reserve> reserves = reserveRepository.findAllWithTourInfoByCustomer(customerCode);
         return reserves;
     }
 
     @Override
     public ReserveTourOutput reserve(ReserveTourInput input) throws BusinessException {
 
-        TourInfo tourInfo = tourInfoSharedService.findOneForUpdate(input
+        TourInfo tourInfo = tourInfoSharedService.findOneWithDetailsForUpdate(input
                 .getTourCode());
         DateTime today = dateFactory.newDateTime().withTime(0, 0, 0, 0);
 
@@ -120,7 +127,7 @@ public class ReserveServiceImpl implements ReserveService {
         reserve.setSumPrice(priceCalculateOutput.getSumPrice());
         reserve.setReservedDay(today.toDate());
         reserve.setTransfer(Reserve.NOT_TRANSFERED);
-        reserveRepository.create(reserve);
+        reserveRepository.insert(reserve);
         logger.debug("reserved {}", reserve);
 
         // * create output
@@ -131,10 +138,6 @@ public class ReserveServiceImpl implements ReserveService {
         tourReserveOutput.setPaymentTimeLimit(tourInfo.getPaymentLimit().toDate());
         tourReserveOutput.setCustomer(input.getCustomer());
 
-        // fetch to avoid lazy LazyInitializationException
-        tourInfo.getAccommodation().getAccomCode();
-        tourInfo.getDeparture().getDepCode();
-        tourInfo.getArrival().getArrCode();
         return tourReserveOutput;
     }
 
@@ -152,7 +155,7 @@ public class ReserveServiceImpl implements ReserveService {
             throw new BusinessException(message);
         }
 
-        TourInfo info = reserve.getTourInfo();
+        TourInfo info = tourInfoSharedService.findOneWithDetails(reserve.getTourInfo().getTourCode());
 
         // compare system date and payment limit.
         // if the payment limit has been exceeded,
@@ -178,7 +181,7 @@ public class ReserveServiceImpl implements ReserveService {
 
     @Override
     public ReservationUpdateOutput update(ReservationUpdateInput input) throws BusinessException {
-        Reserve reserve = findOne(input.getReserveNo());
+        Reserve reserve = findOneWithTourInfo(input.getReserveNo());
 
         beanMapper.map(input, reserve, "reserve_map_nonnull");
 
@@ -193,10 +196,6 @@ public class ReserveServiceImpl implements ReserveService {
         output.setReserve(reserve);
         output.setPriceCalculateOutput(price);
         output.setPaymentTimeLimit(info.getPaymentLimit().toDate());
-
-        // eager fetch to avoid lazy-init exception
-        info.getDeparture().getDepCode();
-        info.getArrival().getArrCode();
 
         return output;
     }

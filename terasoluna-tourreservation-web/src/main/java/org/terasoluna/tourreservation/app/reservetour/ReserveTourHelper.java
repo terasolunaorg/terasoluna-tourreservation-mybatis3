@@ -54,7 +54,7 @@ public class ReserveTourHelper {
 	 */
 	public TourDetailOutput findTourDetail(ReservationUserDetails userDetails, ReserveTourForm form) {
 		TourDetailOutput output = new TourDetailOutput();
-		TourInfo tourInfo = tourInfoSharedService.findOne(form.getTourCode());
+		TourInfo tourInfo = tourInfoSharedService.findOneWithDetails(form.getTourCode());
 
 		PriceCalculateOutput priceCalculateOutput = priceCalculateService
 				.calculatePrice(tourInfo.getBasePrice(), form.getAdultCount(),

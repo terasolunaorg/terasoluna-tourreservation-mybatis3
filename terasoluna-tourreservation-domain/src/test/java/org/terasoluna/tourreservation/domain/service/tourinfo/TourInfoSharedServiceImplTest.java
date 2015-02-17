@@ -55,10 +55,10 @@ public class TourInfoSharedServiceImplTest {
     public void testFindOne01() {
         TourInfo info = new TourInfo();
 
-        when(tourInfoRepository.findOne("foo")).thenReturn(info);
+        when(tourInfoRepository.findOneWithDetails("foo")).thenReturn(info);
 
         // run
-        TourInfo result = tourInfoSharedService.findOne("foo");
+        TourInfo result = tourInfoSharedService.findOneWithDetails("foo");
 
         // assert
         assertThat(result, is(info));

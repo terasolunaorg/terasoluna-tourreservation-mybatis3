@@ -23,7 +23,7 @@ public interface ReserveRepository {
 
     Reserve findOne(String reserveNo);
 
-    void create(Reserve reserve);
+    void insert(Reserve reserve);
 
     void update(Reserve reserve);
 
@@ -35,5 +35,5 @@ public interface ReserveRepository {
 
     Long countReservedPersonSumByTourInfo(String tourCode);
 
-    List<Reserve> findAllByCustomer(String customerCode);
+    List<Reserve> findAllWithTourInfoByCustomer(String customerCode);
 }

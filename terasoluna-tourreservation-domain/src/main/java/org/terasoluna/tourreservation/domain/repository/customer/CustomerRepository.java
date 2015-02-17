@@ -21,6 +21,6 @@ public interface CustomerRepository {
 
 	Customer findOne(String customerCode);
 	
-	void create(Customer customer);
+	void insert(Customer customer);
 
 }

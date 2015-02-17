@@ -208,7 +208,7 @@ public class ReserveRepositoryImplTest {
 
 		// run
 		List<Reserve> reservationList = reserveRepository
-				.findAllByCustomer(customerCode);
+				.findAllWithTourInfoByCustomer(customerCode);
 
 		// assert
 		assertThat(reservationList, is(notNullValue()));
@@ -265,7 +265,7 @@ public class ReserveRepositoryImplTest {
 
 		// run
 		List<Reserve> reservationList = reserveRepository
-				.findAllByCustomer(customerCode);
+				.findAllWithTourInfoByCustomer(customerCode);
 
 		assertThat(reservationList, is(notNullValue()));
 		assertThat(reservationList.size(), is(0));

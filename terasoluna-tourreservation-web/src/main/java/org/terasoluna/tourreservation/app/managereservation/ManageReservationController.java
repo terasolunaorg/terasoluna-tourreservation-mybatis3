@@ -107,7 +107,7 @@ public class ManageReservationController {
     public String updateForm(@PathVariable("reserveNo") String reserveNo,
             ManageReservationForm form, Model model) {
 
-        Reserve reserve = reserveService.findOne(reserveNo);
+        Reserve reserve = reserveService.findOneWithTourInfo(reserveNo);
 
         // Map Model to form
         // This is needed to copy the current values of the reservation into the form
@@ -126,7 +126,7 @@ public class ManageReservationController {
      */
     @RequestMapping(value = "update", method = RequestMethod.POST, params = "redo")
     public String updateRedo(ManageReservationForm form, Model model) {
-        Reserve reserve = reserveService.findOne(form.getReserveNo());
+        Reserve reserve = reserveService.findOneWithTourInfo(form.getReserveNo());
         model.addAttribute(reserve);
         return "managereservation/updateForm";
     }

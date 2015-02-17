@@ -19,9 +19,9 @@ import org.terasoluna.tourreservation.domain.model.TourInfo;
 
 public interface TourInfoSharedService {
 
-    TourInfo findOne(String tourCode);
+    TourInfo findOneWithDetails(String tourCode);
 
-    TourInfo findOneForUpdate(String tourCode);
+    TourInfo findOneWithDetailsForUpdate(String tourCode);
     
     boolean isOverPaymentLimit(TourInfo tour);
 

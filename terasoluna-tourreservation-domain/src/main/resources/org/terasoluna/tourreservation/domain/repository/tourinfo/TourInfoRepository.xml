@@ -24,7 +24,7 @@
         <result property="tourAbs" column="tour_abs" />
     </resultMap>
 
-    <select id="findOne" parameterType="string" resultMap="tourInfoResultMap">
+    <select id="findOneWithDetails" parameterType="string" resultMap="tourInfoResultMap">
         SELECT
             tourinfo.tour_code,
             tourinfo.planned_day,
@@ -37,7 +37,9 @@
             departure.dep_name,
             tourinfo.arr_code,
             arrival.arr_name,
-            tourinfo.accom_code,
+            accommodation.accom_code,
+            accommodation.accom_name,
+            accommodation.accom_tel,
             tourinfo.base_price,
             tourinfo.conductor,
             tourinfo.tour_abs
@@ -45,11 +47,12 @@
             tourinfo
         INNER JOIN departure ON tourinfo.dep_code = departure.dep_code
         INNER JOIN arrival ON tourinfo.arr_code = arrival.arr_code
+        INNER JOIN accommodation ON tourinfo.accom_code = accommodation.accom_code
         WHERE
             tour_code = #{tourCode}
     </select>
 
-    <select id="findOneForUpdate" parameterType="string" resultMap="tourInfoResultMap">
+    <select id="findOneWithDetailsForUpdate" parameterType="string" resultMap="tourInfoResultMap">
         SELECT
             tourinfo.tour_code,
             tourinfo.planned_day,
@@ -63,6 +66,8 @@
             tourinfo.arr_code,
             arrival.arr_name,
             tourinfo.accom_code,
+            accommodation.accom_name,
+            accommodation.accom_tel,
             tourinfo.base_price,
             tourinfo.conductor,
             tourinfo.tour_abs
@@ -70,6 +75,7 @@
             tourinfo
         INNER JOIN departure ON tourinfo.dep_code = departure.dep_code
         INNER JOIN arrival ON tourinfo.arr_code = arrival.arr_code
+        INNER JOIN accommodation ON tourinfo.accom_code = accommodation.accom_code
         WHERE
             tour_code = #{tourCode}
         FOR UPDATE

@@ -77,7 +77,7 @@ public class ManageReservationHelperTest {
         tour2.setTourDays(4);
         List<Reserve> reserves = Arrays.asList(reserve1, reserve2);
 
-        when(reserveService.findAllByCustomerCode("xxxx")).thenReturn(reserves);
+        when(reserveService.findAllWithTourInfoByCustomer("xxxx")).thenReturn(reserves);
         when(tourInfoSharedService.isOverPaymentLimit(tour1)).thenReturn(
                 false);
         when(tourInfoSharedService.isOverPaymentLimit(tour2)).thenReturn(

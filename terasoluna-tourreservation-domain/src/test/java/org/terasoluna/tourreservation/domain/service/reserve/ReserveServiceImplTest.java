@@ -98,17 +98,22 @@ public class ReserveServiceImplTest {
     @Test
     public void testFindOne01() {
         Reserve reserve = new Reserve();
+        TourInfo tourInfo = new TourInfo();
+        tourInfo.setTourCode("XXXXXXXXXX");
+        reserve.setTourInfo(tourInfo);
         when(reserveRepository.findOne("foo")).thenReturn(reserve);
+        when(tourInfoSharedService.findOneWithDetails("XXXXXXXXXX")).thenReturn(tourInfo);
 
-        Reserve result = reserveService.findOne("foo");
+        Reserve result = reserveService.findOneWithTourInfo("foo");
         assertThat(result, is(reserve));
     }
 
     @Test
     public void testFindOne02() {
         when(reserveRepository.findOne("foo")).thenReturn(null);
+        when(tourInfoSharedService.findOneWithDetails(null)).thenReturn(null);
 
-        Reserve result = reserveService.findOne("foo");
+        Reserve result = reserveService.findOneWithTourInfo("foo");
         assertThat(result, is(nullValue()));
     }
 
@@ -124,13 +129,13 @@ public class ReserveServiceImplTest {
         tour2.setTourDays(4);
         List<Reserve> reserves = Arrays.asList(reserve1, reserve2);
 
-        when(reserveRepository.findAllByCustomer("xxxx")).thenReturn(reserves);
+        when(reserveRepository.findAllWithTourInfoByCustomer("xxxx")).thenReturn(reserves);
         when(tourInfoSharedService.isOverPaymentLimit(tour1)).thenReturn(
                 false);
         when(tourInfoSharedService.isOverPaymentLimit(tour2)).thenReturn(
                 true);
 
-        List<Reserve> result = reserveService.findAllByCustomerCode("xxxx");
+        List<Reserve> result = reserveService.findAllWithTourInfoByCustomer("xxxx");
         assertThat(result, is(notNullValue()));
         assertThat(result.size(), is(2));
         assertThat(result.get(0), is(reserve1));
@@ -139,9 +144,9 @@ public class ReserveServiceImplTest {
 
     @Test
     public void testFindByCustomerCode03() {
-        when(reserveRepository.findAllByCustomer("xxxx")).thenReturn(
+        when(reserveRepository.findAllWithTourInfoByCustomer("xxxx")).thenReturn(
                 new ArrayList<Reserve>());
-        List<Reserve> result = reserveService.findAllByCustomerCode("xxxx");
+        List<Reserve> result = reserveService.findAllWithTourInfoByCustomer("xxxx");
         assertThat(result, is(notNullValue()));
         assertThat(result.size(), is(0));
     }
@@ -159,8 +164,8 @@ public class ReserveServiceImplTest {
         tour.setAccommodation(new Accommodation());
         tour.setDeparture(new Departure());
         tour.setArrival(new Arrival());
-        when(tourInfoSharedService.findOne("01")).thenReturn(tour);
-        when(tourInfoSharedService.findOneForUpdate("01")).thenReturn(tour);
+        when(tourInfoSharedService.findOneWithDetails("01")).thenReturn(tour);
+        when(tourInfoSharedService.findOneWithDetailsForUpdate("01")).thenReturn(tour);
         when(reserveRepository.countReservedPersonSumByTourInfo(tour.getTourCode())).thenReturn(7L); // 1+2+7 <= 10
 
         ReserveTourInput input = new ReserveTourInput();
@@ -181,7 +186,7 @@ public class ReserveServiceImplTest {
 
         ArgumentCaptor<Reserve> capture = ArgumentCaptor
                 .forClass(Reserve.class);
-        verify(reserveRepository, atLeast(1)).create(capture.capture());
+        verify(reserveRepository, atLeast(1)).insert(capture.capture());
 
         Reserve r = capture.getValue();
         assertThat(output.getReserve(), is(r));
@@ -208,8 +213,8 @@ public class ReserveServiceImplTest {
                 true); // !!today is over limit
         tour.setTourDays(2);
         tour.setAvaRecMax(10);
-        when(tourInfoSharedService.findOne("01")).thenReturn(tour);
-        when(tourInfoSharedService.findOneForUpdate("01")).thenReturn(tour);
+        when(tourInfoSharedService.findOneWithDetails("01")).thenReturn(tour);
+        when(tourInfoSharedService.findOneWithDetailsForUpdate("01")).thenReturn(tour);
         when(reserveRepository.countReservedPersonSumByTourInfo(tour.getTourCode())).thenReturn(7L); // 1+2+7 <= 10
 
         ReserveTourInput input = new ReserveTourInput();
@@ -251,8 +256,8 @@ public class ReserveServiceImplTest {
         tour.setArrival(new Arrival());
         tour.setTourDays(2);
         tour.setAvaRecMax(10);
-        when(tourInfoSharedService.findOne("01")).thenReturn(tour);
-        when(tourInfoSharedService.findOneForUpdate("01")).thenReturn(tour);
+        when(tourInfoSharedService.findOneWithDetails("01")).thenReturn(tour);
+        when(tourInfoSharedService.findOneWithDetailsForUpdate("01")).thenReturn(tour);
         when(reserveRepository.countReservedPersonSumByTourInfo(tour.getTourCode())).thenReturn(8L); // !!1+2+8 > 10
 
         ReserveTourInput input = new ReserveTourInput();
@@ -347,6 +352,7 @@ public class ReserveServiceImplTest {
 
         when(reserveRepository.findOne("001")).thenReturn(reserve);
         when(reserveRepository.findOneForUpdate("001")).thenReturn(reserve);
+        when(tourInfoSharedService.findOneWithDetails("01")).thenReturn(tour);
         when(tourInfoSharedService.isOverPaymentLimit(tour)).thenReturn(
                 true); // !!!over limit
 
@@ -417,7 +423,7 @@ public class ReserveServiceImplTest {
         reserve.setTourInfo(tour);
 
         when(reserveRepository.findOne("foo")).thenReturn(reserve);
-        when(reserveRepository.findOneForUpdate("foo")).thenReturn(reserve);
+        when(tourInfoSharedService.findOneWithDetails("aaa")).thenReturn(tour);
         // run
         ReservationUpdateOutput output = reserveService.update(input);
         assertThat(output, is(output));

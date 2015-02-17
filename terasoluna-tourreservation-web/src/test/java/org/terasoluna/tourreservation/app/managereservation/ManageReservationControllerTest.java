@@ -139,7 +139,7 @@ public class ManageReservationControllerTest {
                 "/managereservation/update/123").param("form", "");
 
         // Set mock behavior for service method
-        when(reserveService.findOne("123")).thenReturn(new Reserve());
+        when(reserveService.findOneWithTourInfo("123")).thenReturn(new Reserve());
 
         try {
             ResultActions results = mockMvc.perform(getRequest);
@@ -162,7 +162,7 @@ public class ManageReservationControllerTest {
                 .post("/managereservation/update").param("redo", "");
 
         // Set mock behavior for service method
-        when(reserveService.findOne("123")).thenReturn(new Reserve());
+        when(reserveService.findOneWithTourInfo("123")).thenReturn(new Reserve());
 
         // Model should not be null
         // following assignment is required to avoid null model error
