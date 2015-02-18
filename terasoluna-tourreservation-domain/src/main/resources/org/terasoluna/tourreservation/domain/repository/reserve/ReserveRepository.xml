@@ -132,46 +132,46 @@
 
     <select id="findOneWithDetail" parameterType="string" resultMap="reserveResultMap">
         SELECT
-            reserve.reserve_no,
-            reserve.tour_code,
-            tourinfo.planned_day,
-            tourinfo.plan_no,
-            tourinfo.tour_name,
-            tourinfo.tour_days,
-            tourinfo.dep_day,
-            tourinfo.ava_rec_max,
-            tourinfo.dep_code,
-            departure.dep_name,
-            tourinfo.arr_code,
-            arrival.arr_name,
-            tourinfo.accom_code,
-            tourinfo.base_price,
-            tourinfo.conductor,
-            tourinfo.tour_abs,
-            reserve.reserved_day,
-            reserve.adult_count,
-            reserve.child_count,
-            customer.customer_code,
-            customer.customer_name,
-            customer.customer_kana,
-            customer.customer_pass,
-            customer.customer_birth,
-            customer.customer_job,
-            customer.customer_mail,
-            customer.customer_tel,
-            customer.customer_post,
-            customer.customer_add,
-            reserve.transfer,
-            reserve.sum_price,
-            reserve.remarks
+            r.reserve_no AS reserve_no,
+            r.tour_code AS tour_code,
+            t.planned_day AS planned_day,
+            t.plan_no AS plan_no,
+            t.tour_name AS tour_name,
+            t.tour_days AS tour_days,
+            t.dep_day AS dep_day,
+            t.ava_rec_max AS ava_rec_max,
+            t.dep_code AS dep_code,
+            d.dep_name AS dep_name,
+            t.arr_code AS arr_code,
+            a.arr_name AS arr_name,
+            t.accom_code AS accom_code,
+            t.base_price AS base_price,
+            t.conductor AS conductor,
+            t.tour_abs AS tour_abs,
+            r.reserved_day AS reserved_day,
+            r.adult_count AS adult_count,
+            r.child_count AS child_count,
+            c.customer_code AS customer_code,
+            c.customer_name AS customer_name,
+            c.customer_kana AS customer_kana,
+            c.customer_pass AS customer_pass,
+            c.customer_birth AS customer_birth,
+            c.customer_job AS customer_job,
+            c.customer_mail AS customer_mail,
+            c.customer_tel AS customer_tel,
+            c.customer_post AS customer_post,
+            c.customer_add AS customer_add,
+            r.transfer AS transfer,
+            r.sum_price AS sum_price,
+            r.remarks AS remarks
         FROM
-            reserve
-        LEFT JOIN tourinfo ON reserve.tour_code = tourinfo.tour_code
-        LEFT JOIN departure ON tourinfo.dep_code = departure.dep_code
-        LEFT JOIN arrival ON tourinfo.arr_code = arrival.arr_code
-        INNER JOIN customer ON reserve.customer_code = customer.customer_code
+            reserve AS r
+        JOIN tourinfo AS t ON r.tour_code = t.tour_code
+        JOIN departure AS d ON t.dep_code = d.dep_code
+        JOIN arrival AS a ON t.arr_code = a.arr_code
+        JOIN customer AS c ON r.customer_code = c.customer_code
         WHERE
-            reserve_no = #{reserveNo}
+            r.reserve_no = #{reserveNo}
     </select>
 
     <select id="countReservedPersonSumByTourInfo" parameterType="string" resultType="Long">
@@ -185,50 +185,50 @@
 
     <select id="findAllWithTourInfoByCustomer" parameterType="string" resultMap="reserveResultMap">
         SELECT
-            reserve.reserve_no,
-            reserve.tour_code,
-            tourinfo.planned_day,
-            tourinfo.plan_no,
-            tourinfo.tour_name,
-            tourinfo.tour_days,
-            tourinfo.dep_day,
-            tourinfo.ava_rec_max,
-            tourinfo.dep_code,
-            departure.dep_name,
-            tourinfo.arr_code,
-            arrival.arr_name,
-            tourinfo.accom_code,
-            accommodation.accom_name,
-            accommodation.accom_tel,
-            tourinfo.base_price,
-            tourinfo.conductor,
-            tourinfo.tour_abs,
-            reserve.reserved_day,
-            reserve.adult_count,
-            reserve.child_count,
-            customer.customer_code,
-            customer.customer_name,
-            customer.customer_kana,
-            customer.customer_pass,
-            customer.customer_birth,
-            customer.customer_job,
-            customer.customer_mail,
-            customer.customer_tel,
-            customer.customer_post,
-            customer.customer_add,
-            reserve.transfer,
-            reserve.sum_price,
-            reserve.remarks
+            r.reserve_no AS reserve_no,
+            r.tour_code AS tour_code,
+            t.planned_day AS planned_day,
+            t.plan_no AS plan_no,
+            t.tour_name AS tour_name,
+            t.tour_days AS tour_days,
+            t.dep_day AS dep_day,
+            t.ava_rec_max AS ava_rec_max,
+            t.dep_code AS dep_code,
+            d.dep_name AS dep_name,
+            t.arr_code AS arr_code,
+            a.arr_name AS arr_name,
+            t.accom_code AS accom_code,
+            ac.accom_name AS accom_name,
+            ac.accom_tel AS accom_tel,
+            t.base_price AS base_price,
+            t.conductor AS conductor,
+            t.tour_abs AS tour_abs,
+            r.reserved_day AS reserved_day,
+            r.adult_count AS adult_count,
+            r.child_count AS child_count,
+            c.customer_code AS customer_code,
+            c.customer_name AS customer_name,
+            c.customer_kana AS customer_kana,
+            c.customer_pass AS customer_pass,
+            c.customer_birth AS customer_birth,
+            c.customer_job AS customer_job,
+            c.customer_mail AS customer_mail,
+            c.customer_tel AS customer_tel,
+            c.customer_post AS customer_post,
+            c.customer_add AS customer_add,
+            r.transfer AS transfer,
+            r.sum_price AS sum_price,
+            r.remarks AS remarks
         FROM
-            reserve
-        LEFT JOIN tourinfo ON reserve.tour_code = tourinfo.tour_code
-        LEFT JOIN departure ON tourinfo.dep_code = departure.dep_code
-        LEFT JOIN arrival ON tourinfo.arr_code = arrival.arr_code
-        INNER JOIN customer ON reserve.customer_code = customer.customer_code
-        INNER JOIN accommodation ON accommodation.accom_code = tourinfo.accom_code
+            reserve AS r
+        JOIN tourinfo AS t ON r.tour_code = t.tour_code
+        JOIN departure AS d ON t.dep_code = d.dep_code
+        JOIN arrival AS a ON t.arr_code = a.arr_code
+        JOIN customer AS c ON r.customer_code = c.customer_code
+        JOIN accommodation AS ac ON ac.accom_code = t.accom_code
         WHERE
-            customer.customer_code = #{customerCode}
-        ORDER BY tourinfo.dep_day,reserve.reserve_no
+            c.customer_code = #{customerCode}
+        ORDER BY t.dep_day,r.reserve_no
     </select>
 
 </mapper>

@@ -26,87 +26,87 @@
 
     <select id="findOneWithDetails" parameterType="string" resultMap="tourInfoResultMap">
         SELECT
-            tourinfo.tour_code,
-            tourinfo.planned_day,
-            tourinfo.plan_no,
-            tourinfo.tour_name,
-            tourinfo.tour_days,
-            tourinfo.dep_day,
-            tourinfo.ava_rec_max,
-            tourinfo.dep_code,
-            departure.dep_name,
-            tourinfo.arr_code,
-            arrival.arr_name,
-            accommodation.accom_code,
-            accommodation.accom_name,
-            accommodation.accom_tel,
-            tourinfo.base_price,
-            tourinfo.conductor,
-            tourinfo.tour_abs
+            t.tour_code,
+            t.planned_day,
+            t.plan_no,
+            t.tour_name,
+            t.tour_days,
+            t.dep_day,
+            t.ava_rec_max,
+            t.dep_code,
+            d.dep_name,
+            t.arr_code,
+            a.arr_name,
+            ac.accom_code,
+            ac.accom_name,
+            ac.accom_tel,
+            t.base_price,
+            t.conductor,
+            t.tour_abs
         FROM
-            tourinfo
-        INNER JOIN departure ON tourinfo.dep_code = departure.dep_code
-        INNER JOIN arrival ON tourinfo.arr_code = arrival.arr_code
-        INNER JOIN accommodation ON tourinfo.accom_code = accommodation.accom_code
+            tourinfo AS t
+        JOIN departure AS d ON t.dep_code = d.dep_code
+        JOIN arrival AS a ON t.arr_code = a.arr_code
+        JOIN accommodation AS ac ON t.accom_code = ac.accom_code
         WHERE
-            tour_code = #{tourCode}
+            t.tour_code = #{tourCode}
     </select>
 
     <select id="findOneWithDetailsForUpdate" parameterType="string" resultMap="tourInfoResultMap">
         SELECT
-            tourinfo.tour_code,
-            tourinfo.planned_day,
-            tourinfo.plan_no,
-            tourinfo.tour_name,
-            tourinfo.tour_days,
-            tourinfo.dep_day,
-            tourinfo.ava_rec_max,
-            tourinfo.dep_code,
-            departure.dep_name,
-            tourinfo.arr_code,
-            arrival.arr_name,
-            tourinfo.accom_code,
-            accommodation.accom_name,
-            accommodation.accom_tel,
-            tourinfo.base_price,
-            tourinfo.conductor,
-            tourinfo.tour_abs
+            t.tour_code,
+            t.planned_day,
+            t.plan_no,
+            t.tour_name,
+            t.tour_days,
+            t.dep_day,
+            t.ava_rec_max,
+            t.dep_code,
+            d.dep_name,
+            t.arr_code,
+            a.arr_name,
+            t.accom_code,
+            ac.accom_name,
+            ac.accom_tel,
+            t.base_price,
+            t.conductor,
+            t.tour_abs
         FROM
-            tourinfo
-        INNER JOIN departure ON tourinfo.dep_code = departure.dep_code
-        INNER JOIN arrival ON tourinfo.arr_code = arrival.arr_code
-        INNER JOIN accommodation ON tourinfo.accom_code = accommodation.accom_code
+            tourinfo AS t
+        JOIN departure AS d ON t.dep_code = d.dep_code
+        JOIN arrival AS a ON t.arr_code = a.arr_code
+        JOIN accommodation AS ac ON t.accom_code = ac.accom_code
         WHERE
-            tour_code = #{tourCode}
+            t.tour_code = #{tourCode}
         FOR UPDATE
     </select>
 
     <select id="findPageBySearchCriteria" parameterType="TourInfoSearchCriteria" resultMap="tourInfoResultMap">
         SELECT
-            tourinfo.tour_code,
-            tourinfo.planned_day,
-            tourinfo.plan_no,
-            tourinfo.tour_name,
-            tourinfo.tour_days,
-            tourinfo.dep_day,
-            tourinfo.ava_rec_max,
-            tourinfo.dep_code,
-            departure.dep_name,
-            tourinfo.arr_code,
-            arrival.arr_name,
-            tourinfo.accom_code,
-            accommodation.accom_name,
-            accommodation.accom_tel,
-            tourinfo.base_price,
-            tourinfo.conductor,
-            tourinfo.tour_abs
+            t.tour_code,
+            t.planned_day,
+            t.plan_no,
+            t.tour_name,
+            t.tour_days,
+            t.dep_day,
+            t.ava_rec_max,
+            t.dep_code,
+            d.dep_name,
+            t.arr_code,
+            a.arr_name,
+            t.accom_code,
+            ac.accom_name,
+            ac.accom_tel,
+            t.base_price,
+            t.conductor,
+            t.tour_abs
         FROM
-            tourinfo
-        LEFT JOIN departure ON tourinfo.dep_code = departure.dep_code
-        LEFT JOIN arrival ON tourinfo.arr_code = arrival.arr_code
-        INNER JOIN accommodation ON accommodation.accom_code = tourinfo.accom_code
+            tourinfo AS t
+        JOIN departure AS d ON t.dep_code = d.dep_code
+        JOIN arrival AS a ON t.arr_code = a.arr_code
+        JOIN accommodation AS ac ON ac.accom_code = t.accom_code
         <include refid="findPageBySearchCriteriaWherePhrase" />
-        ORDER BY tourinfo.tour_days DESC, tourinfo.base_price DESC
+        ORDER BY t.tour_days DESC, t.base_price DESC
         LIMIT
             #{pageable.pageSize}
         OFFSET
@@ -117,9 +117,9 @@
         SELECT
             COUNT(*)
         FROM
-            tourinfo
-        LEFT JOIN departure ON tourinfo.dep_code = departure.dep_code
-        LEFT JOIN arrival ON tourinfo.arr_code = arrival.arr_code
+            tourinfo AS t
+        JOIN departure AS d ON t.dep_code = d.dep_code
+        JOIN arrival AS a ON t.arr_code = a.arr_code
         <include refid="findPageBySearchCriteriaWherePhrase" />
     </select>
 
@@ -128,24 +128,24 @@
         WHERE
         (
             EXISTS(
-            SELECT reserve.tour_code FROM reserve
-            WHERE reserve.tour_code = tourinfo.tour_code
-            AND (reserve.adult_count + child_count + #{criteria.adultCount} + #{criteria.childCount}) <= tourinfo.ava_rec_max
+            SELECT r.tour_code FROM reserve AS r
+            WHERE r.tour_code = t.tour_code
+            AND (r.adult_count + r.child_count + #{criteria.adultCount} + #{criteria.childCount}) <= t.ava_rec_max
             )
                 OR
             NOT EXISTS(
-            SELECT reserve.tour_code FROM reserve 
-            WHERE reserve.tour_code = tourinfo.tour_code
+            SELECT r.tour_code FROM reserve AS r
+            WHERE r.tour_code = t.tour_code
             )
         )]]>
-        AND tourinfo.dep_day = #{criteria.depDate}
-        AND departure.dep_code = #{criteria.depCode}
-        AND arrival.arr_code = #{criteria.arrCode}
+        AND t.dep_day = #{criteria.depDate}
+        AND d.dep_code = #{criteria.depCode}
+        AND a.arr_code = #{criteria.arrCode}
         <if test="criteria.tourDays != 0">
-            AND tourinfo.tour_days = #{criteria.tourDays}
+            AND t.tour_days = #{criteria.tourDays}
         </if>
         <if test="criteria.basePrice != 0">
-            AND tourinfo.base_price = #{criteria.basePrice}
+            AND t.base_price = #{criteria.basePrice}
         </if>
     </sql>
 
