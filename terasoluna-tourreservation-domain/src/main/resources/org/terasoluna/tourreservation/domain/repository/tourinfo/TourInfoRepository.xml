@@ -44,12 +44,15 @@
             t.conductor,
             t.tour_abs
         FROM
-            tourinfo AS t
-        JOIN departure AS d ON t.dep_code = d.dep_code
-        JOIN arrival AS a ON t.arr_code = a.arr_code
-        JOIN accommodation AS ac ON t.accom_code = ac.accom_code
+            tourinfo AS t JOIN departure AS d
+        ON
+                t.dep_code = d.dep_code JOIN arrival AS a
+        ON
+                t.arr_code = a.arr_code JOIN accommodation AS ac
+        ON
+                t.accom_code = ac.accom_code
         WHERE
-            t.tour_code = #{tourCode}
+                t.tour_code = #{tourCode}
     </select>
 
     <select id="findOneWithDetailsForUpdate" parameterType="string" resultMap="tourInfoResultMap">
@@ -72,13 +75,15 @@
             t.conductor,
             t.tour_abs
         FROM
-            tourinfo AS t
-        JOIN departure AS d ON t.dep_code = d.dep_code
-        JOIN arrival AS a ON t.arr_code = a.arr_code
-        JOIN accommodation AS ac ON t.accom_code = ac.accom_code
+            tourinfo AS t JOIN departure AS d
+        ON
+                t.dep_code = d.dep_code JOIN arrival AS a
+        ON
+                t.arr_code = a.arr_code JOIN accommodation AS ac
+        ON
+                t.accom_code = ac.accom_code
         WHERE
-            t.tour_code = #{tourCode}
-        FOR UPDATE
+                t.tour_code = #{tourCode} FOR UPDATE
     </select>
 
     <select id="findPageBySearchCriteria" parameterType="TourInfoSearchCriteria" resultMap="tourInfoResultMap">
@@ -101,25 +106,28 @@
             t.conductor,
             t.tour_abs
         FROM
-            tourinfo AS t
-        JOIN departure AS d ON t.dep_code = d.dep_code
-        JOIN arrival AS a ON t.arr_code = a.arr_code
-        JOIN accommodation AS ac ON ac.accom_code = t.accom_code
+            tourinfo AS t JOIN departure AS d
+        ON
+                t.dep_code = d.dep_code JOIN arrival AS a
+        ON
+                t.arr_code = a.arr_code JOIN accommodation AS ac
+        ON
+                ac.accom_code = t.accom_code
         <include refid="findPageBySearchCriteriaWherePhrase" />
-        ORDER BY t.tour_days DESC, t.base_price DESC
-        LIMIT
-            #{pageable.pageSize}
-        OFFSET
-            #{pageable.offset}
+        ORDER BY
+            t.tour_days DESC,
+            t.base_price DESC LIMIT #{pageable.pageSize} OFFSET #{pageable.offset}
     </select>
 
     <select id="countBySearchCriteria" parameterType="TourInfoSearchCriteria" resultType="_long">
         SELECT
             COUNT(*)
         FROM
-            tourinfo AS t
-        JOIN departure AS d ON t.dep_code = d.dep_code
-        JOIN arrival AS a ON t.arr_code = a.arr_code
+            tourinfo AS t JOIN departure AS d
+        ON
+                t.dep_code = d.dep_code JOIN arrival AS a
+        ON
+                t.arr_code = a.arr_code
         <include refid="findPageBySearchCriteriaWherePhrase" />
     </select>
 

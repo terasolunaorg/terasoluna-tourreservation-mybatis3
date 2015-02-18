@@ -165,13 +165,17 @@
             r.sum_price AS sum_price,
             r.remarks AS remarks
         FROM
-            reserve AS r
-        JOIN tourinfo AS t ON r.tour_code = t.tour_code
-        JOIN departure AS d ON t.dep_code = d.dep_code
-        JOIN arrival AS a ON t.arr_code = a.arr_code
-        JOIN customer AS c ON r.customer_code = c.customer_code
+            reserve AS r JOIN tourinfo AS t
+        ON
+                r.tour_code = t.tour_code JOIN departure AS d
+        ON
+                t.dep_code = d.dep_code JOIN arrival AS a
+        ON
+                t.arr_code = a.arr_code JOIN customer AS c
+        ON
+                r.customer_code = c.customer_code
         WHERE
-            r.reserve_no = #{reserveNo}
+                r.reserve_no = #{reserveNo}
     </select>
 
     <select id="countReservedPersonSumByTourInfo" parameterType="string" resultType="Long">
@@ -220,15 +224,22 @@
             r.sum_price AS sum_price,
             r.remarks AS remarks
         FROM
-            reserve AS r
-        JOIN tourinfo AS t ON r.tour_code = t.tour_code
-        JOIN departure AS d ON t.dep_code = d.dep_code
-        JOIN arrival AS a ON t.arr_code = a.arr_code
-        JOIN customer AS c ON r.customer_code = c.customer_code
-        JOIN accommodation AS ac ON ac.accom_code = t.accom_code
+            reserve AS r JOIN tourinfo AS t
+        ON
+                r.tour_code = t.tour_code JOIN departure AS d
+        ON
+                t.dep_code = d.dep_code JOIN arrival AS a
+        ON
+                t.arr_code = a.arr_code JOIN customer AS c
+        ON
+                r.customer_code = c.customer_code JOIN accommodation AS ac
+        ON
+                ac.accom_code = t.accom_code
         WHERE
-            c.customer_code = #{customerCode}
-        ORDER BY t.dep_day,r.reserve_no
+                c.customer_code = #{customerCode}
+        ORDER BY
+            t.dep_day,
+            r.reserve_no
     </select>
 
 </mapper>
