@@ -39,13 +39,11 @@ public class TourInfoSharedServiceImpl implements TourInfoSharedService {
     @Inject
     JodaTimeDateFactory dateFactory;
 
-    @Transactional(readOnly = true)
     @Override
     public TourInfo findOneWithDetails(String tourCode) {
         return tourInfoRepository.findOneWithDetails(tourCode);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public boolean isOverPaymentLimit(TourInfo tour) {
         Assert.notNull(tour, "tour must not be null");
@@ -56,7 +54,6 @@ public class TourInfoSharedServiceImpl implements TourInfoSharedService {
         return today.isAfter(paymentLimit);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public TourInfo findOneWithDetailsForUpdate(String tourCode) {
         return tourInfoRepository.findOneWithDetailsForUpdate(tourCode);
