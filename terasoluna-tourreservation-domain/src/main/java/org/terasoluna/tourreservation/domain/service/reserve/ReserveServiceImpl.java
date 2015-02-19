@@ -59,7 +59,6 @@ public class ReserveServiceImpl implements ReserveService {
     @Inject
     Mapper beanMapper;
 
-    @Transactional(readOnly = true)
     @Override
     public Reserve findOneWithTourInfo(String reserveNo) {
         Reserve reserve = reserveRepository.findOne(reserveNo);
@@ -74,7 +73,6 @@ public class ReserveServiceImpl implements ReserveService {
         return reserve;
     }
 
-    @Transactional(readOnly = true)
     @Override
     public List<Reserve> findAllWithTourInfoByCustomer(String customerCode) {
         List<Reserve> reserves = reserveRepository.findAllWithTourInfoByCustomer(customerCode);
