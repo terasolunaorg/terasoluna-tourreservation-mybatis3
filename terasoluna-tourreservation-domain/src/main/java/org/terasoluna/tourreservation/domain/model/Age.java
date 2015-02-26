@@ -21,6 +21,9 @@ package org.terasoluna.tourreservation.domain.model;
 
 import java.io.Serializable;
 
+import lombok.Data;
+
+@Data
 public class Age implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -29,70 +32,5 @@ public class Age implements Serializable {
     private String ageName;
 
     private int ageRate;
-
-    public Age() {
-    }
-
-    public Age(String ageCode) {
-        this.ageCode = ageCode;
-    }
-
-    public Age(String ageCode, String ageName, int ageRate) {
-        this.ageCode = ageCode;
-        this.ageName = ageName;
-        this.ageRate = ageRate;
-    }
-
-    public String getAgeCode() {
-        return ageCode;
-    }
-
-    public void setAgeCode(String ageCode) {
-        this.ageCode = ageCode;
-    }
-
-    public String getAgeName() {
-        return ageName;
-    }
-
-    public void setAgeName(String ageName) {
-        this.ageName = ageName;
-    }
-
-    public int getAgeRate() {
-        return ageRate;
-    }
-
-    public void setAgeRate(int ageRate) {
-        this.ageRate = ageRate;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (ageCode != null ? ageCode.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are
-        // not set
-        if (!(object instanceof Age)) {
-            return false;
-        }
-        Age other = (Age) object;
-        if ((this.ageCode == null && other.ageCode != null)
-                || (this.ageCode != null && !this.ageCode.equals(other.ageCode))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "org.terasoluna.tourreservation.domain.model.Age[ ageCode=" + ageCode
-                + " ]";
-    }
 
 }
