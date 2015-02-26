@@ -21,67 +21,14 @@ package org.terasoluna.tourreservation.domain.model;
 
 import java.io.Serializable;
 
+import lombok.Data;
+
+@Data
 public class Departure implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String depCode;
 
     private String depName;
-
-    public Departure() {
-    }
-
-    public Departure(String depCode) {
-        this.depCode = depCode;
-    }
-
-    public Departure(String depCode, String depName) {
-        this.depCode = depCode;
-        this.depName = depName;
-    }
-
-    public String getDepCode() {
-        return depCode;
-    }
-
-    public void setDepCode(String depCode) {
-        this.depCode = depCode;
-    }
-
-    public String getDepName() {
-        return depName;
-    }
-
-    public void setDepName(String depName) {
-        this.depName = depName;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (depCode != null ? depCode.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are
-        // not set
-        if (!(object instanceof Departure)) {
-            return false;
-        }
-        Departure other = (Departure) object;
-        if ((this.depCode == null && other.depCode != null)
-                || (this.depCode != null && !this.depCode.equals(other.depCode))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "org.terasoluna.tourreservation.domain.model.Departure[ depCode="
-                + depCode + " ]";
-    }
 
 }
