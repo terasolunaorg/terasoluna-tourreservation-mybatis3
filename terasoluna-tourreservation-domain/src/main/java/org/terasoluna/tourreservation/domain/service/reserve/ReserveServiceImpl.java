@@ -34,7 +34,7 @@ import org.terasoluna.tourreservation.domain.model.Reserve;
 import org.terasoluna.tourreservation.domain.model.TourInfo;
 import org.terasoluna.tourreservation.domain.repository.reserve.ReserveRepository;
 import org.terasoluna.tourreservation.domain.service.tourinfo.PriceCalculateOutput;
-import org.terasoluna.tourreservation.domain.service.tourinfo.PriceCalculateSharedSerivce;
+import org.terasoluna.tourreservation.domain.service.tourinfo.PriceCalculateSharedService;
 import org.terasoluna.tourreservation.domain.service.tourinfo.TourInfoSharedService;
 
 @Transactional
@@ -51,7 +51,7 @@ public class ReserveServiceImpl implements ReserveService {
     TourInfoSharedService tourInfoSharedService;
 
     @Inject
-    PriceCalculateSharedSerivce priceCalculateService;
+    PriceCalculateSharedService priceCalculateService;
 
     @Inject
     JodaTimeDateFactory dateFactory;
