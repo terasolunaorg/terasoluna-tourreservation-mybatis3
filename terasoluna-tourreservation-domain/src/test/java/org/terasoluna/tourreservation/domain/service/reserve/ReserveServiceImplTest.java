@@ -76,6 +76,8 @@ public class ReserveServiceImplTest {
         tourInfoSharedService = mock(TourInfoSharedService.class);
         dateFactory = mock(JodaTimeDateFactory.class);
         priceCalculateSerivce = mock(PriceCalculateSharedService.class);
+        AuthorizedReserveSharedServiceImpl authorizedReserveSharedService = new AuthorizedReserveSharedServiceImpl();
+        authorizedReserveSharedService.reserveRepository = reserveRepository;
 
         beanMapper = new DozerBeanMapper();
         List<String> mappingFiles = new ArrayList<String>();
@@ -86,6 +88,7 @@ public class ReserveServiceImplTest {
         reserveService.tourInfoSharedService = tourInfoSharedService;
         reserveService.dateFactory = dateFactory;
         reserveService.priceCalculateService = priceCalculateSerivce;
+        reserveService.authorizedReserveSharedService = authorizedReserveSharedService;
         reserveService.beanMapper = beanMapper;
 
         when(dateFactory.newDateTime()).thenReturn(now);
@@ -299,6 +302,7 @@ public class ReserveServiceImplTest {
 
         when(reserveRepository.findOne("001")).thenReturn(reserve);
         when(reserveRepository.findOneForUpdate("001")).thenReturn(reserve);
+        when(tourInfoSharedService.findOneWithDetails("01")).thenReturn(tour);
         when(tourInfoSharedService.isOverPaymentLimit(tour)).thenReturn(
                 false); // within limit
 
@@ -323,6 +327,7 @@ public class ReserveServiceImplTest {
 
         when(reserveRepository.findOne("001")).thenReturn(reserve);
         when(reserveRepository.findOneForUpdate("001")).thenReturn(reserve);
+        when(tourInfoSharedService.findOneWithDetails("01")).thenReturn(tour);
         when(tourInfoSharedService.isOverPaymentLimit(tour)).thenReturn(
                 false); // within limit
 
@@ -384,6 +389,7 @@ public class ReserveServiceImplTest {
                 (Reserve) null); // !!!return null for second time
         when(reserveRepository.findOneForUpdate("001")).thenReturn(
                 (Reserve) null); // return null
+        when(tourInfoSharedService.findOneWithDetails("01")).thenReturn(tour);
         when(tourInfoSharedService.isOverPaymentLimit(tour)).thenReturn(
                 false); // within limit
 
