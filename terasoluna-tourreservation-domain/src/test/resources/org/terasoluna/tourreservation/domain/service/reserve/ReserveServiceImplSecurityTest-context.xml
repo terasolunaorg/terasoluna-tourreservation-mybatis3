@@ -15,6 +15,10 @@
         <constructor-arg value="org.terasoluna.tourreservation.domain.repository.reserve.ReserveRepository" />
     </bean>
 
+    <bean id="tourInfoRepository" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.terasoluna.tourreservation.domain.repository.tourinfo.TourInfoRepository" />
+    </bean>
+
     <!-- Integrate with Spring Security for method security -->
     <sec:global-method-security pre-post-annotations="enabled" />
     <sec:authentication-manager>

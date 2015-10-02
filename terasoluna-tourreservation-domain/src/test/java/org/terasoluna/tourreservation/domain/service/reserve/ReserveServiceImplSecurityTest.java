@@ -25,6 +25,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.terasoluna.gfw.common.date.jodatime.JodaTimeDateFactory;
 import org.terasoluna.tourreservation.domain.model.*;
 import org.terasoluna.tourreservation.domain.repository.reserve.ReserveRepository;
+import org.terasoluna.tourreservation.domain.repository.tourinfo.TourInfoRepository;
 import org.terasoluna.tourreservation.domain.service.userdetails.ReservationUserDetails;
 
 import javax.inject.Inject;
@@ -45,6 +46,9 @@ public class ReserveServiceImplSecurityTest {
     // Mock repository is define at the default bean definition file for this test case class.
     @Inject
     ReserveRepository mockReserveRepository;
+
+    @Inject
+    TourInfoRepository tourInfoRepository;
 
     @Inject
     ReserveService reserveService;
@@ -68,7 +72,7 @@ public class ReserveServiceImplSecurityTest {
 
     @Before
     public void resetMocks() {
-        reset(mockReserveRepository);
+        reset(mockReserveRepository, tourInfoRepository);
     }
 
     @Test
@@ -82,7 +86,7 @@ public class ReserveServiceImplSecurityTest {
         // test
         Reserve reserve;
         {
-            reserve = reserveService.findOne("R000000001");
+            reserve = reserveService.findOneWithTourInfo("R000000001");
         }
 
         // assert
@@ -105,7 +109,7 @@ public class ReserveServiceImplSecurityTest {
         // test
         Reserve reserve;
         {
-            reserve = reserveService.findOne("R000000001");
+            reserve = reserveService.findOneWithTourInfo("R000000001");
         }
 
         // assert
@@ -125,7 +129,7 @@ public class ReserveServiceImplSecurityTest {
 
         // test
         {
-            reserveService.findOne("R000000001");
+            reserveService.findOneWithTourInfo("R000000001");
         }
 
     }
@@ -150,7 +154,7 @@ public class ReserveServiceImplSecurityTest {
 
         // assert
         {
-            verify(mockReserveRepository, times(1)).save((Reserve) anyObject());
+            verify(mockReserveRepository, times(1)).update((Reserve) anyObject());
             assertThat(output.getReserve().getReserveNo(), is("R000000001"));
             assertThat(output.getReserve().getCustomer().getCustomerCode(), is(AUTHENTICATED_CUSTOMER_CODE));
         }
@@ -180,7 +184,7 @@ public class ReserveServiceImplSecurityTest {
 
         // assert
         {
-            verify(mockReserveRepository, never()).save((Reserve) anyObject());
+            verify(mockReserveRepository, never()).update((Reserve) anyObject());
         }
     }
 
@@ -244,14 +248,18 @@ public class ReserveServiceImplSecurityTest {
     private void setUpMockReserveRepository(String customerCode, String reserveNo) {
         Reserve reserve = new Reserve(reserveNo);
         reserve.setCustomer(new Customer(customerCode));
-        TourInfo tourInfo = new TourInfo();
+        reserve.setTourInfo(new TourInfo("01"));
+
+        when(mockReserveRepository.findOne(reserveNo)).thenReturn(reserve);
+        when(mockReserveRepository.findOneForUpdate(reserveNo)).thenReturn(reserve);
+
+        TourInfo tourInfo = new TourInfo("01");
         tourInfo.setDepDay(dateFactory.newDateTime().plusDays(8).toDate());
         tourInfo.setDeparture(new Departure());
         tourInfo.setArrival(new Arrival());
         reserve.setTourInfo(tourInfo);
 
-        when(mockReserveRepository.findOne(reserveNo)).thenReturn(reserve);
-        when(mockReserveRepository.findOneForUpdate(reserveNo)).thenReturn(reserve);
+        when(tourInfoRepository.findOneWithDetails(tourInfo.getTourCode())).thenReturn(tourInfo);
     }
 
 }
