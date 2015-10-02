@@ -27,7 +27,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.terasoluna.gfw.common.date.jodatime.JodaTimeDateFactory;
 import org.terasoluna.gfw.common.exception.BusinessException;
-import org.terasoluna.gfw.common.exception.SystemException;
 import org.terasoluna.gfw.common.message.ResultMessages;
 import org.terasoluna.tourreservation.domain.common.constants.MessageId;
 import org.terasoluna.tourreservation.domain.model.Reserve;
@@ -46,6 +45,9 @@ public class ReserveServiceImpl implements ReserveService {
     ReserveRepository reserveRepository;
 
     @Inject
+    AuthorizedReserveSharedService authorizedReserveSharedService;
+
+    @Inject
     TourInfoSharedService tourInfoSharedService;
 
     @Inject
@@ -59,14 +61,12 @@ public class ReserveServiceImpl implements ReserveService {
 
     @Override
     public Reserve findOneWithTourInfo(String reserveNo) {
-        Reserve reserve = reserveRepository.findOne(reserveNo);
+        Reserve reserve = authorizedReserveSharedService.findOne(reserveNo);
 
         if(reserve != null){
             TourInfo tourInfo = tourInfoSharedService.findOneWithDetails(reserve.getTourInfo().getTourCode());
             reserve.setTourInfo(tourInfo);
         }
-
-        validateReservation(reserve);
 
         return reserve;
     }
@@ -140,10 +140,7 @@ public class ReserveServiceImpl implements ReserveService {
 
     @Override
     public void cancel(String reserveNo) throws BusinessException {
-        log.debug("cancel reserveNo={}", reserveNo);
-        Reserve reserve = reserveRepository.findOne(reserveNo);
-        log.debug("check for cancel {}", reserve);
-        validateReservation(reserve);
+        Reserve reserve = findOneWithTourInfo(reserveNo);
 
         String transfer = reserve.getTransfer();
         if (Reserve.TRANSFERED.equals(transfer)) {
@@ -195,28 +192,6 @@ public class ReserveServiceImpl implements ReserveService {
         output.setPaymentTimeLimit(info.getPaymentLimit().toDate());
 
         return output;
-    }
-
-    /**
-     * check whether the reservation is reserved by login user.
-     * @param reserve
-     * @throws SystemException
-     */
-    protected void validateReservation(Reserve reserve) throws SystemException {
-        // String loginCustomerCode = authService.getAuthentication().getName();
-        // Customer customer = reserve.getCustomer();
-        // if (customer == null) {
-        // // TODO
-        // throw new SystemException(MessageId.E_TR_9001,
-        // getMessage(MessageId.E_TR_9001));
-        // }
-        //
-        // String targetCustomerCode = customer.getCustomerCode();
-        // if (!loginCustomerCode.equals(targetCustomerCode)) {
-        // // TODO
-        // throw new SystemException(MessageId.E_TR_9002,
-        // getMessage(MessageId.E_TR_9002));
-        // }
     }
 
 }
