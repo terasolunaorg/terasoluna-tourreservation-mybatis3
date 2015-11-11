@@ -18,8 +18,12 @@ package org.terasoluna.tourreservation.domain.service.reserve;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithSecurityContext;
+import org.springframework.security.test.context.support.WithSecurityContextFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.terasoluna.gfw.common.date.jodatime.JodaTimeDateFactory;
@@ -29,6 +33,9 @@ import org.terasoluna.tourreservation.domain.repository.tourinfo.TourInfoReposit
 import org.terasoluna.tourreservation.domain.service.userdetails.ReservationUserDetails;
 
 import javax.inject.Inject;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.nullValue;
@@ -40,8 +47,8 @@ import static org.mockito.Mockito.*;
 @ContextConfiguration
 public class ReserveServiceImplSecurityTest {
 
-    // Customer code of authenticated user.
-    private static final String AUTHENTICATED_CUSTOMER_CODE = "C0000001";
+    private static final String CUSTOMER_A = "C0000001";
+    private static final String CUSTOMER_B = "C0000002";
 
     // Mock repository is define at the default bean definition file for this test case class.
     @Inject
@@ -56,31 +63,18 @@ public class ReserveServiceImplSecurityTest {
     @Inject
     JodaTimeDateFactory dateFactory;
 
-    @BeforeClass
-    public static void setUpSecurityContext() {
-        Authentication mockAuthentication = mock(Authentication.class);
-        when(mockAuthentication.isAuthenticated()).thenReturn(true);
-        when(mockAuthentication.getPrincipal())
-                .thenReturn(new ReservationUserDetails(new Customer(AUTHENTICATED_CUSTOMER_CODE)));
-        SecurityContextHolder.getContext().setAuthentication(mockAuthentication);
-    }
-
-    @AfterClass
-    public static void cleanupSecurityContext() {
-        SecurityContextHolder.clearContext();
-    }
-
     @Before
     public void resetMocks() {
         reset(mockReserveRepository, tourInfoRepository);
     }
 
     @Test
+    @WithMockCustomer(customerCode = CUSTOMER_A)
     public void testFindOneForOwnerReservation() {
 
         // setup
         {
-            setUpMockReserveRepository(AUTHENTICATED_CUSTOMER_CODE, "R000000001");
+            setUpMockReserveRepository(CUSTOMER_A, "R000000001");
         }
 
         // test
@@ -92,12 +86,13 @@ public class ReserveServiceImplSecurityTest {
         // assert
         {
             assertThat(reserve.getReserveNo(), is("R000000001"));
-            assertThat(reserve.getCustomer().getCustomerCode(), is(AUTHENTICATED_CUSTOMER_CODE));
+            assertThat(reserve.getCustomer().getCustomerCode(), is(CUSTOMER_A));
         }
 
     }
 
     @Test
+    @WithMockCustomer(customerCode = CUSTOMER_A)
     public void testFindOneForNotFound() {
 
         // setup
@@ -120,11 +115,12 @@ public class ReserveServiceImplSecurityTest {
     }
 
     @Test(expected = AccessDeniedException.class)
+    @WithMockCustomer(customerCode = CUSTOMER_A)
     public void testFindOneForOtherOwnerReservation() {
 
         // setup
         {
-            setUpMockReserveRepository("C0000002", "R000000001");
+            setUpMockReserveRepository(CUSTOMER_B, "R000000001");
         }
 
         // test
@@ -135,11 +131,12 @@ public class ReserveServiceImplSecurityTest {
     }
 
     @Test
+    @WithMockCustomer(customerCode = CUSTOMER_A)
     public void testUpdateForOwnerReservation() {
 
         // setup
         {
-            setUpMockReserveRepository(AUTHENTICATED_CUSTOMER_CODE, "R000000001");
+            setUpMockReserveRepository(CUSTOMER_A, "R000000001");
         }
 
         // test
@@ -156,18 +153,19 @@ public class ReserveServiceImplSecurityTest {
         {
             verify(mockReserveRepository, times(1)).update((Reserve) anyObject());
             assertThat(output.getReserve().getReserveNo(), is("R000000001"));
-            assertThat(output.getReserve().getCustomer().getCustomerCode(), is(AUTHENTICATED_CUSTOMER_CODE));
+            assertThat(output.getReserve().getCustomer().getCustomerCode(), is(CUSTOMER_A));
         }
 
 
     }
 
     @Test
+    @WithMockCustomer(customerCode = CUSTOMER_A)
     public void testUpdateForOtherOwnerReservation() {
 
         // setup
         {
-            setUpMockReserveRepository("C0000002", "R000000001");
+            setUpMockReserveRepository(CUSTOMER_B, "R000000001");
         }
 
         // test
@@ -189,11 +187,12 @@ public class ReserveServiceImplSecurityTest {
     }
 
     @Test
+    @WithMockCustomer(customerCode = CUSTOMER_A)
     public void testCancelForOwnerReservation() {
 
         // setup
         {
-            setUpMockReserveRepository(AUTHENTICATED_CUSTOMER_CODE, "R000000001");
+            setUpMockReserveRepository(CUSTOMER_A, "R000000001");
         }
 
         // test
@@ -209,11 +208,12 @@ public class ReserveServiceImplSecurityTest {
     }
 
     @Test
+    @WithMockCustomer(customerCode = CUSTOMER_A)
     public void testCancelForOtherOwnerReservation() {
 
         // setup
         {
-            setUpMockReserveRepository("C0000002", "R000000001");
+            setUpMockReserveRepository(CUSTOMER_B, "R000000001");
         }
 
         // test
@@ -260,6 +260,23 @@ public class ReserveServiceImplSecurityTest {
         reserve.setTourInfo(tourInfo);
 
         when(tourInfoRepository.findOneWithDetails(tourInfo.getTourCode())).thenReturn(tourInfo);
+    }
+
+    @WithSecurityContext(factory = WithMockCustomerSecurityContextFactory.class)
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface WithMockCustomer {
+        String customerCode();
+    }
+
+    static class WithMockCustomerSecurityContextFactory implements WithSecurityContextFactory<WithMockCustomer> {
+        @Override
+        public SecurityContext createSecurityContext(WithMockCustomer mockCustomer) {
+            SecurityContext context = SecurityContextHolder.createEmptyContext();
+            ReservationUserDetails userDetails = new ReservationUserDetails(new Customer(mockCustomer.customerCode()));
+            Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, "dummyPassword", userDetails.getAuthorities());
+            context.setAuthentication(auth);
+            return context;
+        }
     }
 
 }
