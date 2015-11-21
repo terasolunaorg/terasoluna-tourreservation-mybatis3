@@ -22,13 +22,13 @@
         <package name="org.terasoluna.tourreservation.domain.model" />
         <package name="org.terasoluna.tourreservation.domain.repository" />
 <!--
-        <package name="xxxxxx.yyyyyy.zzzzzz.infra.mybatis.typehandler" />
+        <package name="org.terasoluna.tourreservation.infra.mybatis.typehandler" />
 -->
     </typeAliases>
 
     <typeHandlers>
 <!--
-        <package name="xxxxxx.yyyyyy.zzzzzz.infra.mybatis.typehandler" />
+        <package name="org.terasoluna.tourreservation.infra.mybatis.typehandler" />
 -->
     </typeHandlers>
 
