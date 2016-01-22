@@ -16,7 +16,7 @@
 -->
 <!-- Defaul value for proxyFactory has chenged to JAVASSIST since mybatis 3.3.0 .
      To use CGLIB as a proxyFactory, remove this comment and add dependency for CGLIB in pom.xml
-        <setting name="proxyFactory" value="CGLIV" />
+        <setting name="proxyFactory" value="CGLIB" />
 -->
     </settings>
 
