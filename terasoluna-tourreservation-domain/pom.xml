@@ -76,15 +76,6 @@
             <scope>test</scope>
         </dependency>
         <!-- == End Unit Test == -->
-
-        <!-- == Begin MyBatis -->
-        <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib</artifactId>
-            <version>3.1</version>
-            <scope>runtime</scope>
-        </dependency>
-        <!-- == End MyBatis -->
     </dependencies>
 
 </project>
