@@ -24,7 +24,7 @@
 
     <parent>
         <groupId>org.terasoluna.gfw</groupId>
-        <artifactId>terasoluna-gfw-parent</artifactId>
+        <artifactId>terasoluna-gfw-starters</artifactId>
         <version>5.2.0-SNAPSHOT</version>
         <relativePath />
     </parent>
