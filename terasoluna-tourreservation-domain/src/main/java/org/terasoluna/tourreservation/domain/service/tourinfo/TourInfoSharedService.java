@@ -22,7 +22,7 @@ public interface TourInfoSharedService {
     TourInfo findOneWithDetails(String tourCode);
 
     TourInfo findOneWithDetailsForUpdate(String tourCode);
-    
+
     boolean isOverPaymentLimit(TourInfo tour);
 
 }
