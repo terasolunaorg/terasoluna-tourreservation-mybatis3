@@ -19,8 +19,8 @@ import org.terasoluna.tourreservation.domain.model.Customer;
 
 public interface CustomerRepository {
 
-	Customer findOne(String customerCode);
-	
-	void insert(Customer customer);
+    Customer findOne(String customerCode);
+
+    void insert(Customer customer);
 
 }
