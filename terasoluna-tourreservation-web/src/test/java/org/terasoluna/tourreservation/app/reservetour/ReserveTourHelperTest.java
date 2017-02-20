@@ -94,7 +94,8 @@ public class ReserveTourHelperTest {
         accommodation.setAccomCode("9012");
         tourInfo.setAccommodation(accommodation);
 
-        when(tourInfoSharedService.findOneWithDetails(tourCode)).thenReturn(tourInfo);
+        when(tourInfoSharedService.findOneWithDetails(tourCode)).thenReturn(
+                tourInfo);
 
         priceCalculateOutput = new PriceCalculateOutput();
         priceCalculateOutput.setSumPrice(100000);
@@ -104,7 +105,7 @@ public class ReserveTourHelperTest {
                 .thenReturn(priceCalculateOutput);
 
         customer = new Customer("12345678");
-        
+
         userDetails = new ReservationUserDetails(customer);
     }
 
@@ -123,7 +124,8 @@ public class ReserveTourHelperTest {
         form.setChildCount(2);
 
         // run
-        TourDetailOutput resultOutput = reserveHelper.findTourDetail(userDetails, tourCode, form);
+        TourDetailOutput resultOutput = reserveHelper.findTourDetail(
+                userDetails, tourCode, form);
 
         // assert
         assertThat(resultOutput.getCustomer(), is(customer));
@@ -136,14 +138,15 @@ public class ReserveTourHelperTest {
     public void testFindTourDetail02() {
         // test when principal is null
 
-    	String tourCode = "xxxxx";
+        String tourCode = "xxxxx";
 
         ReserveTourForm form = new ReserveTourForm();
         form.setAdultCount(1);
         form.setChildCount(2);
 
         // run
-        TourDetailOutput resultOutput = reserveHelper.findTourDetail(null, tourCode, form);
+        TourDetailOutput resultOutput = reserveHelper.findTourDetail(null,
+                tourCode, form);
 
         // assert
         assertThat(resultOutput.getCustomer(), is(nullValue()));
@@ -161,7 +164,8 @@ public class ReserveTourHelperTest {
                 .thenReturn(output);
 
         // run
-        ReserveTourOutput result = reserveHelper.reserve(userDetails, "123", form);
+        ReserveTourOutput result = reserveHelper.reserve(userDetails, "123",
+                form);
 
         // assert
         assertThat(result, is(output));

@@ -74,11 +74,11 @@ public class CustomerServiceImplTest {
         ArgumentCaptor<Customer> customerArg = ArgumentCaptor
                 .forClass(Customer.class);
 
-        verify(customerRepository, times(1))
-                .insert(customerArg.capture());
+        verify(customerRepository, times(1)).insert(customerArg.capture());
         assertThat(customerArg.getValue(), is(c));
-        /*assertThat(customerArg.getValue().getCustomerPass(),
-                is("foo{12345678}"));*/
+        /*
+         * assertThat(customerArg.getValue().getCustomerPass(), is("foo{12345678}"));
+         */
     }
 
 }
