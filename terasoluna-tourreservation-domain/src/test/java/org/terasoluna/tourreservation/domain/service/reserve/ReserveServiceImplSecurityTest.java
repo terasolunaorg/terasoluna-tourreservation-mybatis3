@@ -61,8 +61,10 @@ public class ReserveServiceImplSecurityTest {
         Authentication mockAuthentication = mock(Authentication.class);
         when(mockAuthentication.isAuthenticated()).thenReturn(true);
         when(mockAuthentication.getPrincipal())
-                .thenReturn(new ReservationUserDetails(new Customer(AUTHENTICATED_CUSTOMER_CODE)));
-        SecurityContextHolder.getContext().setAuthentication(mockAuthentication);
+                .thenReturn(
+                        new ReservationUserDetails(new Customer(AUTHENTICATED_CUSTOMER_CODE)));
+        SecurityContextHolder.getContext()
+                .setAuthentication(mockAuthentication);
     }
 
     @AfterClass
@@ -80,7 +82,8 @@ public class ReserveServiceImplSecurityTest {
 
         // setup
         {
-            setUpMockReserveRepository(AUTHENTICATED_CUSTOMER_CODE, "R000000001");
+            setUpMockReserveRepository(AUTHENTICATED_CUSTOMER_CODE,
+                    "R000000001");
         }
 
         // test
@@ -92,7 +95,8 @@ public class ReserveServiceImplSecurityTest {
         // assert
         {
             assertThat(reserve.getReserveNo(), is("R000000001"));
-            assertThat(reserve.getCustomer().getCustomerCode(), is(AUTHENTICATED_CUSTOMER_CODE));
+            assertThat(reserve.getCustomer().getCustomerCode(),
+                    is(AUTHENTICATED_CUSTOMER_CODE));
         }
 
     }
@@ -139,7 +143,8 @@ public class ReserveServiceImplSecurityTest {
 
         // setup
         {
-            setUpMockReserveRepository(AUTHENTICATED_CUSTOMER_CODE, "R000000001");
+            setUpMockReserveRepository(AUTHENTICATED_CUSTOMER_CODE,
+                    "R000000001");
         }
 
         // test
@@ -154,11 +159,12 @@ public class ReserveServiceImplSecurityTest {
 
         // assert
         {
-            verify(mockReserveRepository, times(1)).update((Reserve) anyObject());
+            verify(mockReserveRepository, times(1)).update(
+                    (Reserve) anyObject());
             assertThat(output.getReserve().getReserveNo(), is("R000000001"));
-            assertThat(output.getReserve().getCustomer().getCustomerCode(), is(AUTHENTICATED_CUSTOMER_CODE));
+            assertThat(output.getReserve().getCustomer().getCustomerCode(),
+                    is(AUTHENTICATED_CUSTOMER_CODE));
         }
-
 
     }
 
@@ -184,7 +190,8 @@ public class ReserveServiceImplSecurityTest {
 
         // assert
         {
-            verify(mockReserveRepository, never()).update((Reserve) anyObject());
+            verify(mockReserveRepository, never())
+                    .update((Reserve) anyObject());
         }
     }
 
@@ -193,7 +200,8 @@ public class ReserveServiceImplSecurityTest {
 
         // setup
         {
-            setUpMockReserveRepository(AUTHENTICATED_CUSTOMER_CODE, "R000000001");
+            setUpMockReserveRepository(AUTHENTICATED_CUSTOMER_CODE,
+                    "R000000001");
         }
 
         // test
@@ -233,25 +241,26 @@ public class ReserveServiceImplSecurityTest {
 
     }
 
-
     /**
      * Set up return object of {@link ReserveRepository}'s method.
      * <p>
      * This method set up return object of following methods.
      * <ul>
-     *     <li>{@link ReserveRepository#findOne}</li>
-     *     <li>{@link ReserveRepository#findOneForUpdate}</li>
+     * <li>{@link ReserveRepository#findOne}</li>
+     * <li>{@link ReserveRepository#findOneForUpdate}</li>
      * </ul>
      * @param customerCode customer code of reservation owner
      * @param reserveNo reserve number of reservation
      */
-    private void setUpMockReserveRepository(String customerCode, String reserveNo) {
+    private void setUpMockReserveRepository(String customerCode,
+            String reserveNo) {
         Reserve reserve = new Reserve(reserveNo);
         reserve.setCustomer(new Customer(customerCode));
         reserve.setTourInfo(new TourInfo("01"));
 
         when(mockReserveRepository.findOne(reserveNo)).thenReturn(reserve);
-        when(mockReserveRepository.findOneForUpdate(reserveNo)).thenReturn(reserve);
+        when(mockReserveRepository.findOneForUpdate(reserveNo)).thenReturn(
+                reserve);
 
         TourInfo tourInfo = new TourInfo("01");
         tourInfo.setDepDay(dateFactory.newDateTime().plusDays(8).toDate());
@@ -259,7 +268,8 @@ public class ReserveServiceImplSecurityTest {
         tourInfo.setArrival(new Arrival());
         reserve.setTourInfo(tourInfo);
 
-        when(tourInfoRepository.findOneWithDetails(tourInfo.getTourCode())).thenReturn(tourInfo);
+        when(tourInfoRepository.findOneWithDetails(tourInfo.getTourCode()))
+                .thenReturn(tourInfo);
     }
 
 }
