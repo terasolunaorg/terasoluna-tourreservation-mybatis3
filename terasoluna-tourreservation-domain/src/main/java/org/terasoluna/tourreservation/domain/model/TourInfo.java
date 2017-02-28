@@ -58,10 +58,10 @@ public class TourInfo implements Serializable {
     private Arrival arrival;
 
     private Accommodation accommodation;
-    
+
     public TourInfo(String tourCode) {
-		this.tourCode = tourCode;
-	}
+        this.tourCode = tourCode;
+    }
 
     public DateTime getPaymentLimit() {
         DateTime paymentLimit = new DateTime(this.getDepDay());

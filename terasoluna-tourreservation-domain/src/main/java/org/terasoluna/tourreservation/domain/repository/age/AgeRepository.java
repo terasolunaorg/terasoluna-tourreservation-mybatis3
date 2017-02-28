@@ -19,6 +19,6 @@ import org.terasoluna.tourreservation.domain.model.Age;
 
 public interface AgeRepository {
 
-	Age findOne(String ageCode);
+    Age findOne(String ageCode);
 
 }

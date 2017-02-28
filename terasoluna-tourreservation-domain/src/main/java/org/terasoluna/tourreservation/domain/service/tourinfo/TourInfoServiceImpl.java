@@ -43,7 +43,8 @@ public class TourInfoServiceImpl implements TourInfoService {
         long total = tourInfoRepository.countBySearchCriteria(criteria);
         List<TourInfo> content;
         if (0 < total) {
-            content = tourInfoRepository.findPageBySearchCriteria(criteria, pageable);
+            content = tourInfoRepository.findPageBySearchCriteria(criteria,
+                    pageable);
         } else {
             content = Collections.emptyList();
         }
