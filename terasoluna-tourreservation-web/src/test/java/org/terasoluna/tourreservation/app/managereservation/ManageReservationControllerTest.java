@@ -53,7 +53,7 @@ import org.terasoluna.tourreservation.domain.service.userdetails.ReservationUser
 public class ManageReservationControllerTest {
 
     MockMvc mockMvc;
-    
+
     ManageReservationController manageReservationController;
 
     ManageReservationHelper manageReservationHelper;
@@ -61,7 +61,7 @@ public class ManageReservationControllerTest {
     ReserveService reserveService;
 
     Mapper beanMapper;
-    
+
     ReservationUserDetails userDetails;
 
     @Before
@@ -81,8 +81,9 @@ public class ManageReservationControllerTest {
         manageReservationController.reserveService = reserveService;
 
         // build
-        mockMvc = MockMvcBuilders.standaloneSetup(manageReservationController).setCustomArgumentResolvers(new AuthenticationPrincipalArgumentResolver())
-                .build();
+        mockMvc = MockMvcBuilders.standaloneSetup(manageReservationController)
+                .setCustomArgumentResolvers(
+                        new AuthenticationPrincipalArgumentResolver()).build();
     }
 
     @Test
@@ -144,7 +145,8 @@ public class ManageReservationControllerTest {
                 "/reservations/123/update").param("form", "");
 
         // Set mock behavior for service method
-        when(reserveService.findOneWithTourInfo("123")).thenReturn(new Reserve());
+        when(reserveService.findOneWithTourInfo("123")).thenReturn(
+                new Reserve());
 
         try {
             ResultActions results = mockMvc.perform(getRequest);
@@ -167,7 +169,8 @@ public class ManageReservationControllerTest {
                 .post("/reservations/123/update").param("redo", "");
 
         // Set mock behavior for service method
-        when(reserveService.findOneWithTourInfo("123")).thenReturn(new Reserve());
+        when(reserveService.findOneWithTourInfo("123")).thenReturn(
+                new Reserve());
 
         try {
             ResultActions results = mockMvc.perform(postRequest);
@@ -192,9 +195,9 @@ public class ManageReservationControllerTest {
 
         // Set mock behavior for helper method
         when(
-                manageReservationHelper
-                        .findDetail(eq("123"),(ManageReservationForm) anyObject()))
-                .thenReturn(new ReservationDetailOutput());
+                manageReservationHelper.findDetail(eq("123"),
+                        (ManageReservationForm) anyObject())).thenReturn(
+                new ReservationDetailOutput());
 
         // Set form data to pass @Validated check
         postRequest.param("reserveNo", "123");
@@ -222,7 +225,8 @@ public class ManageReservationControllerTest {
                 .post("/reservations/123/update").param("confirm", "");
 
         // Set mock behavior for helper method
-        when(reserveService.findOneWithTourInfo("123")).thenReturn(new Reserve());
+        when(reserveService.findOneWithTourInfo("123")).thenReturn(
+                new Reserve());
 
         // Set form data to fail the @Validated check
         postRequest.param("reserveNo", "123");
@@ -285,7 +289,8 @@ public class ManageReservationControllerTest {
 
         // Set mock behavior for helper method
         // Set mock behavior for service method
-        when(reserveService.findOneWithTourInfo("123")).thenReturn(new Reserve());
+        when(reserveService.findOneWithTourInfo("123")).thenReturn(
+                new Reserve());
 
         // Set form data to pass @Validated check
         postRequest.param("reserveNo", "123");
@@ -338,13 +343,13 @@ public class ManageReservationControllerTest {
                 .get("/reservations/123/pdf");
 
         // Set mock behavior for helper method
-        when(manageReservationHelper.createPDF("123", Locale.ENGLISH)).thenReturn(
-                new DownloadPDFOutput());
-        when(manageReservationHelper.existenceCodeList.asMap(Locale.ENGLISH)).thenReturn(
-                new LinkedHashMap<String, String>(){
+        when(manageReservationHelper.createPDF("123", Locale.ENGLISH))
+                .thenReturn(new DownloadPDFOutput());
+        when(manageReservationHelper.existenceCodeList.asMap(Locale.ENGLISH))
+                .thenReturn(new LinkedHashMap<String, String>() {
                     {
-                        put("0","No");
-                        put("1","Yes");
+                        put("0", "No");
+                        put("1", "Yes");
                     }
                 });
 
@@ -437,8 +442,8 @@ public class ManageReservationControllerTest {
     @Test
     public void testManageReservationCancelConfirm() {
         // Prepare post request
-        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders
-                .get("/reservations/123/cancel").param("confirm", "");
+        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders.get(
+                "/reservations/123/cancel").param("confirm", "");
 
         // Set mock behavior for helper method
         when(manageReservationHelper.findDetail("123")).thenReturn(

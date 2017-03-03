@@ -65,8 +65,9 @@ public class ReserveServiceImpl implements ReserveService {
     public Reserve findOneWithTourInfo(String reserveNo) {
         Reserve reserve = authorizedReserveSharedService.findOne(reserveNo);
 
-        if(reserve != null){
-            TourInfo tourInfo = tourInfoSharedService.findOneWithDetails(reserve.getTourInfo().getTourCode());
+        if (reserve != null) {
+            TourInfo tourInfo = tourInfoSharedService
+                    .findOneWithDetails(reserve.getTourInfo().getTourCode());
             reserve.setTourInfo(tourInfo);
         }
 
@@ -75,15 +76,16 @@ public class ReserveServiceImpl implements ReserveService {
 
     @Override
     public List<Reserve> findAllWithTourInfoByCustomer(String customerCode) {
-        List<Reserve> reserves = reserveRepository.findAllWithTourInfoByCustomer(customerCode);
+        List<Reserve> reserves = reserveRepository
+                .findAllWithTourInfoByCustomer(customerCode);
         return reserves;
     }
 
     @Override
     public ReserveTourOutput reserve(ReserveTourInput input) throws BusinessException {
 
-        TourInfo tourInfo = tourInfoSharedService.findOneWithDetailsForUpdate(input
-                .getTourCode());
+        TourInfo tourInfo = tourInfoSharedService
+                .findOneWithDetailsForUpdate(input.getTourCode());
         DateTime today = dateFactory.newDateTime().withTime(0, 0, 0, 0);
 
         // * check date
@@ -98,7 +100,8 @@ public class ReserveServiceImpl implements ReserveService {
         int reserveMember = input.getAdultCount() + input.getChildCount();
         int aveRecMax = tourInfo.getAvaRecMax();
         // retrieve the number of current reservations
-        Long sumCount = reserveRepository.countReservedPersonSumByTourInfo(tourInfo.getTourCode());
+        Long sumCount = reserveRepository
+                .countReservedPersonSumByTourInfo(tourInfo.getTourCode());
         if (sumCount == null) {
             sumCount = 0L;
         }
@@ -134,7 +137,8 @@ public class ReserveServiceImpl implements ReserveService {
         tourReserveOutput.setPriceCalculateOutput(priceCalculateOutput);
         tourReserveOutput.setReserve(reserve);
         tourReserveOutput.setTourInfo(tourInfo);
-        tourReserveOutput.setPaymentTimeLimit(tourInfo.getPaymentLimit().toDate());
+        tourReserveOutput.setPaymentTimeLimit(tourInfo.getPaymentLimit()
+                .toDate());
         tourReserveOutput.setCustomer(input.getCustomer());
 
         return tourReserveOutput;
@@ -151,7 +155,8 @@ public class ReserveServiceImpl implements ReserveService {
             throw new BusinessException(message);
         }
 
-        TourInfo info = tourInfoSharedService.findOneWithDetails(reserve.getTourInfo().getTourCode());
+        TourInfo info = tourInfoSharedService.findOneWithDetails(reserve
+                .getTourInfo().getTourCode());
 
         // compare system date and payment limit.
         // if the payment limit has been exceeded,

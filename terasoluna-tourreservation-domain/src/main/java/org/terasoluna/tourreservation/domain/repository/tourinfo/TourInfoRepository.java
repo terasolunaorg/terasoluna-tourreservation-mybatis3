@@ -32,6 +32,5 @@ public interface TourInfoRepository {
             @Param("pageable") Pageable pageable);
 
     long countBySearchCriteria(
-            @Param("criteria") TourInfoSearchCriteria criteria
-            );
+            @Param("criteria") TourInfoSearchCriteria criteria);
 }

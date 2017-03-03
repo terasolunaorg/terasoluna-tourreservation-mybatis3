@@ -105,7 +105,8 @@ public class ReserveServiceImplTest {
         tourInfo.setTourCode("XXXXXXXXXX");
         reserve.setTourInfo(tourInfo);
         when(reserveRepository.findOne("foo")).thenReturn(reserve);
-        when(tourInfoSharedService.findOneWithDetails("XXXXXXXXXX")).thenReturn(tourInfo);
+        when(tourInfoSharedService.findOneWithDetails("XXXXXXXXXX"))
+                .thenReturn(tourInfo);
 
         Reserve result = reserveService.findOneWithTourInfo("foo");
         assertThat(result, is(reserve));
@@ -132,13 +133,13 @@ public class ReserveServiceImplTest {
         tour2.setTourDays(4);
         List<Reserve> reserves = Arrays.asList(reserve1, reserve2);
 
-        when(reserveRepository.findAllWithTourInfoByCustomer("xxxx")).thenReturn(reserves);
-        when(tourInfoSharedService.isOverPaymentLimit(tour1)).thenReturn(
-                false);
-        when(tourInfoSharedService.isOverPaymentLimit(tour2)).thenReturn(
-                true);
+        when(reserveRepository.findAllWithTourInfoByCustomer("xxxx"))
+                .thenReturn(reserves);
+        when(tourInfoSharedService.isOverPaymentLimit(tour1)).thenReturn(false);
+        when(tourInfoSharedService.isOverPaymentLimit(tour2)).thenReturn(true);
 
-        List<Reserve> result = reserveService.findAllWithTourInfoByCustomer("xxxx");
+        List<Reserve> result = reserveService
+                .findAllWithTourInfoByCustomer("xxxx");
         assertThat(result, is(notNullValue()));
         assertThat(result.size(), is(2));
         assertThat(result.get(0), is(reserve1));
@@ -147,9 +148,10 @@ public class ReserveServiceImplTest {
 
     @Test
     public void testFindByCustomerCode03() {
-        when(reserveRepository.findAllWithTourInfoByCustomer("xxxx")).thenReturn(
-                new ArrayList<Reserve>());
-        List<Reserve> result = reserveService.findAllWithTourInfoByCustomer("xxxx");
+        when(reserveRepository.findAllWithTourInfoByCustomer("xxxx"))
+                .thenReturn(new ArrayList<Reserve>());
+        List<Reserve> result = reserveService
+                .findAllWithTourInfoByCustomer("xxxx");
         assertThat(result, is(notNullValue()));
         assertThat(result.size(), is(0));
     }
@@ -168,8 +170,11 @@ public class ReserveServiceImplTest {
         tour.setDeparture(new Departure());
         tour.setArrival(new Arrival());
         when(tourInfoSharedService.findOneWithDetails("01")).thenReturn(tour);
-        when(tourInfoSharedService.findOneWithDetailsForUpdate("01")).thenReturn(tour);
-        when(reserveRepository.countReservedPersonSumByTourInfo(tour.getTourCode())).thenReturn(7L); // 1+2+7 <= 10
+        when(tourInfoSharedService.findOneWithDetailsForUpdate("01"))
+                .thenReturn(tour);
+        when(
+                reserveRepository.countReservedPersonSumByTourInfo(tour
+                        .getTourCode())).thenReturn(7L); // 1+2+7 <= 10
 
         ReserveTourInput input = new ReserveTourInput();
         input.setAdultCount(1);
@@ -212,13 +217,15 @@ public class ReserveServiceImplTest {
         tour.setAccommodation(new Accommodation());
         tour.setDeparture(new Departure());
         tour.setArrival(new Arrival());
-        when(tourInfoSharedService.isOverPaymentLimit(tour)).thenReturn(
-                true); // !!today is over limit
+        when(tourInfoSharedService.isOverPaymentLimit(tour)).thenReturn(true); // !!today is over limit
         tour.setTourDays(2);
         tour.setAvaRecMax(10);
         when(tourInfoSharedService.findOneWithDetails("01")).thenReturn(tour);
-        when(tourInfoSharedService.findOneWithDetailsForUpdate("01")).thenReturn(tour);
-        when(reserveRepository.countReservedPersonSumByTourInfo(tour.getTourCode())).thenReturn(7L); // 1+2+7 <= 10
+        when(tourInfoSharedService.findOneWithDetailsForUpdate("01"))
+                .thenReturn(tour);
+        when(
+                reserveRepository.countReservedPersonSumByTourInfo(tour
+                        .getTourCode())).thenReturn(7L); // 1+2+7 <= 10
 
         ReserveTourInput input = new ReserveTourInput();
         input.setAdultCount(1);
@@ -260,8 +267,11 @@ public class ReserveServiceImplTest {
         tour.setTourDays(2);
         tour.setAvaRecMax(10);
         when(tourInfoSharedService.findOneWithDetails("01")).thenReturn(tour);
-        when(tourInfoSharedService.findOneWithDetailsForUpdate("01")).thenReturn(tour);
-        when(reserveRepository.countReservedPersonSumByTourInfo(tour.getTourCode())).thenReturn(8L); // !!1+2+8 > 10
+        when(tourInfoSharedService.findOneWithDetailsForUpdate("01"))
+                .thenReturn(tour);
+        when(
+                reserveRepository.countReservedPersonSumByTourInfo(tour
+                        .getTourCode())).thenReturn(8L); // !!1+2+8 > 10
 
         ReserveTourInput input = new ReserveTourInput();
         input.setAdultCount(1);
@@ -303,8 +313,7 @@ public class ReserveServiceImplTest {
         when(reserveRepository.findOne("001")).thenReturn(reserve);
         when(reserveRepository.findOneForUpdate("001")).thenReturn(reserve);
         when(tourInfoSharedService.findOneWithDetails("01")).thenReturn(tour);
-        when(tourInfoSharedService.isOverPaymentLimit(tour)).thenReturn(
-                false); // within limit
+        when(tourInfoSharedService.isOverPaymentLimit(tour)).thenReturn(false); // within limit
 
         reserveService.cancel("001");
 
@@ -328,8 +337,7 @@ public class ReserveServiceImplTest {
         when(reserveRepository.findOne("001")).thenReturn(reserve);
         when(reserveRepository.findOneForUpdate("001")).thenReturn(reserve);
         when(tourInfoSharedService.findOneWithDetails("01")).thenReturn(tour);
-        when(tourInfoSharedService.isOverPaymentLimit(tour)).thenReturn(
-                false); // within limit
+        when(tourInfoSharedService.isOverPaymentLimit(tour)).thenReturn(false); // within limit
 
         try {
             reserveService.cancel("001");
@@ -358,8 +366,7 @@ public class ReserveServiceImplTest {
         when(reserveRepository.findOne("001")).thenReturn(reserve);
         when(reserveRepository.findOneForUpdate("001")).thenReturn(reserve);
         when(tourInfoSharedService.findOneWithDetails("01")).thenReturn(tour);
-        when(tourInfoSharedService.isOverPaymentLimit(tour)).thenReturn(
-                true); // !!!over limit
+        when(tourInfoSharedService.isOverPaymentLimit(tour)).thenReturn(true); // !!!over limit
 
         try {
             reserveService.cancel("001");
@@ -390,8 +397,7 @@ public class ReserveServiceImplTest {
         when(reserveRepository.findOneForUpdate("001")).thenReturn(
                 (Reserve) null); // return null
         when(tourInfoSharedService.findOneWithDetails("01")).thenReturn(tour);
-        when(tourInfoSharedService.isOverPaymentLimit(tour)).thenReturn(
-                false); // within limit
+        when(tourInfoSharedService.isOverPaymentLimit(tour)).thenReturn(false); // within limit
 
         try {
             reserveService.cancel("001");
