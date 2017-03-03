@@ -52,9 +52,9 @@ public class Reserve implements Serializable {
     private TourInfo tourInfo;
 
     private Customer customer;
-    
-	public Reserve(String reserveNo) {
-		this.reserveNo = reserveNo;
-	}
+
+    public Reserve(String reserveNo) {
+        this.reserveNo = reserveNo;
+    }
 
 }

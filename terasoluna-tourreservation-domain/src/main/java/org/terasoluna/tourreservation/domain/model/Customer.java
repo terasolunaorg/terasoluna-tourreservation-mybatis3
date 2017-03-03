@@ -49,9 +49,9 @@ public class Customer implements Serializable {
     private String customerPost;
 
     private String customerAdd;
-    
+
     public Customer(String customerCode) {
-		this.customerCode = customerCode;
-	}
+        this.customerCode = customerCode;
+    }
 
 }
