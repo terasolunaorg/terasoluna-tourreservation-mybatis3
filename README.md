@@ -5,10 +5,7 @@ This application shows **how an IDEAL project configuration and package structur
 
 **This sample uses MyBatis3.**
 
-* master [![Build Status for master](https://travis-ci.org/terasolunaorg/terasoluna-tourreservation-mybatis3.svg?branch=master)](https://travis-ci.org/terasolunaorg/terasoluna-tourreservation-mybatis3)
-* 5.2.x [![Build Status for 5.2.x](https://travis-ci.org/terasolunaorg/terasoluna-tourreservation-mybatis3.svg?branch=5.2.x)](https://travis-ci.org/terasolunaorg/terasoluna-tourreservation-mybatis3)
-* 5.1.x [![Build Status for 5.1.x](https://travis-ci.org/terasolunaorg/terasoluna-tourreservation-mybatis3.svg?branch=5.1.x)](https://travis-ci.org/terasolunaorg/terasoluna-tourreservation-mybatis3)
-* 5.0.x [![Build Status for 5.0.x](https://travis-ci.org/terasolunaorg/terasoluna-tourreservation-mybatis3.svg?branch=5.0.x)](https://travis-ci.org/terasolunaorg/terasoluna-tourreservation-mybatis3)
+[![Build Status for master](https://travis-ci.org/terasolunaorg/terasoluna-tourreservation-mybatis3.svg?branch=master)](https://travis-ci.org/terasolunaorg/terasoluna-tourreservation-mybatis3)
 
 ### Getting started
 
