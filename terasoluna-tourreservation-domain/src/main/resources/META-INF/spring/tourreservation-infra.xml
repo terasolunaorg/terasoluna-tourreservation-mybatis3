@@ -1,34 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-    xmlns:mybatis="http://mybatis.org/schema/mybatis-spring" xmlns:tx="http://www.springframework.org/schema/tx"
-    xmlns:util="http://www.springframework.org/schema/util"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context" xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+  xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
 		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <import resource="classpath:/META-INF/spring/tourreservation-env.xml" />
+  <import resource="classpath:/META-INF/spring/tourreservation-env.xml" />
 
-    <bean id="sqlSessionFactory"
-        class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
-        <property name="configLocation"
-            value="classpath:/META-INF/mybatis/mybatis-config.xml" />
-    </bean>
+  <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <property name="dataSource" ref="dataSource" />
+    <property name="configLocation" value="classpath:/META-INF/mybatis/mybatis-config.xml" />
+  </bean>
 
-    <mybatis:scan base-package="org.terasoluna.tourreservation.domain.repository" />
+  <mybatis:scan base-package="org.terasoluna.tourreservation.domain.repository" />
 
-    <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
-        id="transactionManager">
-        <property name="dataSource" ref="dataSource" />
-        <property name="rollbackOnCommitFailure" value="true" />
-    </bean>
+  <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="transactionManager">
+    <property name="dataSource" ref="dataSource" />
+    <property name="rollbackOnCommitFailure" value="true" />
+  </bean>
 
-    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-        <property name="dataSource" ref="dataSource" />
-        <property name="fetchSize" value="100" />
-    </bean>
+  <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+    <property name="dataSource" ref="dataSource" />
+    <property name="fetchSize" value="100" />
+  </bean>
 
 </beans>
