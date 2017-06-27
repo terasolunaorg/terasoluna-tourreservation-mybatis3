@@ -71,8 +71,8 @@ public class CustomerServiceImplTest {
         Customer c = new Customer();
         customerService.register(c, "foo");
 
-        ArgumentCaptor<Customer> customerArg = ArgumentCaptor
-                .forClass(Customer.class);
+        ArgumentCaptor<Customer> customerArg = ArgumentCaptor.forClass(
+                Customer.class);
 
         verify(customerRepository, times(1)).insert(customerArg.capture());
         assertThat(customerArg.getValue(), is(c));
