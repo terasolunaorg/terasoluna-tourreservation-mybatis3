@@ -155,8 +155,8 @@ public class ReserveServiceImplSecurityTest {
             verify(mockReserveRepository, times(1)).update(
                     (Reserve) anyObject());
             assertThat(output.getReserve().getReserveNo(), is("R000000001"));
-            assertThat(output.getReserve().getCustomer().getCustomerCode(),
-                    is(CUSTOMER_A));
+            assertThat(output.getReserve().getCustomer().getCustomerCode(), is(
+                    CUSTOMER_A));
         }
 
     }
@@ -184,8 +184,8 @@ public class ReserveServiceImplSecurityTest {
 
         // assert
         {
-            verify(mockReserveRepository, never())
-                    .update((Reserve) anyObject());
+            verify(mockReserveRepository, never()).update(
+                    (Reserve) anyObject());
         }
     }
 
@@ -273,9 +273,8 @@ public class ReserveServiceImplSecurityTest {
         String customerCode();
     }
 
-    static class WithMockCustomerSecurityContextFactory
-                                                       implements
-                                                       WithSecurityContextFactory<WithMockCustomer> {
+    static class WithMockCustomerSecurityContextFactory implements
+                                                        WithSecurityContextFactory<WithMockCustomer> {
         @Override
         public SecurityContext createSecurityContext(
                 WithMockCustomer mockCustomer) {
