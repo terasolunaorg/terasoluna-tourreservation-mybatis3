@@ -200,8 +200,8 @@ public class TourInfo implements Serializable {
         }
         TourInfo other = (TourInfo) object;
         if ((this.tourCode == null && other.tourCode != null)
-                || (this.tourCode != null && !this.tourCode
-                        .equals(other.tourCode))) {
+                || (this.tourCode != null && !this.tourCode.equals(
+                        other.tourCode))) {
             return false;
         }
         return true;

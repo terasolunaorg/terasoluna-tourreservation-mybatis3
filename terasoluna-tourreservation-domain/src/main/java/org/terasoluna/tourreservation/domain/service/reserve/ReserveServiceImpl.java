@@ -40,8 +40,8 @@ import org.terasoluna.tourreservation.domain.service.tourinfo.TourInfoSharedServ
 @Service
 public class ReserveServiceImpl implements ReserveService {
 
-    private static final Logger logger = LoggerFactory
-            .getLogger(ReserveServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(
+            ReserveServiceImpl.class);
 
     @Inject
     ReserveRepository reserveRepository;
@@ -66,8 +66,8 @@ public class ReserveServiceImpl implements ReserveService {
         Reserve reserve = authorizedReserveSharedService.findOne(reserveNo);
 
         if (reserve != null) {
-            TourInfo tourInfo = tourInfoSharedService
-                    .findOneWithDetails(reserve.getTourInfo().getTourCode());
+            TourInfo tourInfo = tourInfoSharedService.findOneWithDetails(reserve
+                    .getTourInfo().getTourCode());
             reserve.setTourInfo(tourInfo);
         }
 
@@ -82,10 +82,11 @@ public class ReserveServiceImpl implements ReserveService {
     }
 
     @Override
-    public ReserveTourOutput reserve(ReserveTourInput input) throws BusinessException {
+    public ReserveTourOutput reserve(
+            ReserveTourInput input) throws BusinessException {
 
-        TourInfo tourInfo = tourInfoSharedService
-                .findOneWithDetailsForUpdate(input.getTourCode());
+        TourInfo tourInfo = tourInfoSharedService.findOneWithDetailsForUpdate(
+                input.getTourCode());
         DateTime today = dateFactory.newDateTime().withTime(0, 0, 0, 0);
 
         // * check date
@@ -100,8 +101,8 @@ public class ReserveServiceImpl implements ReserveService {
         int reserveMember = input.getAdultCount() + input.getChildCount();
         int aveRecMax = tourInfo.getAvaRecMax();
         // retrieve the number of current reservations
-        Long sumCount = reserveRepository
-                .countReservedPersonSumByTourInfo(tourInfo.getTourCode());
+        Long sumCount = reserveRepository.countReservedPersonSumByTourInfo(
+                tourInfo.getTourCode());
         if (sumCount == null) {
             sumCount = 0L;
         }
@@ -181,7 +182,8 @@ public class ReserveServiceImpl implements ReserveService {
     }
 
     @Override
-    public ReservationUpdateOutput update(ReservationUpdateInput input) throws BusinessException {
+    public ReservationUpdateOutput update(
+            ReservationUpdateInput input) throws BusinessException {
         Reserve reserve = findOneWithTourInfo(input.getReserveNo());
 
         beanMapper.map(input, reserve, "reserve_map_nonnull");
