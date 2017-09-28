@@ -105,8 +105,8 @@ public class ReserveServiceImplTest {
         tourInfo.setTourCode("XXXXXXXXXX");
         reserve.setTourInfo(tourInfo);
         when(reserveRepository.findOne("foo")).thenReturn(reserve);
-        when(tourInfoSharedService.findOneWithDetails("XXXXXXXXXX"))
-                .thenReturn(tourInfo);
+        when(tourInfoSharedService.findOneWithDetails("XXXXXXXXXX")).thenReturn(
+                tourInfo);
 
         Reserve result = reserveService.findOneWithTourInfo("foo");
         assertThat(result, is(reserve));
@@ -138,8 +138,8 @@ public class ReserveServiceImplTest {
         when(tourInfoSharedService.isOverPaymentLimit(tour1)).thenReturn(false);
         when(tourInfoSharedService.isOverPaymentLimit(tour2)).thenReturn(true);
 
-        List<Reserve> result = reserveService
-                .findAllWithTourInfoByCustomer("xxxx");
+        List<Reserve> result = reserveService.findAllWithTourInfoByCustomer(
+                "xxxx");
         assertThat(result, is(notNullValue()));
         assertThat(result.size(), is(2));
         assertThat(result.get(0), is(reserve1));
@@ -150,8 +150,8 @@ public class ReserveServiceImplTest {
     public void testFindByCustomerCode03() {
         when(reserveRepository.findAllWithTourInfoByCustomer("xxxx"))
                 .thenReturn(new ArrayList<Reserve>());
-        List<Reserve> result = reserveService
-                .findAllWithTourInfoByCustomer("xxxx");
+        List<Reserve> result = reserveService.findAllWithTourInfoByCustomer(
+                "xxxx");
         assertThat(result, is(notNullValue()));
         assertThat(result.size(), is(0));
     }
@@ -172,9 +172,8 @@ public class ReserveServiceImplTest {
         when(tourInfoSharedService.findOneWithDetails("01")).thenReturn(tour);
         when(tourInfoSharedService.findOneWithDetailsForUpdate("01"))
                 .thenReturn(tour);
-        when(
-                reserveRepository.countReservedPersonSumByTourInfo(tour
-                        .getTourCode())).thenReturn(7L); // 1+2+7 <= 10
+        when(reserveRepository.countReservedPersonSumByTourInfo(tour
+                .getTourCode())).thenReturn(7L); // 1+2+7 <= 10
 
         ReserveTourInput input = new ReserveTourInput();
         input.setAdultCount(1);
@@ -192,8 +191,8 @@ public class ReserveServiceImplTest {
         // normal
         ReserveTourOutput output = reserveService.reserve(input);
 
-        ArgumentCaptor<Reserve> capture = ArgumentCaptor
-                .forClass(Reserve.class);
+        ArgumentCaptor<Reserve> capture = ArgumentCaptor.forClass(
+                Reserve.class);
         verify(reserveRepository, atLeast(1)).insert(capture.capture());
 
         Reserve r = capture.getValue();
@@ -223,9 +222,8 @@ public class ReserveServiceImplTest {
         when(tourInfoSharedService.findOneWithDetails("01")).thenReturn(tour);
         when(tourInfoSharedService.findOneWithDetailsForUpdate("01"))
                 .thenReturn(tour);
-        when(
-                reserveRepository.countReservedPersonSumByTourInfo(tour
-                        .getTourCode())).thenReturn(7L); // 1+2+7 <= 10
+        when(reserveRepository.countReservedPersonSumByTourInfo(tour
+                .getTourCode())).thenReturn(7L); // 1+2+7 <= 10
 
         ReserveTourInput input = new ReserveTourInput();
         input.setAdultCount(1);
@@ -248,8 +246,8 @@ public class ReserveServiceImplTest {
             assertThat(messages.isNotEmpty(), is(true));
             assertThat(messages.getType(), is((ResultMessageType) ERROR));
             assertThat(messages.getList().size(), is(1));
-            assertThat(messages.getList().get(0).getCode(),
-                    is(MessageId.E_TR_0004));
+            assertThat(messages.getList().get(0).getCode(), is(
+                    MessageId.E_TR_0004));
             throw e;
         }
     }
@@ -269,9 +267,8 @@ public class ReserveServiceImplTest {
         when(tourInfoSharedService.findOneWithDetails("01")).thenReturn(tour);
         when(tourInfoSharedService.findOneWithDetailsForUpdate("01"))
                 .thenReturn(tour);
-        when(
-                reserveRepository.countReservedPersonSumByTourInfo(tour
-                        .getTourCode())).thenReturn(8L); // !!1+2+8 > 10
+        when(reserveRepository.countReservedPersonSumByTourInfo(tour
+                .getTourCode())).thenReturn(8L); // !!1+2+8 > 10
 
         ReserveTourInput input = new ReserveTourInput();
         input.setAdultCount(1);
@@ -294,8 +291,8 @@ public class ReserveServiceImplTest {
             assertThat(messages.isNotEmpty(), is(true));
             assertThat(messages.getType(), is((ResultMessageType) ERROR));
             assertThat(messages.getList().size(), is(1));
-            assertThat(messages.getList().get(0).getCode(),
-                    is(MessageId.E_TR_0005));
+            assertThat(messages.getList().get(0).getCode(), is(
+                    MessageId.E_TR_0005));
             throw e;
         }
     }
@@ -317,8 +314,8 @@ public class ReserveServiceImplTest {
 
         reserveService.cancel("001");
 
-        ArgumentCaptor<String> argOfDelete = ArgumentCaptor
-                .forClass(String.class);
+        ArgumentCaptor<String> argOfDelete = ArgumentCaptor.forClass(
+                String.class);
         verify(reserveRepository, times(1)).delete(argOfDelete.capture());
 
         assertThat(argOfDelete.getValue(), is("001"));
@@ -347,8 +344,8 @@ public class ReserveServiceImplTest {
             assertThat(messages.isNotEmpty(), is(true));
             assertThat(messages.getType(), is((ResultMessageType) ERROR));
             assertThat(messages.getList().size(), is(1));
-            assertThat(messages.getList().get(0).getCode(),
-                    is(MessageId.E_TR_0001));
+            assertThat(messages.getList().get(0).getCode(), is(
+                    MessageId.E_TR_0001));
             throw e;
         }
     }
@@ -376,8 +373,8 @@ public class ReserveServiceImplTest {
             assertThat(messages.isNotEmpty(), is(true));
             assertThat(messages.getType(), is((ResultMessageType) ERROR));
             assertThat(messages.getList().size(), is(1));
-            assertThat(messages.getList().get(0).getCode(),
-                    is(MessageId.E_TR_0002));
+            assertThat(messages.getList().get(0).getCode(), is(
+                    MessageId.E_TR_0002));
             throw e;
         }
     }
@@ -407,8 +404,8 @@ public class ReserveServiceImplTest {
             assertThat(messages.isNotEmpty(), is(true));
             assertThat(messages.getType(), is((ResultMessageType) ERROR));
             assertThat(messages.getList().size(), is(1));
-            assertThat(messages.getList().get(0).getCode(),
-                    is(MessageId.E_TR_0003));
+            assertThat(messages.getList().get(0).getCode(), is(
+                    MessageId.E_TR_0003));
             throw e;
         }
     }

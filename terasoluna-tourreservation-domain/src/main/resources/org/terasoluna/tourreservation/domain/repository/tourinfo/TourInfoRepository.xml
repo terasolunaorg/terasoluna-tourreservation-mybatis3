@@ -4,134 +4,138 @@
 
 <mapper namespace="org.terasoluna.tourreservation.domain.repository.tourinfo.TourInfoRepository">
 
-    <resultMap id="tourInfoResultMap" type="TourInfo">
-        <id property="tourCode" column="tour_code" />
-        <result property="plannedDay" column="planned_day" />
-        <result property="planNo" column="plan_no" />
-        <result property="tourName" column="tour_name" />
-        <result property="tourDays" column="tour_days" />
-        <result property="depDay" column="dep_day" />
-        <result property="avaRecMax" column="ava_rec_max" />
-        <result property="departure.depCode" column="dep_code" />
-        <result property="departure.depName" column="dep_name" />
-        <result property="arrival.arrCode" column="arr_code" />
-        <result property="arrival.arrName" column="arr_name" />
-        <result property="accommodation.accomCode" column="accom_code" />
-        <result property="accommodation.accomName" column="accom_name" />
-        <result property="accommodation.accomTel" column="accom_tel" />
-        <result property="basePrice" column="base_price" />
-        <result property="conductor" column="conductor" />
-        <result property="tourAbs" column="tour_abs" />
-    </resultMap>
+  <resultMap id="tourInfoResultMap" type="TourInfo">
+    <id property="tourCode" column="tour_code" />
+    <result property="plannedDay" column="planned_day" />
+    <result property="planNo" column="plan_no" />
+    <result property="tourName" column="tour_name" />
+    <result property="tourDays" column="tour_days" />
+    <result property="depDay" column="dep_day" />
+    <result property="avaRecMax" column="ava_rec_max" />
+    <result property="departure.depCode" column="dep_code" />
+    <result property="departure.depName" column="dep_name" />
+    <result property="arrival.arrCode" column="arr_code" />
+    <result property="arrival.arrName" column="arr_name" />
+    <result property="accommodation.accomCode" column="accom_code" />
+    <result property="accommodation.accomName" column="accom_name" />
+    <result property="accommodation.accomTel" column="accom_tel" />
+    <result property="basePrice" column="base_price" />
+    <result property="conductor" column="conductor" />
+    <result property="tourAbs" column="tour_abs" />
+  </resultMap>
 
-    <select id="findOneWithDetails" parameterType="string" resultMap="tourInfoResultMap">
-        SELECT
-            t.tour_code,
-            t.planned_day,
-            t.plan_no,
-            t.tour_name,
-            t.tour_days,
-            t.dep_day,
-            t.ava_rec_max,
-            t.dep_code,
-            d.dep_name,
-            t.arr_code,
-            a.arr_name,
-            ac.accom_code,
-            ac.accom_name,
-            ac.accom_tel,
-            t.base_price,
-            t.conductor,
-            t.tour_abs
-        FROM
-            tourinfo AS t JOIN departure AS d
-        ON
-                t.dep_code = d.dep_code JOIN arrival AS a
-        ON
-                t.arr_code = a.arr_code JOIN accommodation AS ac
-        ON
-                t.accom_code = ac.accom_code
-        WHERE
-                t.tour_code = #{tourCode}
-    </select>
+  <select id="findOneWithDetails" parameterType="string" resultMap="tourInfoResultMap">
+    SELECT
+    t.tour_code,
+    t.planned_day,
+    t.plan_no,
+    t.tour_name,
+    t.tour_days,
+    t.dep_day,
+    t.ava_rec_max,
+    t.dep_code,
+    d.dep_name,
+    t.arr_code,
+    a.arr_name,
+    ac.accom_code,
+    ac.accom_name,
+    ac.accom_tel,
+    t.base_price,
+    t.conductor,
+    t.tour_abs
+    FROM
+    tourinfo AS t JOIN departure AS d
+    ON
+    t.dep_code = d.dep_code JOIN arrival AS a
+    ON
+    t.arr_code = a.arr_code JOIN accommodation AS ac
+    ON
+    t.accom_code = ac.accom_code
+    WHERE
+    t.tour_code =
+    #{tourCode}
+  </select>
 
-    <select id="findOneWithDetailsForUpdate" parameterType="string" resultMap="tourInfoResultMap">
-        SELECT
-            t.tour_code,
-            t.planned_day,
-            t.plan_no,
-            t.tour_name,
-            t.tour_days,
-            t.dep_day,
-            t.ava_rec_max,
-            t.dep_code,
-            d.dep_name,
-            t.arr_code,
-            a.arr_name,
-            t.accom_code,
-            ac.accom_name,
-            ac.accom_tel,
-            t.base_price,
-            t.conductor,
-            t.tour_abs
-        FROM
-            tourinfo AS t JOIN departure AS d
-        ON
-                t.dep_code = d.dep_code JOIN arrival AS a
-        ON
-                t.arr_code = a.arr_code JOIN accommodation AS ac
-        ON
-                t.accom_code = ac.accom_code
-        WHERE
-                t.tour_code = #{tourCode} FOR UPDATE
-    </select>
+  <select id="findOneWithDetailsForUpdate" parameterType="string" resultMap="tourInfoResultMap">
+    SELECT
+    t.tour_code,
+    t.planned_day,
+    t.plan_no,
+    t.tour_name,
+    t.tour_days,
+    t.dep_day,
+    t.ava_rec_max,
+    t.dep_code,
+    d.dep_name,
+    t.arr_code,
+    a.arr_name,
+    t.accom_code,
+    ac.accom_name,
+    ac.accom_tel,
+    t.base_price,
+    t.conductor,
+    t.tour_abs
+    FROM
+    tourinfo AS t JOIN departure AS d
+    ON
+    t.dep_code = d.dep_code JOIN
+    arrival AS a
+    ON
+    t.arr_code = a.arr_code JOIN accommodation AS ac
+    ON
+    t.accom_code = ac.accom_code
+    WHERE
+    t.tour_code = #{tourCode} FOR UPDATE
+  </select>
 
-    <select id="findPageBySearchCriteria" parameterType="TourInfoSearchCriteria" resultMap="tourInfoResultMap">
-        SELECT
-            t.tour_code,
-            t.planned_day,
-            t.plan_no,
-            t.tour_name,
-            t.tour_days,
-            t.dep_day,
-            t.ava_rec_max,
-            t.dep_code,
-            d.dep_name,
-            t.arr_code,
-            a.arr_name,
-            t.accom_code,
-            ac.accom_name,
-            ac.accom_tel,
-            t.base_price,
-            t.conductor,
-            t.tour_abs
-        FROM
-            tourinfo AS t JOIN departure AS d
-        ON
-                t.dep_code = d.dep_code JOIN arrival AS a
-        ON
-                t.arr_code = a.arr_code JOIN accommodation AS ac
-        ON
-                ac.accom_code = t.accom_code
-        <include refid="findPageBySearchCriteriaWherePhrase" />
-        ORDER BY
-            t.tour_days DESC,
-            t.base_price DESC LIMIT #{pageable.pageSize} OFFSET #{pageable.offset}
-    </select>
+  <select id="findPageBySearchCriteria" parameterType="TourInfoSearchCriteria" resultMap="tourInfoResultMap">
+    SELECT
+    t.tour_code,
+    t.planned_day,
+    t.plan_no,
+    t.tour_name,
+    t.tour_days,
+    t.dep_day,
+    t.ava_rec_max,
+    t.dep_code,
+    d.dep_name,
+    t.arr_code,
+    a.arr_name,
+    t.accom_code,
+    ac.accom_name,
+    ac.accom_tel,
+    t.base_price,
+    t.conductor,
+    t.tour_abs
+    FROM
+    tourinfo AS t JOIN departure AS d
+    ON
+    t.dep_code =
+    d.dep_code JOIN arrival AS a
+    ON
+    t.arr_code = a.arr_code JOIN accommodation AS ac
+    ON
+    ac.accom_code =
+    t.accom_code
+    <include refid="findPageBySearchCriteriaWherePhrase" />
+    ORDER BY
+    t.tour_days DESC,
+    t.base_price DESC LIMIT #{pageable.pageSize} OFFSET #{pageable.offset}
+  </select>
 
-    <select id="countBySearchCriteria" parameterType="TourInfoSearchCriteria" resultType="_long">
-        SELECT
-            COUNT(*)
-        FROM
-            tourinfo AS t JOIN departure AS d
-        ON
-                t.dep_code = d.dep_code JOIN arrival AS a
-        ON
-                t.arr_code = a.arr_code
-        <include refid="findPageBySearchCriteriaWherePhrase" />
-    </select>
+  <select id="countBySearchCriteria" parameterType="TourInfoSearchCriteria" resultType="_long">
+    SELECT
+    COUNT(*)
+    FROM
+    tourinfo AS t JOIN departure AS d
+    ON
+    t.dep_code = d.dep_code JOIN arrival AS a
+    ON
+    t.arr_code = a.arr_code
+    <include refid="findPageBySearchCriteriaWherePhrase" />
+  </select>
 
-    <sql id="findPageBySearchCriteriaWherePhrase">
+  <sql id="findPageBySearchCriteriaWherePhrase">
         <![CDATA[
         WHERE
         (
@@ -146,15 +150,16 @@
             WHERE r.tour_code = t.tour_code
             )
         )]]>
-        AND t.dep_day = #{criteria.depDate}
-        AND d.dep_code = #{criteria.depCode}
-        AND a.arr_code = #{criteria.arrCode}
-        <if test="criteria.tourDays != 0">
-            AND t.tour_days = #{criteria.tourDays}
-        </if>
-        <if test="criteria.basePrice != 0">
-            AND t.base_price = #{criteria.basePrice}
-        </if>
-    </sql>
+    AND t.dep_day = #{criteria.depDate}
+    AND d.dep_code = #{criteria.depCode}
+    AND a.arr_code =
+    #{criteria.arrCode}
+    <if test="criteria.tourDays != 0">
+      AND t.tour_days = #{criteria.tourDays}
+    </if>
+    <if test="criteria.basePrice != 0">
+      AND t.base_price = #{criteria.basePrice}
+    </if>
+  </sql>
 
 </mapper>
