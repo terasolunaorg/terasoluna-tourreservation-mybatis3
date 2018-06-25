@@ -15,7 +15,24 @@
  */
 package org.terasoluna.tourreservation.domain.service.reserve;
 
-import org.junit.*;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.nullValue;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+import javax.inject.Inject;
+
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,21 +44,14 @@ import org.springframework.security.test.context.support.WithSecurityContextFact
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.terasoluna.gfw.common.date.jodatime.JodaTimeDateFactory;
-import org.terasoluna.tourreservation.domain.model.*;
+import org.terasoluna.tourreservation.domain.model.Arrival;
+import org.terasoluna.tourreservation.domain.model.Customer;
+import org.terasoluna.tourreservation.domain.model.Departure;
+import org.terasoluna.tourreservation.domain.model.Reserve;
+import org.terasoluna.tourreservation.domain.model.TourInfo;
 import org.terasoluna.tourreservation.domain.repository.reserve.ReserveRepository;
 import org.terasoluna.tourreservation.domain.repository.tourinfo.TourInfoRepository;
 import org.terasoluna.tourreservation.domain.service.userdetails.ReservationUserDetails;
-
-import javax.inject.Inject;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.nullValue;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
@@ -152,8 +162,7 @@ public class ReserveServiceImplSecurityTest {
 
         // assert
         {
-            verify(mockReserveRepository, times(1)).update(
-                    (Reserve) anyObject());
+            verify(mockReserveRepository, times(1)).update(any(Reserve.class));
             assertThat(output.getReserve().getReserveNo(), is("R000000001"));
             assertThat(output.getReserve().getCustomer().getCustomerCode(), is(
                     CUSTOMER_A));
@@ -184,8 +193,7 @@ public class ReserveServiceImplSecurityTest {
 
         // assert
         {
-            verify(mockReserveRepository, never()).update(
-                    (Reserve) anyObject());
+            verify(mockReserveRepository, never()).update(any(Reserve.class));
         }
     }
 
