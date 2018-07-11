@@ -336,14 +336,14 @@ public class ManageReservationControllerTest {
     }
 
     @Test
-    public void testManageReservationDownloadPDF() {
+    public void testManageReservationDownloadEXCEL() {
         // Prepare get request
         MockHttpServletRequestBuilder getRequest = MockMvcRequestBuilders.get(
-                "/reservations/123/pdf");
+                "/reservations/123/excel");
 
         // Set mock behavior for helper method
-        when(manageReservationHelper.createPDF("123", Locale.ENGLISH))
-                .thenReturn(new DownloadPDFOutput());
+        when(manageReservationHelper.createFile("123", Locale.ENGLISH))
+                .thenReturn(new DownloadFileOutput());
         when(manageReservationHelper.existenceCodeList.asMap(Locale.ENGLISH))
                 .thenReturn(new LinkedHashMap<String, String>() {
                     {
@@ -358,9 +358,9 @@ public class ManageReservationControllerTest {
         try {
             ResultActions results = mockMvc.perform(getRequest);
             results.andExpect(status().isOk());
-            results.andExpect(view().name("managereservation/report"));
-            results.andExpect(model().attribute("downloadPDFOutputList", IsNull
-                    .notNullValue()));
+            results.andExpect(view().name("reservationReportExcelView"));
+            results.andExpect(model().attribute("downloadEXCELOutputList",
+                    IsNull.nullValue()));
             return;
 
         } catch (Exception e) {

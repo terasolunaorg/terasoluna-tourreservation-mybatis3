@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DownloadPDFOutput implements Serializable {
+public class DownloadFileOutput implements Serializable {
 
     /**
      * serialVersionUID.

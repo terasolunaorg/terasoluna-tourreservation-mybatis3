@@ -10,15 +10,15 @@
   <br />
 
   <p>
-    <spring:message code="label.tr.searchtour.searchtourReservePdfMessage" />
+    <spring:message code="label.tr.searchtour.searchtourReserveExcelMessage" />
   </p>
   <p>
     <spring:message code="label.tr.searchtour.searchtourReserveDetailMessage" />
   </p>
   <form:form method="get"
-    action="${pageContext.request.contextPath}/reservations/${f:h(output.getReserve().getReserveNo())}/pdf">
+    action="${pageContext.request.contextPath}/reservations/${f:h(output.getReserve().getReserveNo())}/excel">
     <button>
-      <spring:message code="label.tr.common.downloadpdfBtnMessage" />
+      <spring:message code="label.tr.common.downloadexcelBtnMessage" />
     </button>
   </form:form>
 
