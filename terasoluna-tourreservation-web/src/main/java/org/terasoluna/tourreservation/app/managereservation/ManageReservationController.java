@@ -226,13 +226,14 @@ public class ManageReservationController {
         return "redirect:/reservations/me";
     }
 
-    @RequestMapping(value = "{reserveNo}/pdf", method = RequestMethod.GET)
-    public String downloadPDF(@PathVariable("reserveNo") String reserveNo,
+    @RequestMapping(value = "{reserveNo}/excel", method = RequestMethod.GET)
+    public String downloadExcel(@PathVariable("reserveNo") String reserveNo,
             Model model, Locale locale) {
-        DownloadPDFOutput downloadPDFOutput = manageReservationHelper.createPDF(
-                reserveNo, locale);
-        model.addAttribute(Arrays.asList(downloadPDFOutput));
-        return "managereservation/report";
+        DownloadFileOutput downloadExcelOutput = manageReservationHelper
+                .createFile(reserveNo, locale);
+        model.addAttribute("downloadExcelOutput", downloadExcelOutput);
+        model.addAttribute("fileName", "予約明細票.xlsx");
+        return "reservationReportExcelView";
     }
 
 }

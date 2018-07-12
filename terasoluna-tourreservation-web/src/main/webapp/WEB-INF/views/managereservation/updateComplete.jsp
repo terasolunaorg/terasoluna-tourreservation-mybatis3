@@ -19,12 +19,12 @@
     <spring:message code="label.tr.managereservation.paymentReminderMessage" />
   </p>
   <p>
-    <spring:message code="label.tr.common.pdfdownloadMessage" />
+    <spring:message code="label.tr.common.exceldownloadMessage" />
   </p>
   <form:form method="get"
-    action="${f:h(pageContext.request.contextPath)}/reservations/${f:h(output.reserve.reserveNo)}/pdf">
+    action="${f:h(pageContext.request.contextPath)}/reservations/${f:h(output.reserve.reserveNo)}/excel">
     <button id="downloadBtn">
-      <spring:message code="label.tr.common.downloadpdfBtnMessage" />
+      <spring:message code="label.tr.common.downloadexcelBtnMessage" />
     </button>
   </form:form>
 

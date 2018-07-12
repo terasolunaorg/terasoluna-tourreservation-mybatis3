@@ -156,7 +156,7 @@ public class ManageReservationHelper {
         return output;
     }
 
-    public DownloadPDFOutput createPDF(String reserveNo, Locale locale) {
+    public DownloadFileOutput createFile(String reserveNo, Locale locale) {
         ReservationDetailOutput reserveDetailOutput = findDetail(reserveNo);
 
         String paymentTimeLimit = null;
@@ -170,44 +170,44 @@ public class ManageReservationHelper {
                     .getPaymentTimeLimit());
         }
 
-        DownloadPDFOutput downloadPDFOutput = new DownloadPDFOutput();
-        downloadPDFOutput.setReserveNo(reserveNo);
-        downloadPDFOutput.setTourName(reserveDetailOutput.getReserve()
+        DownloadFileOutput downloadFileOutput = new DownloadFileOutput();
+        downloadFileOutput.setReserveNo(reserveNo);
+        downloadFileOutput.setTourName(reserveDetailOutput.getReserve()
                 .getTourInfo().getTourName());
-        downloadPDFOutput.setReservedDay(reserveDetailOutput.getReserve()
+        downloadFileOutput.setReservedDay(reserveDetailOutput.getReserve()
                 .getReservedDay());
-        downloadPDFOutput.setDepDay(reserveDetailOutput.getReserve()
+        downloadFileOutput.setDepDay(reserveDetailOutput.getReserve()
                 .getTourInfo().getDepDay());
 
         // TODO String.valueOf ?
-        downloadPDFOutput.setTourDays(String.valueOf(reserveDetailOutput
+        downloadFileOutput.setTourDays(String.valueOf(reserveDetailOutput
                 .getReserve().getTourInfo().getTourDays()));
-        downloadPDFOutput.setDepName(reserveDetailOutput.getReserve()
+        downloadFileOutput.setDepName(reserveDetailOutput.getReserve()
                 .getTourInfo().getDeparture().getDepName());
-        downloadPDFOutput.setArrName(reserveDetailOutput.getReserve()
+        downloadFileOutput.setArrName(reserveDetailOutput.getReserve()
                 .getTourInfo().getArrival().getArrName());
-        downloadPDFOutput.setConductor(getCodeName(existenceCodeList,
+        downloadFileOutput.setConductor(getCodeName(existenceCodeList,
                 reserveDetailOutput.getReserve().getTourInfo().getConductor(),
                 locale));
-        downloadPDFOutput.setAccomName(reserveDetailOutput.getReserve()
+        downloadFileOutput.setAccomName(reserveDetailOutput.getReserve()
                 .getTourInfo().getAccommodation().getAccomName());
-        downloadPDFOutput.setAccomTel(reserveDetailOutput.getReserve()
+        downloadFileOutput.setAccomTel(reserveDetailOutput.getReserve()
                 .getTourInfo().getAccommodation().getAccomTel());
-        downloadPDFOutput.setTourAbs(reserveDetailOutput.getReserve()
+        downloadFileOutput.setTourAbs(reserveDetailOutput.getReserve()
                 .getTourInfo().getTourAbs());
-        downloadPDFOutput.setAdultCount(reserveDetailOutput.getReserve()
+        downloadFileOutput.setAdultCount(reserveDetailOutput.getReserve()
                 .getAdultCount());
-        downloadPDFOutput.setChildCount(reserveDetailOutput.getReserve()
+        downloadFileOutput.setChildCount(reserveDetailOutput.getReserve()
                 .getChildCount());
-        downloadPDFOutput.setRemarks(reserveDetailOutput.getReserve()
+        downloadFileOutput.setRemarks(reserveDetailOutput.getReserve()
                 .getRemarks());
-        downloadPDFOutput.setPaymentMethod(getMessage(
+        downloadFileOutput.setPaymentMethod(getMessage(
                 MessageId.LABEL_TR_COMMON_BANKTRANSFER, locale));
-        downloadPDFOutput.setPaymentCompanyName(getMessage(
+        downloadFileOutput.setPaymentCompanyName(getMessage(
                 MessageId.LABEL_TR_COMMON_PAYMENTCOMPANYNAME, locale));
-        downloadPDFOutput.setPaymentAccount(getMessage(
+        downloadFileOutput.setPaymentAccount(getMessage(
                 MessageId.LABEL_TR_COMMON_SAVINGSACCOUNT, locale));
-        downloadPDFOutput.setPaymentTimeLimit(paymentTimeLimit);
+        downloadFileOutput.setPaymentTimeLimit(paymentTimeLimit);
 
         // calculate price
         PriceCalculateOutput priceCalcResult = priceCalculateService
@@ -217,46 +217,46 @@ public class ManageReservationHelper {
                                         .getReserve().getChildCount());
 
         // set price information
-        downloadPDFOutput.setAdultUnitPrice(priceCalcResult
+        downloadFileOutput.setAdultUnitPrice(priceCalcResult
                 .getAdultUnitPrice());
-        downloadPDFOutput.setChildUnitPrice(priceCalcResult
+        downloadFileOutput.setChildUnitPrice(priceCalcResult
                 .getChildUnitPrice());
-        downloadPDFOutput.setAdultPrice(priceCalcResult.getAdultPrice());
-        downloadPDFOutput.setChildPrice(priceCalcResult.getChildPrice());
-        downloadPDFOutput.setSumPrice(priceCalcResult.getSumPrice());
+        downloadFileOutput.setAdultPrice(priceCalcResult.getAdultPrice());
+        downloadFileOutput.setChildPrice(priceCalcResult.getChildPrice());
+        downloadFileOutput.setSumPrice(priceCalcResult.getSumPrice());
 
         // set customer information
-        downloadPDFOutput.setCustomerCode(reserveDetailOutput.getCustomer()
+        downloadFileOutput.setCustomerCode(reserveDetailOutput.getCustomer()
                 .getCustomerCode());
-        downloadPDFOutput.setCustomerKana(reserveDetailOutput.getCustomer()
+        downloadFileOutput.setCustomerKana(reserveDetailOutput.getCustomer()
                 .getCustomerKana());
-        downloadPDFOutput.setCustomerName(reserveDetailOutput.getCustomer()
+        downloadFileOutput.setCustomerName(reserveDetailOutput.getCustomer()
                 .getCustomerName());
-        downloadPDFOutput.setCustomerBirth(reserveDetailOutput.getCustomer()
+        downloadFileOutput.setCustomerBirth(reserveDetailOutput.getCustomer()
                 .getCustomerBirth());
-        downloadPDFOutput.setCustomerJob(reserveDetailOutput.getCustomer()
+        downloadFileOutput.setCustomerJob(reserveDetailOutput.getCustomer()
                 .getCustomerJob());
-        downloadPDFOutput.setCustomerMail(reserveDetailOutput.getCustomer()
+        downloadFileOutput.setCustomerMail(reserveDetailOutput.getCustomer()
                 .getCustomerMail());
-        downloadPDFOutput.setCustomerTel(reserveDetailOutput.getCustomer()
+        downloadFileOutput.setCustomerTel(reserveDetailOutput.getCustomer()
                 .getCustomerTel());
-        downloadPDFOutput.setCustomerPost(reserveDetailOutput.getCustomer()
+        downloadFileOutput.setCustomerPost(reserveDetailOutput.getCustomer()
                 .getCustomerPost());
-        downloadPDFOutput.setCustomerAdd(reserveDetailOutput.getCustomer()
+        downloadFileOutput.setCustomerAdd(reserveDetailOutput.getCustomer()
                 .getCustomerAdd());
 
         // set reference information
-        downloadPDFOutput.setReferenceName(getMessage(
+        downloadFileOutput.setReferenceName(getMessage(
                 MessageId.LABEL_TR_COMMON_COMPANYNAME, locale));
-        downloadPDFOutput.setReferenceEmail(getMessage(
+        downloadFileOutput.setReferenceEmail(getMessage(
                 MessageId.LABEL_TR_COMMON_COMPANYEMAIL, locale));
-        downloadPDFOutput.setReferenceTel(getMessage(
+        downloadFileOutput.setReferenceTel(getMessage(
                 MessageId.LABEL_TR_COMMON_COMPANYTEL, locale));
 
         // set print date
-        downloadPDFOutput.setPrintDay(dateFactory.newDate());
+        downloadFileOutput.setPrintDay(dateFactory.newDate());
 
-        return downloadPDFOutput;
+        return downloadFileOutput;
     }
 
     /**

@@ -25,12 +25,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.terasoluna.gfw.common.message.StandardResultMessageType.ERROR;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.dozer.DozerBeanMapper;
+import org.dozer.DozerBeanMapperBuilder;
+import org.dozer.Mapper;
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
@@ -40,7 +42,6 @@ import org.terasoluna.gfw.common.date.jodatime.JodaTimeDateFactory;
 import org.terasoluna.gfw.common.exception.BusinessException;
 import org.terasoluna.gfw.common.message.ResultMessageType;
 import org.terasoluna.gfw.common.message.ResultMessages;
-import static org.terasoluna.gfw.common.message.StandardResultMessageType.*;
 import org.terasoluna.tourreservation.domain.common.constants.MessageId;
 import org.terasoluna.tourreservation.domain.model.Accommodation;
 import org.terasoluna.tourreservation.domain.model.Arrival;
@@ -64,7 +65,7 @@ public class ReserveServiceImplTest {
 
     JodaTimeDateFactory dateFactory;
 
-    DozerBeanMapper beanMapper;
+    Mapper beanMapper;
 
     DateTime now = new DateTime();
 
@@ -79,10 +80,10 @@ public class ReserveServiceImplTest {
         AuthorizedReserveSharedServiceImpl authorizedReserveSharedService = new AuthorizedReserveSharedServiceImpl();
         authorizedReserveSharedService.reserveRepository = reserveRepository;
 
-        beanMapper = new DozerBeanMapper();
         List<String> mappingFiles = new ArrayList<String>();
         mappingFiles.add("META-INF/dozer/domain-mapping.xml");
-        beanMapper.setMappingFiles(mappingFiles);
+        beanMapper = DozerBeanMapperBuilder.create().withMappingFiles(
+                mappingFiles).build();
 
         reserveService.reserveRepository = reserveRepository;
         reserveService.tourInfoSharedService = tourInfoSharedService;
@@ -433,6 +434,7 @@ public class ReserveServiceImplTest {
 
         when(reserveRepository.findOne("foo")).thenReturn(reserve);
         when(tourInfoSharedService.findOneWithDetails("aaa")).thenReturn(tour);
+
         // run
         ReservationUpdateOutput output = reserveService.update(input);
         assertThat(output, is(output));

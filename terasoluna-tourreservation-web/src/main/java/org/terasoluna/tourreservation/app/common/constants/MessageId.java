@@ -278,14 +278,14 @@ public final class MessageId {
     public static final String LABEL_TR_COMMON_PERSONCOUNTPATTERN = "label.tr.common.personcountPattern";
 
     /**
-     * <strong>label.tr.common.pdfdownloadMessage = PDF can be download for this information</strong>
+     * <strong>label.tr.common.exceldownloadMessage = EXCEL can be download for this information</strong>
      */
-    public static final String LABEL_TR_COMMON_PDFDOWNLOADMESSAGE = "label.tr.common.pdfdownloadMessage";
+    public static final String LABEL_TR_COMMON_EXCELDOWNLOADMESSAGE = "label.tr.common.exceldownloadMessage";
 
     /**
-     * <strong>label.tr.common.downloadpdfBtnMessage = Download PDF</strong>
+     * <strong>label.tr.common.downloadexcelBtnMessage = Download EXCEL</strong>
      */
-    public static final String LABEL_TR_COMMON_DOWNLOADPDFBTNMESSAGE = "label.tr.common.downloadpdfBtnMessage";
+    public static final String LABEL_TR_COMMON_DOWNLOADEXCELBTNMESSAGE = "label.tr.common.downloadexcelBtnMessage";
 
     /**
      * <strong>label.tr.common.specialNotes = Special Notes</strong>
@@ -715,7 +715,7 @@ public final class MessageId {
 
     /**
      * <strong>label.tr.searchtour.reserveScreenTitleMessage = Please check the reservation details<br />
-     * Press "Download PDF"button to save the reservation information in PDF format.</strong>
+     * Press "Download EXCEL"button to save the reservation information in EXCEL format.</strong>
      */
     public static final String LABEL_TR_SEARCHTOUR_RESERVESCREENTITLEMESSAGE = "label.tr.searchtour.reserveScreenTitleMessage";
 
@@ -725,7 +725,7 @@ public final class MessageId {
      * Further, if payment is not confirmed till the due date, <br />
      * the reservation can be cancelled. <br />
      * <br />
-     * Reservation slip can be downloaded in the PDF format.<br />
+     * Reservation slip can be downloaded in the EXCEL format.<br />
      * </strong>
      */
     public static final String LABEL_TR_SEARCHTOUR_RESERVESCREENFLOWMESSAGE = "label.tr.searchtour.reserveScreenFlowMessage";
@@ -741,9 +741,9 @@ public final class MessageId {
     public static final String LABEL_TR_SEARCHTOUR_DETAILSCREENFLOWMESSAGE = "label.tr.searchtour.detailScreenFlowMessage";
 
     /**
-     * <strong>label.tr.searchtour.searchtourReservePdfMessage = Return to Tour Search Screen</strong>
+     * <strong>label.tr.searchtour.searchtourReserveExcelMessage = Return to Tour Search Screen</strong>
      */
-    public static final String LABEL_TR_SEARCHTOUR_SEARCHTOURRESERVEPDFMESSAGE = "label.tr.searchtour.searchtourReservePdfMessage";
+    public static final String LABEL_TR_SEARCHTOUR_SEARCHTOURRESERVEEXCELMESSAGE = "label.tr.searchtour.searchtourReserveExcelMessage";
 
     /**
      * <strong>label.tr.searchtour.searchtourReserveDetailMessage = Tour Reservation Completion Screen</strong>

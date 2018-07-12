@@ -30,13 +30,13 @@
         <br />
       </c:if>
       <br />
-      <spring:message code="label.tr.common.pdfdownloadMessage" />
+      <spring:message code="label.tr.common.exceldownloadMessage" />
       <br />
       <div>
         <form:form method="get"
-          action="${pageContext.request.contextPath}/reservations/${output.reserve.reserveNo}/pdf">
+          action="${pageContext.request.contextPath}/reservations/${output.reserve.reserveNo}/excel">
           <button id="downloadBtn">
-            <spring:message code="label.tr.common.downloadpdfBtnMessage" />
+            <spring:message code="label.tr.common.downloadexcelBtnMessage" />
           </button>
         </form:form>
       </div>

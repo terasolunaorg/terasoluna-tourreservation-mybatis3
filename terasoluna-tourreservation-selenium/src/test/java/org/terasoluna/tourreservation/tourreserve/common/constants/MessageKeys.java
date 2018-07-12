@@ -175,11 +175,11 @@ public class MessageKeys {
     /** label.tr.common.personcountPattern=## person(s) */
     public static final String LABEL_TR_COMMON_PERSONCOUNTPATTERN = "label.tr.common.personcountPattern";
 
-    /** label.tr.common.pdfdownloadMessage=PDF can be downloaded for this information */
-    public static final String LABEL_TR_COMMON_PDFDOWNLOADMESSAGE = "label.tr.common.pdfdownloadMessage";
+    /** label.tr.common.exceldownloadMessage=EXCEL can be downloaded for this information */
+    public static final String LABEL_TR_COMMON_EXCELDOWNLOADMESSAGE = "label.tr.common.exceldownloadMessage";
 
-    /** label.tr.common.downloadpdfBtnMessage=PDF Download */
-    public static final String LABEL_TR_COMMON_DOWNLOADPDFBTNMESSAGE = "label.tr.common.downloadpdfBtnMessage";
+    /** label.tr.common.downloadexcelBtnMessage=EXCEL Download */
+    public static final String LABEL_TR_COMMON_DOWNLOADEXCELBTNMESSAGE = "label.tr.common.downloadexcelBtnMessage";
 
     /** label.tr.common.specialNotes=Special Notes */
     public static final String LABEL_TR_COMMON_SPECIALNOTES = "label.tr.common.specialNotes";
@@ -490,10 +490,10 @@ public class MessageKeys {
     public static final String LABEL_TR_SEARCHTOUR_CONFIRMSCREENFLOWMESSAGE = "label.tr.searchtour.confirmScreenFlowMessage";
 
     /**
-     * label.tr.searchtour.searchtourReservePdfMessage=Confirm the Reservation Details<br />
-     * \n Press the PDF Download button to save these details in a PDF format.
+     * label.tr.searchtour.searchtourReserveExcelMessage=Confirm the Reservation Details<br />
+     * \n Press the EXCEL Download button to save these details in a EXCEL format.
      */
-    public static final String LABEL_TR_SEARCHTOUR_SEARCHTOURRESERVEPDFMESSAGE = "label.tr.searchtour.searchtourReservePdfMessage";
+    public static final String LABEL_TR_SEARCHTOUR_SEARCHTOURRESERVEEXCELMESSAGE = "label.tr.searchtour.searchtourReserveExcelMessage";
 
     /**
      * label.tr.searchtour.searchtourReserveDetailMessage=Make the payment at the reception or in the bank account before the
