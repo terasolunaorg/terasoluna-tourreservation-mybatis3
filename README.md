@@ -72,3 +72,10 @@ Run test.
 ```console
 $ mvn -f terasoluna-tourreservation-selenium/pom.xml clean test
 ```
+
+> **Note:**
+>
+> If proxy authentication is required,please build as follows.  
+> ```console
+> $ mvn -U test -pl terasoluna-gfw-functionaltest-selenium -Dselenium.proxyUserName={UserName} -Dselenium.proxyUserPassword={Password} -Dselenium.proxyHttpServer={HttpServer}
+> ```
