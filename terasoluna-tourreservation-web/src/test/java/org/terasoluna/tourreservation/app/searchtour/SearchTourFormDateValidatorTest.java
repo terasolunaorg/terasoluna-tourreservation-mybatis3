@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 NTT DATA Corporation
+ * Copyright (C) 2013-2018 NTT DATA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,53 +27,51 @@ import org.terasoluna.tourreservation.app.searchtour.SearchTourFormDateValidator
 
 public class SearchTourFormDateValidatorTest {
 
-	/**
-	 * check validate normal return
-	 */
-	@Test
-	public void testValidate01() {
-		SearchTourFormDateValidator validator = new SearchTourFormDateValidator();
-		SearchTourForm searchTourForm = new SearchTourForm();
-		BindingResult result = new DirectFieldBindingResult(searchTourForm,
-				"SearchTourcriteria");
-		searchTourForm.setDepDay(1);
-		searchTourForm.setDepMonth(1);
-		searchTourForm.setDepYear(2000);
+    /**
+     * check validate normal return
+     */
+    @Test
+    public void testValidate01() {
+        SearchTourFormDateValidator validator = new SearchTourFormDateValidator();
+        SearchTourForm searchTourForm = new SearchTourForm();
+        BindingResult result = new DirectFieldBindingResult(searchTourForm, "SearchTourcriteria");
+        searchTourForm.setDepDay(1);
+        searchTourForm.setDepMonth(1);
+        searchTourForm.setDepYear(2000);
 
-		// run
-		validator.validate(searchTourForm, result);
+        // run
+        validator.validate(searchTourForm, result);
 
-		// assert
-		assertThat(result.hasErrors(), is(false));
-	}
+        // assert
+        assertThat(result.hasErrors(), is(false));
+    }
 
-	/**
-	 * Date parse Error
-	 */
-	@Test
-	public void testValidate02() {
-		SearchTourFormDateValidator validator = new SearchTourFormDateValidator();
-		SearchTourForm criteria = new SearchTourForm();
-		BindingResult result = new DirectFieldBindingResult(criteria,
-				"SearchTourcriteria");
-		criteria.setDepDay(31);
-		criteria.setDepMonth(2);
-		criteria.setDepYear(2000);
+    /**
+     * Date parse Error
+     */
+    @Test
+    public void testValidate02() {
+        SearchTourFormDateValidator validator = new SearchTourFormDateValidator();
+        SearchTourForm criteria = new SearchTourForm();
+        BindingResult result = new DirectFieldBindingResult(criteria, "SearchTourcriteria");
+        criteria.setDepDay(31);
+        criteria.setDepMonth(2);
+        criteria.setDepYear(2000);
 
-		// run
-		validator.validate(criteria, result);
+        // run
+        validator.validate(criteria, result);
 
-		// assert
-		assertThat(result.hasErrors(), is(true));
+        // assert
+        assertThat(result.hasErrors(), is(true));
 
-		FieldError error = result.getFieldError("depYear");
+        FieldError error = result.getFieldError("depYear");
 
-		if (error != null) {
-			assertThat(error.getCode(), is("IncorrectDate.inputdate"));
-			assertThat(error.getDefaultMessage(),
-					is("Incorrect date was entered."));
-		} else {
-			fail("error");
-		}
-	}
+        if (error != null) {
+            assertThat(error.getCode(), is("IncorrectDate.inputdate"));
+            assertThat(error.getDefaultMessage(), is(
+                    "Incorrect date was entered."));
+        } else {
+            fail("error");
+        }
+    }
 }

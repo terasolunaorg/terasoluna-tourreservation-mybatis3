@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 NTT DATA Corporation
+ * Copyright (C) 2013-2018 NTT DATA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,8 @@ import org.terasoluna.tourreservation.domain.model.Age;
 import org.terasoluna.tourreservation.domain.repository.age.AgeRepository;
 
 @Service
-public class PriceCalculateSharedServiceImpl implements PriceCalculateSharedService {
+public class PriceCalculateSharedServiceImpl implements
+                                             PriceCalculateSharedService {
 
     @Inject
     AgeRepository ageRepository;
@@ -70,7 +71,8 @@ public class PriceCalculateSharedServiceImpl implements PriceCalculateSharedServ
         TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
         transactionTemplate.execute(new TransactionCallbackWithoutResult() {
             @Override
-            protected void doInTransactionWithoutResult(TransactionStatus status) {
+            protected void doInTransactionWithoutResult(
+                    TransactionStatus status) {
                 childAge = ageRepository.findOne("1");
                 adultAge = ageRepository.findOne("0");
             }

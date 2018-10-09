@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 NTT DATA Corporation
+ * Copyright (C) 2013-2018 NTT DATA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
@@ -29,7 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.DozerBeanMapperBuilder;
+import com.github.dozermapper.core.Mapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
@@ -57,7 +58,7 @@ public class ManageCustomerControllerTest {
         CustomerPassEqualsValidator cpev = new CustomerPassEqualsValidator();
         CustomerBirthdayValidator cbv = new CustomerBirthdayValidator();
 
-        DozerBeanMapper beanMapper = new DozerBeanMapper();
+        Mapper beanMapper = DozerBeanMapperBuilder.buildDefault();
 
         // Whenever mapping files are required, can be set as shown below
 
@@ -97,12 +98,12 @@ public class ManageCustomerControllerTest {
             // Also check the default data set in setupForm method
             // this will test the @ModelAttribute annotation
 
-            results.andExpect(model().attribute("customerForm",
-                    hasProperty("customerBirthYear", is(2000))));
-            results.andExpect(model().attribute("customerForm",
-                    hasProperty("customerBirthMonth", is(1))));
-            results.andExpect(model().attribute("customerForm",
-                    hasProperty("customerBirthDay", is(1))));
+            results.andExpect(model().attribute("customerForm", hasProperty(
+                    "customerBirthYear", is(2000))));
+            results.andExpect(model().attribute("customerForm", hasProperty(
+                    "customerBirthMonth", is(1))));
+            results.andExpect(model().attribute("customerForm", hasProperty(
+                    "customerBirthDay", is(1))));
 
             return;
 
@@ -117,8 +118,8 @@ public class ManageCustomerControllerTest {
     public void testCreateConfirmSuccess() {
 
         // Prepare request
-        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders
-                .post("/customers/create").param("confirm", "");
+        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders.post(
+                "/customers/create").param("confirm", "");
 
         // Prepare form and set to POST request
         CustomerForm form = prepareNewForm();
@@ -141,8 +142,8 @@ public class ManageCustomerControllerTest {
     public void testCreateConfirmFail() {
 
         // Prepare request
-        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders
-                .post("/customers/create").param("confirm", "");
+        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders.post(
+                "/customers/create").param("confirm", "");
 
         // Prepare form
         CustomerForm form = prepareNewForm();
@@ -190,8 +191,8 @@ public class ManageCustomerControllerTest {
      */
     @Test
     public void testCreateRedo() {
-        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders
-                .post("/customers/create").param("redo", "");
+        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders.post(
+                "/customers/create").param("redo", "");
 
         // Set form to the request to simulate correct back button behaviour
         // Since the control will be on confirmation screen, form values may be different from the default
@@ -230,10 +231,10 @@ public class ManageCustomerControllerTest {
     public void testCreateSuccess() {
 
         // Prepare request
-        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders
-                .post("/customers/create");
+        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders.post(
+                "/customers/create");
 
-        when(customerService.register((Customer) anyObject(), eq("12345")))
+        when(customerService.register(any(Customer.class), eq("12345")))
                 .thenReturn(new Customer("12345678"));
 
         CustomerForm form = prepareNewForm();
@@ -261,10 +262,10 @@ public class ManageCustomerControllerTest {
     @Test
     public void testCreateFail() {
         // Prepare request
-        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders
-                .post("/customers/create");
+        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders.post(
+                "/customers/create");
 
-        when(customerService.register((Customer) anyObject(), eq("12345")))
+        when(customerService.register(any(Customer.class), eq("12345")))
                 .thenReturn(new Customer("12345678"));
 
         CustomerForm form = prepareNewForm();

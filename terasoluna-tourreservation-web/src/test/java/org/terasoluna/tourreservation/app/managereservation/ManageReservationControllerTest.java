@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 NTT DATA Corporation
+ * Copyright (C) 2013-2018 NTT DATA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@ package org.terasoluna.tourreservation.app.managereservation;
 
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
@@ -30,13 +30,13 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 
-import org.dozer.DozerBeanMapper;
-import org.dozer.Mapper;
+import com.github.dozermapper.core.DozerBeanMapperBuilder;
+import com.github.dozermapper.core.Mapper;
 import org.hamcrest.core.IsNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.springframework.security.web.bind.support.AuthenticationPrincipalArgumentResolver;
+import org.springframework.security.web.method.annotation.AuthenticationPrincipalArgumentResolver;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -53,7 +53,7 @@ import org.terasoluna.tourreservation.domain.service.userdetails.ReservationUser
 public class ManageReservationControllerTest {
 
     MockMvc mockMvc;
-    
+
     ManageReservationController manageReservationController;
 
     ManageReservationHelper manageReservationHelper;
@@ -61,7 +61,7 @@ public class ManageReservationControllerTest {
     ReserveService reserveService;
 
     Mapper beanMapper;
-    
+
     ReservationUserDetails userDetails;
 
     @Before
@@ -73,7 +73,7 @@ public class ManageReservationControllerTest {
         // other members instantiation and assignment
         manageReservationHelper = mock(ManageReservationHelper.class);
         manageReservationHelper.existenceCodeList = mock(I18nCodeList.class);
-        beanMapper = new DozerBeanMapper();
+        beanMapper = DozerBeanMapperBuilder.buildDefault();
         reserveService = mock(ReserveService.class);
         userDetails = mock(ReservationUserDetails.class);
         manageReservationController.manageReservationHelper = manageReservationHelper;
@@ -81,16 +81,17 @@ public class ManageReservationControllerTest {
         manageReservationController.reserveService = reserveService;
 
         // build
-        mockMvc = MockMvcBuilders.standaloneSetup(manageReservationController).setCustomArgumentResolvers(new AuthenticationPrincipalArgumentResolver())
-                .build();
+        mockMvc = MockMvcBuilders.standaloneSetup(manageReservationController)
+                .setCustomArgumentResolvers(
+                        new AuthenticationPrincipalArgumentResolver()).build();
     }
 
     @Test
     public void testManageReservationListSuccess() {
 
         // Prepare get request
-        MockHttpServletRequestBuilder getRequest = MockMvcRequestBuilders
-                .get("/reservations/me");
+        MockHttpServletRequestBuilder getRequest = MockMvcRequestBuilders.get(
+                "/reservations/me");
 
         // Set mock behavior for helper method
         when(manageReservationHelper.list(userDetails)).thenReturn(
@@ -115,8 +116,8 @@ public class ManageReservationControllerTest {
     public void testManageReservationDetailSuccess() {
 
         // Prepare get request
-        MockHttpServletRequestBuilder getRequest = MockMvcRequestBuilders
-                .get("/reservations/123");
+        MockHttpServletRequestBuilder getRequest = MockMvcRequestBuilders.get(
+                "/reservations/123");
 
         // Set mock behavior for helper method
         when(manageReservationHelper.findDetail("123")).thenReturn(
@@ -144,7 +145,8 @@ public class ManageReservationControllerTest {
                 "/reservations/123/update").param("form", "");
 
         // Set mock behavior for service method
-        when(reserveService.findOneWithTourInfo("123")).thenReturn(new Reserve());
+        when(reserveService.findOneWithTourInfo("123")).thenReturn(
+                new Reserve());
 
         try {
             ResultActions results = mockMvc.perform(getRequest);
@@ -163,11 +165,12 @@ public class ManageReservationControllerTest {
     @Test
     public void testManageReservationRedoSuccess() {
         // Prepare post request
-        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders
-                .post("/reservations/123/update").param("redo", "");
+        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders.post(
+                "/reservations/123/update").param("redo", "");
 
         // Set mock behavior for service method
-        when(reserveService.findOneWithTourInfo("123")).thenReturn(new Reserve());
+        when(reserveService.findOneWithTourInfo("123")).thenReturn(
+                new Reserve());
 
         try {
             ResultActions results = mockMvc.perform(postRequest);
@@ -187,14 +190,13 @@ public class ManageReservationControllerTest {
     @Test
     public void testManageReservationUpdateConfirmSuccess() {
         // Prepare post request
-        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders
-                .post("/reservations/123/update").param("confirm", "");
+        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders.post(
+                "/reservations/123/update").param("confirm", "");
 
         // Set mock behavior for helper method
-        when(
-                manageReservationHelper
-                        .findDetail(eq("123"),(ManageReservationForm) anyObject()))
-                .thenReturn(new ReservationDetailOutput());
+        when(manageReservationHelper.findDetail(eq("123"), any(
+                ManageReservationForm.class))).thenReturn(
+                        new ReservationDetailOutput());
 
         // Set form data to pass @Validated check
         postRequest.param("reserveNo", "123");
@@ -218,11 +220,12 @@ public class ManageReservationControllerTest {
     @Test
     public void testManageReservationUpdateConfirmFail() {
         // Prepare post request
-        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders
-                .post("/reservations/123/update").param("confirm", "");
+        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders.post(
+                "/reservations/123/update").param("confirm", "");
 
         // Set mock behavior for helper method
-        when(reserveService.findOneWithTourInfo("123")).thenReturn(new Reserve());
+        when(reserveService.findOneWithTourInfo("123")).thenReturn(
+                new Reserve());
 
         // Set form data to fail the @Validated check
         postRequest.param("reserveNo", "123");
@@ -249,11 +252,11 @@ public class ManageReservationControllerTest {
     @Test
     public void testManageReservationUpdateSuccess() {
         // Prepare post request
-        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders
-                .post("/reservations/123/update");
+        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders.post(
+                "/reservations/123/update");
 
         // Set mock behavior for helper method
-        when(reserveService.update((ReservationUpdateInput) anyObject()))
+        when(reserveService.update(any(ReservationUpdateInput.class)))
                 .thenReturn(new ReservationUpdateOutput());
 
         // Set form data to pass @Validated check
@@ -280,12 +283,13 @@ public class ManageReservationControllerTest {
     @Test
     public void testManageReservationUpdateFail() {
         // Prepare post request
-        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders
-                .post("/reservations/123/update");
+        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders.post(
+                "/reservations/123/update");
 
         // Set mock behavior for helper method
         // Set mock behavior for service method
-        when(reserveService.findOneWithTourInfo("123")).thenReturn(new Reserve());
+        when(reserveService.findOneWithTourInfo("123")).thenReturn(
+                new Reserve());
 
         // Set form data to pass @Validated check
         postRequest.param("reserveNo", "123");
@@ -334,17 +338,17 @@ public class ManageReservationControllerTest {
     @Test
     public void testManageReservationDownloadPDF() {
         // Prepare get request
-        MockHttpServletRequestBuilder getRequest = MockMvcRequestBuilders
-                .get("/reservations/123/pdf");
+        MockHttpServletRequestBuilder getRequest = MockMvcRequestBuilders.get(
+                "/reservations/123/pdf");
 
         // Set mock behavior for helper method
-        when(manageReservationHelper.createPDF("123", Locale.ENGLISH)).thenReturn(
-                new DownloadPDFOutput());
-        when(manageReservationHelper.existenceCodeList.asMap(Locale.ENGLISH)).thenReturn(
-                new LinkedHashMap<String, String>(){
+        when(manageReservationHelper.createPDF("123", Locale.ENGLISH))
+                .thenReturn(new DownloadPDFOutput());
+        when(manageReservationHelper.existenceCodeList.asMap(Locale.ENGLISH))
+                .thenReturn(new LinkedHashMap<String, String>() {
                     {
-                        put("0","No");
-                        put("1","Yes");
+                        put("0", "No");
+                        put("1", "Yes");
                     }
                 });
 
@@ -355,8 +359,8 @@ public class ManageReservationControllerTest {
             ResultActions results = mockMvc.perform(getRequest);
             results.andExpect(status().isOk());
             results.andExpect(view().name("managereservation/report"));
-            results.andExpect(model().attribute("downloadPDFOutputList",
-                    IsNull.notNullValue()));
+            results.andExpect(model().attribute("downloadPDFOutputList", IsNull
+                    .notNullValue()));
             return;
 
         } catch (Exception e) {
@@ -414,8 +418,8 @@ public class ManageReservationControllerTest {
     @Test
     public void testManageReservationUpdateBackList() {
         // Prepare post request
-        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders
-                .post("/reservations/123/update").param("backTolist", "");
+        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders.post(
+                "/reservations/123/update").param("backTolist", "");
 
         // No Logic testing here
         // this will just test the request mapping part
@@ -437,8 +441,8 @@ public class ManageReservationControllerTest {
     @Test
     public void testManageReservationCancelConfirm() {
         // Prepare post request
-        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders
-                .get("/reservations/123/cancel").param("confirm", "");
+        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders.get(
+                "/reservations/123/cancel").param("confirm", "");
 
         // Set mock behavior for helper method
         when(manageReservationHelper.findDetail("123")).thenReturn(
@@ -461,8 +465,8 @@ public class ManageReservationControllerTest {
     @Test
     public void testManageReservationCancelSuccess() {
         // Prepare post request
-        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders
-                .post("/reservations/123/cancel");
+        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders.post(
+                "/reservations/123/cancel");
         // Set mock behavior for service method
         Mockito.doNothing().when(reserveService).cancel("123");
 
@@ -484,8 +488,8 @@ public class ManageReservationControllerTest {
     @Test
     public void testManageReservationCancelFailByBusinessException() {
         // Prepare post request
-        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders
-                .post("/reservations/123/cancel");
+        MockHttpServletRequestBuilder postRequest = MockMvcRequestBuilders.post(
+                "/reservations/123/cancel");
         // Set mock behavior for service and helper method
         Mockito.doThrow(new BusinessException("")).when(reserveService).cancel(
                 "123");

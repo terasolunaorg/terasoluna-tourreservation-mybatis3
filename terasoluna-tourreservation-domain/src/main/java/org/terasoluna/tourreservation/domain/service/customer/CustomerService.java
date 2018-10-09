@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 NTT DATA Corporation
+ * Copyright (C) 2013-2018 NTT DATA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package org.terasoluna.tourreservation.domain.service.customer;
 import org.terasoluna.tourreservation.domain.model.Customer;
 
 public interface CustomerService {
-	Customer findOne(String customerCode);
+    Customer findOne(String customerCode);
 
-	Customer register(Customer customer, String rawPassword);
+    Customer register(Customer customer, String rawPassword);
 }

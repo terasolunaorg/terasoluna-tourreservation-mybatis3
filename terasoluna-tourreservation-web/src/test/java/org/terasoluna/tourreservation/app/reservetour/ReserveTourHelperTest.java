@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 NTT DATA Corporation
+ * Copyright (C) 2013-2018 NTT DATA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,12 @@ package org.terasoluna.tourreservation.app.reservetour;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyObject;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import org.dozer.DozerBeanMapper;
-import org.dozer.Mapper;
+import com.github.dozermapper.core.DozerBeanMapperBuilder;
+import com.github.dozermapper.core.Mapper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -69,7 +69,7 @@ public class ReserveTourHelperTest {
         reserveService = mock(ReserveService.class);
         priceCalculateSharedService = mock(PriceCalculateSharedService.class);
 
-        DozerBeanMapper dozerBeanMapper = new DozerBeanMapper();
+        Mapper dozerBeanMapper = DozerBeanMapperBuilder.buildDefault();
 
         reserveHelper.tourInfoSharedService = tourInfoSharedService;
         reserveHelper.reserveService = reserveService;
@@ -94,7 +94,8 @@ public class ReserveTourHelperTest {
         accommodation.setAccomCode("9012");
         tourInfo.setAccommodation(accommodation);
 
-        when(tourInfoSharedService.findOneWithDetails(tourCode)).thenReturn(tourInfo);
+        when(tourInfoSharedService.findOneWithDetails(tourCode)).thenReturn(
+                tourInfo);
 
         priceCalculateOutput = new PriceCalculateOutput();
         priceCalculateOutput.setSumPrice(100000);
@@ -104,7 +105,7 @@ public class ReserveTourHelperTest {
                 .thenReturn(priceCalculateOutput);
 
         customer = new Customer("12345678");
-        
+
         userDetails = new ReservationUserDetails(customer);
     }
 
@@ -123,12 +124,13 @@ public class ReserveTourHelperTest {
         form.setChildCount(2);
 
         // run
-        TourDetailOutput resultOutput = reserveHelper.findTourDetail(userDetails, tourCode, form);
+        TourDetailOutput resultOutput = reserveHelper.findTourDetail(
+                userDetails, tourCode, form);
 
         // assert
         assertThat(resultOutput.getCustomer(), is(customer));
-        assertThat(resultOutput.getPriceCalculateOutput(),
-                is(priceCalculateOutput));
+        assertThat(resultOutput.getPriceCalculateOutput(), is(
+                priceCalculateOutput));
         assertThat(resultOutput.getTourInfo(), is(tourInfo));
     }
 
@@ -136,19 +138,20 @@ public class ReserveTourHelperTest {
     public void testFindTourDetail02() {
         // test when principal is null
 
-    	String tourCode = "xxxxx";
+        String tourCode = "xxxxx";
 
         ReserveTourForm form = new ReserveTourForm();
         form.setAdultCount(1);
         form.setChildCount(2);
 
         // run
-        TourDetailOutput resultOutput = reserveHelper.findTourDetail(null, tourCode, form);
+        TourDetailOutput resultOutput = reserveHelper.findTourDetail(null,
+                tourCode, form);
 
         // assert
         assertThat(resultOutput.getCustomer(), is(nullValue()));
-        assertThat(resultOutput.getPriceCalculateOutput(),
-                is(priceCalculateOutput));
+        assertThat(resultOutput.getPriceCalculateOutput(), is(
+                priceCalculateOutput));
         assertThat(resultOutput.getTourInfo(), is(tourInfo));
     }
 
@@ -157,11 +160,12 @@ public class ReserveTourHelperTest {
 
         ReserveTourForm form = new ReserveTourForm();
         ReserveTourOutput output = new ReserveTourOutput();
-        when(reserveService.reserve((ReserveTourInput) anyObject()))
-                .thenReturn(output);
+        when(reserveService.reserve(any(ReserveTourInput.class))).thenReturn(
+                output);
 
         // run
-        ReserveTourOutput result = reserveHelper.reserve(userDetails, "123", form);
+        ReserveTourOutput result = reserveHelper.reserve(userDetails, "123",
+                form);
 
         // assert
         assertThat(result, is(output));

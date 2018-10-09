@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 NTT DATA Corporation
+ * Copyright (C) 2013-2017 NTT DATA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,8 @@ import org.terasoluna.tourreservation.tourreserve.common.FunctionTestSupport;
 import org.terasoluna.tourreservation.tourreserve.common.constants.MessageKeys;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:META-INF/spring/seleniumContext.xml"})
+@ContextConfiguration(locations = {
+        "classpath:META-INF/spring/seleniumContext.xml" })
 public class CustomerRegisterTest extends FunctionTestSupport {
 
     WebDriver driver;
@@ -55,8 +56,8 @@ public class CustomerRegisterTest extends FunctionTestSupport {
         driver.findElement(By.name("customerName")).sendKeys("ＴＥＲＡＳＯＬＵＮＡ");
         new Select(driver.findElement(By.id("customerBirthYear")))
                 .selectByValue("2000");
-        new Select(driver.findElement(By.id("customerBirthDay")))
-                .selectByValue("1");
+        new Select(driver.findElement(By.id("customerBirthDay"))).selectByValue(
+                "1");
         new Select(driver.findElement(By.id("customerBirthMonth")))
                 .selectByValue("12");
         driver.findElement(By.name("customerJob")).sendKeys("FW");
@@ -73,20 +74,20 @@ public class CustomerRegisterTest extends FunctionTestSupport {
 
         // confirm registration contents
         confirmRegistrationContents();
-        
+
         // go back
         driver.findElement(By.id("backToFormBtn")).click();
-        
+
         // reenter confirm password again
         driver.findElement(By.name("customerPass")).sendKeys("tera123");
         driver.findElement(By.name("customerPassConfirm")).sendKeys("tera123");
 
         // go to confirm screen
         driver.findElement(By.id("confirmBtn")).click();
-        
+
         // confirm registration contents again
         confirmRegistrationContents();
-        
+
         // Register
         driver.findElement(By.id("registerBtn")).click();
 
@@ -108,29 +109,18 @@ public class CustomerRegisterTest extends FunctionTestSupport {
         // login
         driver.findElement(By.id("loginBtn")).click();
 
-        assertEquals(getMessage(MessageKeys.LABEL_TR_MENU_MENUMESSAGE),
-                driver.findElement(By.id("messagesArea")).getText());
+        assertEquals(getMessage(MessageKeys.LABEL_TR_MENU_MENUMESSAGE), driver
+                .findElement(By.id("messagesArea")).getText());
     }
 
     private void confirmRegistrationContents() {
         WebElement customerTable = driver.findElement(By.id("customerTable"));
-        assertTableContents(
-                customerTable,
-                0,
-                1,
-                null,
-                "テラソルナ",
-                "ＴＥＲＡＳＯＬＵＮＡ",
-                ("2000" + getMessage(MessageKeys.LABEL_TR_COMMON_YEAR) +
-                        "12" + getMessage(MessageKeys.LABEL_TR_COMMON_MONTH) +
-                        "01" + getMessage(MessageKeys.LABEL_TR_COMMON_DAY)),
-                "FW",
-                "terasoluna@nttd.co.jp",
-                "090-99999999",
-                "333-2222",
-                "tokyo-toyosu",
-                "********"
-        );
+        assertTableContents(customerTable, 0, 1, null, "テラソルナ", "ＴＥＲＡＳＯＬＵＮＡ",
+                ("2000" + getMessage(MessageKeys.LABEL_TR_COMMON_YEAR) + "12"
+                        + getMessage(MessageKeys.LABEL_TR_COMMON_MONTH) + "01"
+                        + getMessage(MessageKeys.LABEL_TR_COMMON_DAY)), "FW",
+                "terasoluna@nttd.co.jp", "090-99999999", "333-2222",
+                "tokyo-toyosu", "********");
     }
 
     @After

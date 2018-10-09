@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 NTT DATA Corporation
+ * Copyright (C) 2013-2018 NTT DATA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,8 @@
  */
 package org.terasoluna.tourreservation.app.managereservation;
 
-import org.dozer.Mapper;
-import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
+import com.github.dozermapper.core.Mapper;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -69,8 +69,10 @@ public class ManageReservationController {
      * @param model
      * @return
      */
-    @RequestMapping(value="me", method = RequestMethod.GET)
-    public String list(@AuthenticationPrincipal ReservationUserDetails userDetails ,Model model) {
+    @RequestMapping(value = "me", method = RequestMethod.GET)
+    public String list(
+            @AuthenticationPrincipal ReservationUserDetails userDetails,
+            Model model) {
         List<ReserveRowOutput> rows = manageReservationHelper.list(userDetails);
 
         model.addAttribute("rows", rows);
@@ -86,8 +88,8 @@ public class ManageReservationController {
     @RequestMapping(value = "{reserveNo}", method = RequestMethod.GET)
     public String detailForm(@PathVariable("reserveNo") String reserveNo,
             Model model) {
-        ReservationDetailOutput output = manageReservationHelper
-                .findDetail(reserveNo);
+        ReservationDetailOutput output = manageReservationHelper.findDetail(
+                reserveNo);
         model.addAttribute("output", output);
         return "managereservation/detailForm";
     }
@@ -136,13 +138,14 @@ public class ManageReservationController {
     @TransactionTokenCheck(value = "update", type = TransactionTokenType.BEGIN)
     @RequestMapping(value = "{reserveNo}/update", method = RequestMethod.POST, params = "confirm")
     public String updateConfirm(@PathVariable("reserveNo") String reserveNo,
-            @Validated ManageReservationForm form, BindingResult result, Model model) {
+            @Validated ManageReservationForm form, BindingResult result,
+            Model model) {
         if (result.hasErrors()) {
-             return updateRedo(reserveNo, form, model);
+            return updateRedo(reserveNo, form, model);
         }
 
-        ReservationDetailOutput output = manageReservationHelper
-                .findDetail(reserveNo, form);
+        ReservationDetailOutput output = manageReservationHelper.findDetail(
+                reserveNo, form);
         model.addAttribute("output", output);
         return "managereservation/updateConfirm";
     }
@@ -155,9 +158,10 @@ public class ManageReservationController {
     @TransactionTokenCheck(value = "update", type = TransactionTokenType.IN)
     @RequestMapping(value = "{reserveNo}/update", method = RequestMethod.POST)
     public String update(@PathVariable("reserveNo") String reserveNo,
-            @Validated ManageReservationForm form, BindingResult result, Model model, RedirectAttributes redirectAttr) {
+            @Validated ManageReservationForm form, BindingResult result,
+            Model model, RedirectAttributes redirectAttr) {
         if (result.hasErrors()) {
-             return updateRedo(reserveNo, form, model);
+            return updateRedo(reserveNo, form, model);
         }
 
         ReservationUpdateInput input = beanMapper.map(form,
@@ -185,16 +189,18 @@ public class ManageReservationController {
 
     @TransactionTokenCheck(value = "cancel", type = TransactionTokenType.BEGIN)
     @RequestMapping(value = "{reserveNo}/cancel", method = RequestMethod.GET)
-    public String cancelConfirm(@PathVariable("reserveNo") String reserveNo, Model model) {
-        ReservationDetailOutput output = manageReservationHelper
-                .findDetail(reserveNo);
+    public String cancelConfirm(@PathVariable("reserveNo") String reserveNo,
+            Model model) {
+        ReservationDetailOutput output = manageReservationHelper.findDetail(
+                reserveNo);
         model.addAttribute("output", output);
         return "managereservation/cancelConfirm";
     }
 
     @TransactionTokenCheck(value = "cancel", type = TransactionTokenType.IN)
     @RequestMapping(value = "{reserveNo}/cancel", method = RequestMethod.POST)
-    public String cancel(@PathVariable("reserveNo") String reserveNo, Model model, RedirectAttributes redirectAttr) {
+    public String cancel(@PathVariable("reserveNo") String reserveNo,
+            Model model, RedirectAttributes redirectAttr) {
         try {
             reserveService.cancel(reserveNo);
         } catch (BusinessException e) {
@@ -209,7 +215,8 @@ public class ManageReservationController {
      * @return
      */
     @RequestMapping(value = "{reserveNo}/cancel", method = RequestMethod.GET, params = "complete")
-    public String cancelComplete(@PathVariable("reserveNo") String reserveNo, Model model) {
+    public String cancelComplete(@PathVariable("reserveNo") String reserveNo,
+            Model model) {
         model.addAttribute("reserveNo", reserveNo);
         return "managereservation/cancelComplete";
     }
@@ -220,9 +227,10 @@ public class ManageReservationController {
     }
 
     @RequestMapping(value = "{reserveNo}/pdf", method = RequestMethod.GET)
-    public String downloadPDF(@PathVariable("reserveNo") String reserveNo, Model model, Locale locale) {
-        DownloadPDFOutput downloadPDFOutput = manageReservationHelper
-                .createPDF(reserveNo, locale);
+    public String downloadPDF(@PathVariable("reserveNo") String reserveNo,
+            Model model, Locale locale) {
+        DownloadPDFOutput downloadPDFOutput = manageReservationHelper.createPDF(
+                reserveNo, locale);
         model.addAttribute(Arrays.asList(downloadPDFOutput));
         return "managereservation/report";
     }

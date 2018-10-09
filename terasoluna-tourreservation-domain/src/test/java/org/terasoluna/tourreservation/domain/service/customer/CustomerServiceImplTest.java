@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 NTT DATA Corporation
+ * Copyright (C) 2013-2018 NTT DATA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,14 +71,14 @@ public class CustomerServiceImplTest {
         Customer c = new Customer();
         customerService.register(c, "foo");
 
-        ArgumentCaptor<Customer> customerArg = ArgumentCaptor
-                .forClass(Customer.class);
+        ArgumentCaptor<Customer> customerArg = ArgumentCaptor.forClass(
+                Customer.class);
 
-        verify(customerRepository, times(1))
-                .insert(customerArg.capture());
+        verify(customerRepository, times(1)).insert(customerArg.capture());
         assertThat(customerArg.getValue(), is(c));
-        /*assertThat(customerArg.getValue().getCustomerPass(),
-                is("foo{12345678}"));*/
+        /*
+         * assertThat(customerArg.getValue().getCustomerPass(), is("foo{12345678}"));
+         */
     }
 
 }

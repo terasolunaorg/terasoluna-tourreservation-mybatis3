@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 NTT DATA Corporation
+ * Copyright (C) 2013-2018 NTT DATA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -94,8 +94,8 @@ public class TourInfoSharedServiceImplTest {
         tour.setDepDay(depDay.toDate());
 
         // check whether hh:mm:ss.SSS is ignored
-        when(dateFactory.newDateTime()).thenReturn(
-                now.withTime(0, 0, 0, 0).plusMillis(1));
+        when(dateFactory.newDateTime()).thenReturn(now.withTime(0, 0, 0, 0)
+                .plusMillis(1));
 
         boolean result = tourInfoSharedService.isOverPaymentLimit(tour);
         assertThat(result, is(false));
@@ -109,9 +109,8 @@ public class TourInfoSharedServiceImplTest {
         tour.setDepDay(depDay.toDate());
 
         // check whether hh:mm:ss.SSS is ignored
-        when(dateFactory.newDateTime()).thenReturn(
-                now.withTime(0, 0, 0, 0).plusHours(23).plusMinutes(59)
-                        .plusSeconds(59).plusMillis(999));
+        when(dateFactory.newDateTime()).thenReturn(now.withTime(0, 0, 0, 0)
+                .plusHours(23).plusMinutes(59).plusSeconds(59).plusMillis(999));
 
         boolean result = tourInfoSharedService.isOverPaymentLimit(tour);
         assertThat(result, is(false));

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 NTT DATA Corporation
+ * Copyright (C) 2013-2018 NTT DATA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,8 +38,7 @@ public class CustomerPassEqualsValidatorTest {
         customer.setCustomerPass("12345");
         customer.setCustomerPassConfirm("12345");
 
-        BindingResult result = new DirectFieldBindingResult(customer,
-                "CustomerForm");
+        BindingResult result = new DirectFieldBindingResult(customer, "CustomerForm");
 
         // run
         validator.validate(customer, result);
@@ -59,8 +58,7 @@ public class CustomerPassEqualsValidatorTest {
         customer.setCustomerPass("12345");
         customer.setCustomerPassConfirm("1234");
 
-        BindingResult result = new DirectFieldBindingResult(customer,
-                "CustomerForm");
+        BindingResult result = new DirectFieldBindingResult(customer, "CustomerForm");
 
         // run
         validator.validate(customer, result);
@@ -72,8 +70,8 @@ public class CustomerPassEqualsValidatorTest {
 
         if (error != null) {
             assertThat(error.getCode(), is("NotEquals.customerPass"));
-            assertThat(error.getDefaultMessage(),
-                    is("Password and password confirm is not same."));
+            assertThat(error.getDefaultMessage(), is(
+                    "Password and password confirm is not same."));
         } else {
             fail("error");
         }
@@ -89,8 +87,7 @@ public class CustomerPassEqualsValidatorTest {
         CustomerForm customer = new CustomerForm();
         customer.setCustomerPass("12345");
 
-        BindingResult result = new DirectFieldBindingResult(customer,
-                "CustomerForm");
+        BindingResult result = new DirectFieldBindingResult(customer, "CustomerForm");
 
         // run
         validator.validate(customer, result);
@@ -109,8 +106,7 @@ public class CustomerPassEqualsValidatorTest {
         CustomerForm customer = new CustomerForm();
         customer.setCustomerPassConfirm("12345");
 
-        BindingResult result = new DirectFieldBindingResult(customer,
-                "CustomerForm");
+        BindingResult result = new DirectFieldBindingResult(customer, "CustomerForm");
 
         // run
         validator.validate(customer, result);

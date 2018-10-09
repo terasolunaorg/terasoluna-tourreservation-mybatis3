@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 NTT DATA Corporation
+ * Copyright (C) 2013-2018 NTT DATA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,10 +58,10 @@ public class TourInfo implements Serializable {
     private Arrival arrival;
 
     private Accommodation accommodation;
-    
+
     public TourInfo(String tourCode) {
-		this.tourCode = tourCode;
-	}
+        this.tourCode = tourCode;
+    }
 
     public DateTime getPaymentLimit() {
         DateTime paymentLimit = new DateTime(this.getDepDay());

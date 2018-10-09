@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 NTT DATA Corporation
+ * Copyright (C) 2013-2018 NTT DATA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,8 +33,8 @@ public class CustomerBirthdayValidator implements Validator {
         CustomerForm customer = (CustomerForm) target;
         try {
             new DateTime(customer.getCustomerBirthYear(), customer
-                    .getCustomerBirthMonth(), customer.getCustomerBirthDay(), 0, 0)
-                    .toDate();
+                    .getCustomerBirthMonth(), customer
+                            .getCustomerBirthDay(), 0, 0).toDate();
         } catch (IllegalArgumentException e) {
             errors.rejectValue("customerBirthYear",
                     "IncorrectDate.customerBirth",

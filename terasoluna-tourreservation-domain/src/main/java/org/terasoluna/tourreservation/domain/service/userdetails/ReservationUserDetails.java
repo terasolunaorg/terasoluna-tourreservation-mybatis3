@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 NTT DATA Corporation
+ * Copyright (C) 2013-2018 NTT DATA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,10 +26,10 @@ import org.terasoluna.tourreservation.domain.model.Customer;
 public class ReservationUserDetails implements UserDetails {
     private static final long serialVersionUID = 1L;
 
-    private static final List<? extends GrantedAuthority> DEFAULT_AUTHORITIES = AuthorityUtils.createAuthorityList("ROLE_USER");
+    private static final List<? extends GrantedAuthority> DEFAULT_AUTHORITIES = AuthorityUtils
+            .createAuthorityList("ROLE_USER");
 
     private final Customer customer;
-
 
     public ReservationUserDetails(Customer customer) {
         this.customer = customer;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 NTT DATA Corporation
+ * Copyright (C) 2013-2018 NTT DATA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
  * governing permissions and limitations under the License.
  */
 package org.terasoluna.tourreservation.app.managecustomer;
-
 
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

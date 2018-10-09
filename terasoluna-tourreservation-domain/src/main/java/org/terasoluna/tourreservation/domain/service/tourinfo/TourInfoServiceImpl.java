@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 NTT DATA Corporation
+ * Copyright (C) 2013-2018 NTT DATA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,8 @@ public class TourInfoServiceImpl implements TourInfoService {
         long total = tourInfoRepository.countBySearchCriteria(criteria);
         List<TourInfo> content;
         if (0 < total) {
-            content = tourInfoRepository.findPageBySearchCriteria(criteria, pageable);
+            content = tourInfoRepository.findPageBySearchCriteria(criteria,
+                    pageable);
         } else {
             content = Collections.emptyList();
         }

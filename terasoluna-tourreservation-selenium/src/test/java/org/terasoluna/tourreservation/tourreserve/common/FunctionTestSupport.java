@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 NTT DATA Corporation
+ * Copyright (C) 2013-2017 NTT DATA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -69,7 +70,11 @@ public abstract class FunctionTestSupport extends ApplicationObjectSupport {
         }
 
         if (driver == null) {
-            driver = new FirefoxDriver();
+            FirefoxProfile profile = new FirefoxProfile();
+            profile.setPreference("brouser.startup.homepage_override.mstone",
+                    "ignore");
+            profile.setPreference("network.proxy.type", 0);
+            driver = new FirefoxDriver(profile);
         }
 
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
@@ -89,19 +94,20 @@ public abstract class FunctionTestSupport extends ApplicationObjectSupport {
 
     /**
      * Assert table contents.
-     *
      * @param table WebElement of target table
      * @param expectedContents expected values of table content
      */
     protected void assertTableContents(WebElement table, int rowOffset,
-        int cellIndex, ValueEditor valueEditor, String... expectedContents) {
+            int cellIndex, ValueEditor valueEditor,
+            String... expectedContents) {
         List<WebElement> tableRows = table.findElements(By.tagName("tr"));
         assertThat(tableRows.size(), is(expectedContents.length + rowOffset));
         for (int i = rowOffset; i < (tableRows.size() - rowOffset); i++) {
             WebElement row = tableRows.get(i);
-            WebElement contentCell = row.findElements(By.tagName("td")).get(cellIndex);
+            WebElement contentCell = row.findElements(By.tagName("td")).get(
+                    cellIndex);
             String text = contentCell.getText();
-            if(valueEditor != null){
+            if (valueEditor != null) {
                 text = valueEditor.edit(text);
             }
             assertThat(text, is(expectedContents[i - rowOffset]));

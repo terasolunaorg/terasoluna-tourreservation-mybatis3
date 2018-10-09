@@ -4,68 +4,69 @@
 
 <mapper namespace="org.terasoluna.tourreservation.domain.repository.customer.CustomerRepository">
 
-    <resultMap id="customerResultMap" type="Customer">
-        <id property="customerCode" column="customer_code" />
-        <result property="customerName" column="customer_name" />
-        <result property="customerKana" column="customer_kana" />
-        <result property="customerPass" column="customer_pass" />
-        <result property="customerBirth" column="customer_birth" />
-        <result property="customerJob" column="customer_job" />
-        <result property="customerMail" column="customer_mail" />
-        <result property="customerTel" column="customer_tel" />
-        <result property="customerPost" column="customer_post" />
-        <result property="customerAdd" column="customer_add" />
-    </resultMap>
+  <resultMap id="customerResultMap" type="Customer">
+    <id property="customerCode" column="customer_code" />
+    <result property="customerName" column="customer_name" />
+    <result property="customerKana" column="customer_kana" />
+    <result property="customerPass" column="customer_pass" />
+    <result property="customerBirth" column="customer_birth" />
+    <result property="customerJob" column="customer_job" />
+    <result property="customerMail" column="customer_mail" />
+    <result property="customerTel" column="customer_tel" />
+    <result property="customerPost" column="customer_post" />
+    <result property="customerAdd" column="customer_add" />
+  </resultMap>
 
-    <select id="findOne" parameterType="string" resultMap="customerResultMap">
-        SELECT
-            customer_code,
-            customer_name,
-            customer_kana,
-            customer_pass,
-            customer_birth,
-            customer_job,
-            customer_mail,
-            customer_tel,
-            customer_post,
-            customer_add
-        FROM
-            customer
-        WHERE
-            customer_code = #{customerCode}
-    </select>
+  <select id="findOne" parameterType="string" resultMap="customerResultMap">
+    SELECT
+    customer_code,
+    customer_name,
+    customer_kana,
+    customer_pass,
+    customer_birth,
+    customer_job,
+    customer_mail,
+    customer_tel,
+    customer_post,
+    customer_add
+    FROM
+    customer
+    WHERE
+    customer_code = #{customerCode}
+  </select>
 
-    <insert id="insert" parameterType="Customer">
-        <selectKey keyProperty="customerCode" resultType="string" order="BEFORE">
-            SELECT TO_CHAR(nextval('CUSTOMER_CODE_SEQ'),'FM00000000') AS customerCode
-        </selectKey>
-        INSERT INTO
-            customer
-        (
-            customer_code,
-            customer_name,
-            customer_kana,
-            customer_pass,
-            customer_birth,
-            customer_job,
-            customer_mail,
-            customer_tel,
-            customer_post,
-            customer_add
-        )
-        VALUES
-        (
-            #{customerCode},
-            #{customerName},
-            #{customerKana},
-            #{customerPass},
-            #{customerBirth},
-            #{customerJob},
-            #{customerMail},
-            #{customerTel},
-            #{customerPost},
-            #{customerAdd}
-        )
-    </insert>
+  <insert id="insert" parameterType="Customer">
+    <selectKey keyProperty="customerCode" resultType="string" order="BEFORE">
+      SELECT
+      TO_CHAR(nextval('CUSTOMER_CODE_SEQ'),'FM00000000') AS customerCode
+    </selectKey>
+    INSERT INTO
+    customer
+    (
+    customer_code,
+    customer_name,
+    customer_kana,
+    customer_pass,
+    customer_birth,
+    customer_job,
+    customer_mail,
+    customer_tel,
+    customer_post,
+    customer_add
+    )
+    VALUES
+    (
+    #{customerCode},
+    #{customerName},
+    #{customerKana},
+    #{customerPass},
+    #{customerBirth},
+    #{customerJob},
+    #{customerMail},
+    #{customerTel},
+    #{customerPost},
+    #{customerAdd}
+    )
+  </insert>
 
 </mapper>

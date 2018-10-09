@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 NTT DATA Corporation
+ * Copyright (C) 2013-2018 NTT DATA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package org.terasoluna.tourreservation.app.searchtour;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.anyObject;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -28,7 +28,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.DozerBeanMapperBuilder;
+import com.github.dozermapper.core.Mapper;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,8 +62,8 @@ public class SearchTourControllerTest {
 
     JodaTimeDateFactory dateFactory;
 
-    DozerBeanMapper beanMapper;
-    
+    Mapper beanMapper;
+
     @Before
     public void setUp() {
 
@@ -74,13 +75,13 @@ public class SearchTourControllerTest {
         validator = new SearchTourFormDateValidator();
         dateFactory = new DefaultJodaTimeDateFactory();
 
-        beanMapper = new DozerBeanMapper();
+        beanMapper = DozerBeanMapperBuilder.buildDefault();
 
         searchTourController.tourInfoService = tourInfoService;
         searchTourController.validator = validator;
         searchTourController.dateFactory = dateFactory;
         searchTourController.beanMapper = beanMapper;
-        
+
         // Assign custom method argument resolver and build
         // This is needed to resolve Pageable method argument
         mockMvc = MockMvcBuilders.standaloneSetup(searchTourController)
@@ -104,7 +105,7 @@ public class SearchTourControllerTest {
                                     NativeWebRequest webRequest,
                                     WebDataBinderFactory binderFactory) throws Exception {
 
-                                return new PageRequest(0, 50);
+                                return PageRequest.of(0, 50);
                             }
                         }).build();
     }
@@ -130,12 +131,12 @@ public class SearchTourControllerTest {
             DateTime dateTime = dateFactory.newDateTime();
             DateTime nextWeekDate = dateTime.plusWeeks(1);
 
-            results.andExpect(model().attribute("searchTourForm",
-                    hasProperty("depYear", is(nextWeekDate.getYear()))));
-            results.andExpect(model().attribute("searchTourForm",
-                    hasProperty("depMonth", is(nextWeekDate.getMonthOfYear()))));
-            results.andExpect(model().attribute("searchTourForm",
-                    hasProperty("depDay", is(nextWeekDate.getDayOfMonth()))));
+            results.andExpect(model().attribute("searchTourForm", hasProperty(
+                    "depYear", is(nextWeekDate.getYear()))));
+            results.andExpect(model().attribute("searchTourForm", hasProperty(
+                    "depMonth", is(nextWeekDate.getMonthOfYear()))));
+            results.andExpect(model().attribute("searchTourForm", hasProperty(
+                    "depDay", is(nextWeekDate.getDayOfMonth()))));
 
             return;
 
@@ -152,15 +153,13 @@ public class SearchTourControllerTest {
      */
     @Test
     public void testSearchSuccess() {
-        MockHttpServletRequestBuilder getRequest = MockMvcRequestBuilders
-                .get("/tours");
+        MockHttpServletRequestBuilder getRequest = MockMvcRequestBuilders.get(
+                "/tours");
 
         // Set mock behavior for service method
-        when(
-                tourInfoService.searchTour(
-                        (TourInfoSearchCriteria) anyObject(),
-                        (Pageable) anyObject())).thenReturn(
-                new PageImpl<TourInfo>(new ArrayList<TourInfo>()));
+        when(tourInfoService.searchTour(any(TourInfoSearchCriteria.class), any(
+                Pageable.class))).thenReturn(
+                        new PageImpl<TourInfo>(new ArrayList<TourInfo>()));
 
         DateTime dateTime = dateFactory.newDateTime();
         DateTime nextWeekDate = dateTime.plusWeeks(1);
@@ -168,8 +167,8 @@ public class SearchTourControllerTest {
         getRequest.param("depYear", String.valueOf(nextWeekDate.getYear()));
         getRequest.param("depMonth", String.valueOf(nextWeekDate
                 .getMonthOfYear()));
-        getRequest
-                .param("depDay", String.valueOf(nextWeekDate.getDayOfMonth()));
+        getRequest.param("depDay", String.valueOf(nextWeekDate
+                .getDayOfMonth()));
         getRequest.param("tourDays", "2");
         getRequest.param("adultCount", "2");
         getRequest.param("childCount", "2");
@@ -198,15 +197,13 @@ public class SearchTourControllerTest {
      */
     @Test
     public void testSearchFail() {
-        MockHttpServletRequestBuilder getRequest = MockMvcRequestBuilders
-                .get("/tours");
+        MockHttpServletRequestBuilder getRequest = MockMvcRequestBuilders.get(
+                "/tours");
 
         // Set mock behavior for service method
-        when(
-                tourInfoService.searchTour(
-                        (TourInfoSearchCriteria) anyObject(),
-                        (Pageable) anyObject())).thenReturn(
-                new PageImpl<TourInfo>(new ArrayList<TourInfo>()));
+        when(tourInfoService.searchTour(any(TourInfoSearchCriteria.class), any(
+                Pageable.class))).thenReturn(
+                        new PageImpl<TourInfo>(new ArrayList<TourInfo>()));
 
         // Set invalid date such that custom date validator will fail
         getRequest.param("depYear", "2000");
@@ -218,8 +215,7 @@ public class SearchTourControllerTest {
             results.andExpect(status().isOk());
             results.andExpect(view().name("searchtour/searchForm"));
             results.andExpect(model().hasErrors());
-            results.andExpect(model().attributeErrorCount(
-                    "searchTourForm", 7));
+            results.andExpect(model().attributeErrorCount("searchTourForm", 7));
             return;
 
         } catch (Exception e) {

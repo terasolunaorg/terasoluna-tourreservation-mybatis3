@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 NTT DATA Corporation
+ * Copyright (C) 2013-2018 NTT DATA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ public class SearchTourForm implements Serializable {
     /**
      * serialVersion.
      */
-	private static final long serialVersionUID = 6713033250301914074L;
+    private static final long serialVersionUID = 6713033250301914074L;
 
     @NotNull
     private Integer depYear;
@@ -66,6 +66,5 @@ public class SearchTourForm implements Serializable {
     @NotNull
     @Min(0)
     private Integer basePrice;
-    
-}
 
+}

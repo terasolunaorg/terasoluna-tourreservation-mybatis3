@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 NTT DATA Corporation
+ * Copyright (C) 2013-2018 NTT DATA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,18 +32,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
-import org.terasoluna.tourreservation.domain.repository.tourinfo.TourInfoSearchCriteria;
 import org.terasoluna.tourreservation.domain.model.TourInfo;
 import org.terasoluna.tourreservation.domain.service.tourinfo.TourInfoService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:test-context.xml" })
 @Transactional
-@TransactionConfiguration(defaultRollback = true)
+@Rollback
 public class TourInfoRepositoryImplTest {
 
     @Inject
@@ -112,11 +111,10 @@ public class TourInfoRepositoryImplTest {
         criteria.setDepCode("01");
         criteria.setTourDays(0);
 
-        Pageable pageable = new PageRequest(0, 10);
+        Pageable pageable = PageRequest.of(0, 10);
 
         // run
-        Page<TourInfo> page = tourInfoService.searchTour(criteria,
-                pageable);
+        Page<TourInfo> page = tourInfoService.searchTour(criteria, pageable);
 
         assertThat(page.getTotalPages(), is(1));
         assertThat(page.getNumber(), is(0));
@@ -135,8 +133,8 @@ public class TourInfoRepositoryImplTest {
         assertThat(tour.getTourName(), is(tourName));
 
         assertThat(tour.getAccommodation().getAccomCode(), is("0001"));
-        assertThat(tour.getAccommodation().getAccomName(),
-                is("TERASOLUNAホテル第一荘"));
+        assertThat(tour.getAccommodation().getAccomName(), is(
+                "TERASOLUNAホテル第一荘"));
         assertThat(tour.getAccommodation().getAccomTel(), is("018-123-4567"));
 
         assertThat(tour.getDeparture().getDepCode(), is("01"));
@@ -150,7 +148,7 @@ public class TourInfoRepositoryImplTest {
     @Test
     public void testSearchTourInfo02() {
         // search data
-        criteria.setDepDate(new LocalDate(2012,7,10).toDate());
+        criteria.setDepDate(new LocalDate(2012, 7, 10).toDate());
         criteria.setAdultCount(1);
         criteria.setArrCode("01");
         criteria.setBasePrice(10);
@@ -158,10 +156,9 @@ public class TourInfoRepositoryImplTest {
         criteria.setDepCode("01");
         criteria.setTourDays(2);
 
-        Pageable pageable = new PageRequest(0, 10);
+        Pageable pageable = PageRequest.of(0, 10);
         // run
-        Page<TourInfo> page = tourInfoService.searchTour(criteria,
-                pageable);
+        Page<TourInfo> page = tourInfoService.searchTour(criteria, pageable);
 
         // assert
         assertThat(page.getTotalPages(), is(0));

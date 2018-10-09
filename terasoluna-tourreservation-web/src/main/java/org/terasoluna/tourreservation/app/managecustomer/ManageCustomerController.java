@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 NTT DATA Corporation
+ * Copyright (C) 2013-2018 NTT DATA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import javax.inject.Inject;
 
 import lombok.extern.slf4j.Slf4j;
 
-import org.dozer.Mapper;
+import com.github.dozermapper.core.Mapper;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -112,7 +112,8 @@ public class ManageCustomerController {
      */
     @TransactionTokenCheck(value = "create", type = TransactionTokenType.BEGIN)
     @RequestMapping(value = "create", method = RequestMethod.POST, params = "confirm")
-    public String createConfirm(@Validated CustomerForm form, BindingResult result) {
+    public String createConfirm(@Validated CustomerForm form,
+            BindingResult result) {
         if (result.hasErrors()) {
             return createRedo(form);
         }
@@ -128,7 +129,8 @@ public class ManageCustomerController {
      */
     @TransactionTokenCheck(value = "create", type = TransactionTokenType.IN)
     @RequestMapping(value = "create", method = RequestMethod.POST)
-    public String create(@Validated CustomerForm form, BindingResult result, RedirectAttributes redirectAttr) {
+    public String create(@Validated CustomerForm form, BindingResult result,
+            RedirectAttributes redirectAttr) {
         if (result.hasErrors()) {
             return createRedo(form);
         }
@@ -137,7 +139,7 @@ public class ManageCustomerController {
 
         customer.setCustomerBirth(new DateTime(form.getCustomerBirthYear(), form
                 .getCustomerBirthMonth(), form.getCustomerBirthDay(), 0, 0, 0)
-                .toDate());
+                        .toDate());
 
         Customer registeredCustomer = customerService.register(customer, form
                 .getCustomerPass());

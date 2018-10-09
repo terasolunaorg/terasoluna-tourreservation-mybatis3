@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 NTT DATA Corporation
+ * Copyright (C) 2013-2018 NTT DATA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import javax.inject.Inject;
 
 import lombok.extern.slf4j.Slf4j;
 
-import org.dozer.Mapper;
+import com.github.dozermapper.core.Mapper;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.springframework.data.domain.Page;
@@ -125,10 +125,12 @@ public class SearchTourController {
         if (log.isDebugEnabled()) {
             log.debug("pageable={}", pageable);
         }
-        
-        TourInfoSearchCriteria criteria = beanMapper.map(searchTourForm, TourInfoSearchCriteria.class);
 
-        Date depDate = new LocalDate(searchTourForm.getDepYear(), searchTourForm.getDepMonth(), searchTourForm.getDepDay()).toDate();
+        TourInfoSearchCriteria criteria = beanMapper.map(searchTourForm,
+                TourInfoSearchCriteria.class);
+
+        Date depDate = new LocalDate(searchTourForm.getDepYear(), searchTourForm
+                .getDepMonth(), searchTourForm.getDepDay()).toDate();
         criteria.setDepDate(depDate);
 
         Page<TourInfo> page = tourInfoService.searchTour(criteria, pageable);

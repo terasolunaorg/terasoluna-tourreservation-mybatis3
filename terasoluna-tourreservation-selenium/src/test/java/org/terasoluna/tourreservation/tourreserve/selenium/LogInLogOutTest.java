@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 NTT DATA Corporation
+ * Copyright (C) 2013-2017 NTT DATA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,8 @@ import org.terasoluna.tourreservation.tourreserve.common.FunctionTestSupport;
 import org.terasoluna.tourreservation.tourreserve.common.constants.MessageKeys;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:META-INF/spring/seleniumContext.xml"})
+@ContextConfiguration(locations = {
+        "classpath:META-INF/spring/seleniumContext.xml" })
 public class LogInLogOutTest extends FunctionTestSupport {
 
     WebDriver driver;
@@ -47,8 +48,8 @@ public class LogInLogOutTest extends FunctionTestSupport {
     @Test
     public void testLoginLogoff() {
 
-        assertEquals(getMessage(MessageKeys.LABEL_TR_COMMON_NOTLOGINMESSAGE) + " "
-                + getMessage(MessageKeys.LABEL_TR_MENU_MENUMESSAGE),
+        assertEquals(getMessage(MessageKeys.LABEL_TR_COMMON_NOTLOGINMESSAGE)
+                + " " + getMessage(MessageKeys.LABEL_TR_MENU_MENUMESSAGE),
                 driver.findElement(By.id("messagesArea")).getText());
 
         // go to login screen
@@ -66,8 +67,8 @@ public class LogInLogOutTest extends FunctionTestSupport {
         // login
         driver.findElement(By.id("loginBtn")).click();
 
-        assertEquals(getMessage(MessageKeys.LABEL_TR_MENU_MENUMESSAGE),
-                driver.findElement(By.id("messagesArea")).getText());
+        assertEquals(getMessage(MessageKeys.LABEL_TR_MENU_MENUMESSAGE), driver
+                .findElement(By.id("messagesArea")).getText());
 
         // go to search tour screen
         driver.findElement(By.id("searchTourBtn")).click();
@@ -75,16 +76,16 @@ public class LogInLogOutTest extends FunctionTestSupport {
         // logout
         driver.findElement(By.id("logoutBtn")).click();
 
-        assertEquals(getMessage(MessageKeys.LABEL_TR_COMMON_NOTLOGINMESSAGE) + " "
-                + getMessage(MessageKeys.LABEL_TR_MENU_MENUMESSAGE),
+        assertEquals(getMessage(MessageKeys.LABEL_TR_COMMON_NOTLOGINMESSAGE)
+                + " " + getMessage(MessageKeys.LABEL_TR_MENU_MENUMESSAGE),
                 driver.findElement(By.id("messagesArea")).getText());
     }
-    
+
     @Test
     public void testLoginFailure() {
 
-        assertEquals(getMessage(MessageKeys.LABEL_TR_COMMON_NOTLOGINMESSAGE) + " "
-                + getMessage(MessageKeys.LABEL_TR_MENU_MENUMESSAGE),
+        assertEquals(getMessage(MessageKeys.LABEL_TR_COMMON_NOTLOGINMESSAGE)
+                + " " + getMessage(MessageKeys.LABEL_TR_MENU_MENUMESSAGE),
                 driver.findElement(By.id("messagesArea")).getText());
 
         // go to login screen
@@ -101,16 +102,16 @@ public class LogInLogOutTest extends FunctionTestSupport {
 
         // login
         driver.findElement(By.id("loginBtn")).click();
-        
+
         // login failure default message
-        assertThat(driver.findElement(By.id("loginError")).getText(),
-                is("Bad credentials"));
-        
+        assertThat(driver.findElement(By.id("loginError")).getText(), is(
+                "Bad credentials"));
+
         // go to login screen
         driver.get(applicationContextUrl + "/login");
-        
+
         assertEquals(getMessage(MessageKeys.LABEL_TR_COMMON_NOTLOGINMESSAGE),
-                driver.findElement(By.id("messagesArea")).getText());  
+                driver.findElement(By.id("messagesArea")).getText());
     }
 
     @After

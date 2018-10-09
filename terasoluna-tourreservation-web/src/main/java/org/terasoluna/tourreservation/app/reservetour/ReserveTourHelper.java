@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 NTT DATA Corporation
+ * Copyright (C) 2013-2018 NTT DATA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ package org.terasoluna.tourreservation.app.reservetour;
 
 import javax.inject.Inject;
 
-import org.dozer.Mapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.stereotype.Component;
 import org.terasoluna.gfw.common.exception.BusinessException;
 import org.terasoluna.tourreservation.domain.model.Customer;
@@ -33,61 +33,60 @@ import org.terasoluna.tourreservation.domain.service.userdetails.ReservationUser
 @Component
 public class ReserveTourHelper {
 
-	@Inject
-	PriceCalculateSharedService priceCalculateService;
+    @Inject
+    PriceCalculateSharedService priceCalculateService;
 
-	@Inject
-	ReserveService reserveService;
+    @Inject
+    ReserveService reserveService;
 
-	@Inject
-	TourInfoSharedService tourInfoSharedService;
+    @Inject
+    TourInfoSharedService tourInfoSharedService;
 
-	@Inject
-	Mapper beanMapper;
+    @Inject
+    Mapper beanMapper;
 
-	/**
-	 * Fetches detailed information of a particular tour (associated entities
-	 * are also fetched)
-	 * 
-	 * @param form
-	 * @return
-	 */
-	public TourDetailOutput findTourDetail(ReservationUserDetails userDetails, String tourCode, ReserveTourForm form) {
-		TourInfo tourInfo = tourInfoSharedService.findOneWithDetails(tourCode);
+    /**
+     * Fetches detailed information of a particular tour (associated entities are also fetched)
+     * @param form
+     * @return
+     */
+    public TourDetailOutput findTourDetail(ReservationUserDetails userDetails,
+            String tourCode, ReserveTourForm form) {
+        TourInfo tourInfo = tourInfoSharedService.findOneWithDetails(tourCode);
 
-		PriceCalculateOutput priceCalculateOutput = priceCalculateService
-				.calculatePrice(tourInfo.getBasePrice(), form.getAdultCount(),
-						form.getChildCount());
+        PriceCalculateOutput priceCalculateOutput = priceCalculateService
+                .calculatePrice(tourInfo.getBasePrice(), form.getAdultCount(),
+                        form.getChildCount());
 
-		TourDetailOutput output = new TourDetailOutput();
-		output.setTourInfo(tourInfo);
-		output.setPriceCalculateOutput(priceCalculateOutput);
-		
-		if (userDetails != null) {
-			output.setCustomer(userDetails.getCustomer());
-		}
-		return output;
-	}
+        TourDetailOutput output = new TourDetailOutput();
+        output.setTourInfo(tourInfo);
+        output.setPriceCalculateOutput(priceCalculateOutput);
 
-	/**
-	 * makes a reservation
-	 *
-	 * @param userDetails
-	 * @param tourReserveForm
-	 * @return
-	 * @throws BusinessException
-	 */
-	public ReserveTourOutput reserve(ReservationUserDetails userDetails, String tourCode, ReserveTourForm tourReserveForm)
-			throws BusinessException {
+        if (userDetails != null) {
+            output.setCustomer(userDetails.getCustomer());
+        }
+        return output;
+    }
 
-		ReserveTourInput input = beanMapper.map(tourReserveForm,
-				ReserveTourInput.class);
-		input.setTourCode(tourCode);
+    /**
+     * makes a reservation
+     * @param userDetails
+     * @param tourReserveForm
+     * @return
+     * @throws BusinessException
+     */
+    public ReserveTourOutput reserve(ReservationUserDetails userDetails,
+            String tourCode,
+            ReserveTourForm tourReserveForm) throws BusinessException {
 
-		Customer customer = userDetails.getCustomer();
-		input.setCustomer(customer);
-		ReserveTourOutput tourReserveOutput = reserveService.reserve(input);
-		return tourReserveOutput;
-	}
+        ReserveTourInput input = beanMapper.map(tourReserveForm,
+                ReserveTourInput.class);
+        input.setTourCode(tourCode);
+
+        Customer customer = userDetails.getCustomer();
+        input.setCustomer(customer);
+        ReserveTourOutput tourReserveOutput = reserveService.reserve(input);
+        return tourReserveOutput;
+    }
 
 }

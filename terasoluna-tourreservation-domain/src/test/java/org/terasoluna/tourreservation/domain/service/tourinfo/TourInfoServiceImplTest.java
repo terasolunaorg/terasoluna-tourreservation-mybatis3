@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 NTT DATA Corporation
+ * Copyright (C) 2013-2018 NTT DATA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ public class TourInfoServiceImplTest {
     public void testSearchTourInfo01() {
 
         TourInfoSearchCriteria criteria = new TourInfoSearchCriteria();
-        Pageable pageable = new PageRequest(0, 10);
+        Pageable pageable = PageRequest.of(0, 10);
 
         List<TourInfo> mockedList = new ArrayList<TourInfo>();
 
@@ -78,14 +78,14 @@ public class TourInfoServiceImplTest {
         info.setDeparture(departure);
         info.setTourCode("12345678");
         mockedList.add(info);
-        
-        Page<TourInfo> page = new PageImpl<TourInfo>(mockedList,pageable,1L);
 
-        when(tourInfoRepository.findPageBySearchCriteria(criteria, pageable)).thenReturn(
-                mockedList);
+        Page<TourInfo> page = new PageImpl<TourInfo>(mockedList, pageable, 1L);
+
+        when(tourInfoRepository.findPageBySearchCriteria(criteria, pageable))
+                .thenReturn(mockedList);
 
         when(tourInfoRepository.countBySearchCriteria(criteria)).thenReturn(1L);
-        
+
         // run
         Page<TourInfo> result = tourInfoService.searchTour(criteria, pageable);
 

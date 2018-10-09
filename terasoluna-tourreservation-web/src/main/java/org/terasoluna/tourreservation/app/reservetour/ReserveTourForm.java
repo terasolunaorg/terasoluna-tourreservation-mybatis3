@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 NTT DATA Corporation
+ * Copyright (C) 2013-2018 NTT DATA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,23 +30,22 @@ import lombok.Data;
 @Data
 public class ReserveTourForm implements Serializable {
 
-	/**
-	 * serialVersion.
-	 */
-	private static final long serialVersionUID = -6732565610738816899L;
+    /**
+     * serialVersion.
+     */
+    private static final long serialVersionUID = -6732565610738816899L;
 
-	@NotNull
-	@Min(0)
-	@Max(5)
-	private Integer adultCount;
+    @NotNull
+    @Min(0)
+    @Max(5)
+    private Integer adultCount;
 
-	@NotNull
-	@Min(0)
-	@Max(5)
-	private Integer childCount;
+    @NotNull
+    @Min(0)
+    @Max(5)
+    private Integer childCount;
 
-	@Size(min = 0, max = 80)
-	private String remarks;
+    @Size(min = 0, max = 80)
+    private String remarks;
 
-	
 }

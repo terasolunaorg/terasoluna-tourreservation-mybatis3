@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 NTT DATA Corporation
+ * Copyright (C) 2013-2018 NTT DATA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,8 @@ public class ReservationUserDetailsService implements UserDetailsService {
     CustomerRepository customerRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(
+            String username) throws UsernameNotFoundException {
         Customer customer = customerRepository.findOne(username);
         if (customer == null) {
             throw new UsernameNotFoundException(username + " is not found.");
