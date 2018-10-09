@@ -152,8 +152,7 @@ public class ReserveServiceImplSecurityTest {
 
         // assert
         {
-            verify(mockReserveRepository, times(1)).update(
-                    (Reserve) anyObject());
+            verify(mockReserveRepository, times(1)).update(any(Reserve.class));
             assertThat(output.getReserve().getReserveNo(), is("R000000001"));
             assertThat(output.getReserve().getCustomer().getCustomerCode(), is(
                     CUSTOMER_A));
@@ -184,8 +183,7 @@ public class ReserveServiceImplSecurityTest {
 
         // assert
         {
-            verify(mockReserveRepository, never()).update(
-                    (Reserve) anyObject());
+            verify(mockReserveRepository, never()).update(any(Reserve.class));
         }
     }
 
