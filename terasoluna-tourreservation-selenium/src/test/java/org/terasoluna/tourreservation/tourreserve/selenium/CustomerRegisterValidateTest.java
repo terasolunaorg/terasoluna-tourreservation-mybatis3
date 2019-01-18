@@ -635,7 +635,7 @@ public class CustomerRegisterValidateTest extends FunctionTestSupport {
     }
 
     @After
-    public void afterClass() {
+    public void tearDown() {
         /*
          * In case of firefox 52.9, geckodriver 0.14.0,
          * Since it crashes when closing firefox browser,
