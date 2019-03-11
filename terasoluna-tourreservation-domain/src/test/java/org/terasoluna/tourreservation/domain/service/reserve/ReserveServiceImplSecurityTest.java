@@ -203,7 +203,7 @@ public class ReserveServiceImplSecurityTest {
 
         // assert
         {
-            verify(mockReserveRepository, times(1)).delete("R000000001");
+            verify(mockReserveRepository, times(1)).deleteById("R000000001");
         }
 
     }
@@ -229,7 +229,7 @@ public class ReserveServiceImplSecurityTest {
 
         // assert
         {
-            verify(mockReserveRepository, never()).delete("R000000001");
+            verify(mockReserveRepository, never()).deleteById("R000000001");
         }
 
     }
@@ -251,7 +251,7 @@ public class ReserveServiceImplSecurityTest {
         reserve.setCustomer(new Customer(customerCode));
         reserve.setTourInfo(new TourInfo("01"));
 
-        when(mockReserveRepository.findOne(reserveNo)).thenReturn(reserve);
+        when(mockReserveRepository.findById(reserveNo)).thenReturn(reserve);
         when(mockReserveRepository.findOneForUpdate(reserveNo)).thenReturn(
                 reserve);
 

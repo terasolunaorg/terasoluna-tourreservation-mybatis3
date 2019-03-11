@@ -19,7 +19,7 @@ import org.terasoluna.tourreservation.domain.model.Customer;
 
 public interface CustomerRepository {
 
-    Customer findOne(String customerCode);
+    Customer findById(String customerCode);
 
     void insert(Customer customer);
 

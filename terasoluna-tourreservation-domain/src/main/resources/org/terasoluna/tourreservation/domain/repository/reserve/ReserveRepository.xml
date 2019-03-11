@@ -41,7 +41,7 @@
     <result property="remarks" column="remarks" />
   </resultMap>
 
-  <select id="findOne" parameterType="string" resultMap="reserveResultMap">
+  <select id="findById" parameterType="string" resultMap="reserveResultMap">
     SELECT
     reserve_no,
     tour_code,
@@ -107,7 +107,7 @@
     reserve_no = #{reserveNo}
   </update>
 
-  <delete id="delete" parameterType="Reserve">
+  <delete id="deleteById" parameterType="Reserve">
     DELETE FROM
     reserve
     WHERE

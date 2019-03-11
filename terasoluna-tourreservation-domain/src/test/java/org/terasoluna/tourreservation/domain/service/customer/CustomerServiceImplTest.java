@@ -52,7 +52,7 @@ public class CustomerServiceImplTest {
     @Test
     public void testFindOne01() {
         Customer c = new Customer();
-        when(customerRepository.findOne("xxx")).thenReturn(c);
+        when(customerRepository.findById("xxx")).thenReturn(c);
 
         Customer result = customerService.findOne("xxx");
         assertThat(result, is(c));
@@ -60,7 +60,7 @@ public class CustomerServiceImplTest {
 
     @Test
     public void testFindOne02() {
-        when(customerRepository.findOne("xxx")).thenReturn(null);
+        when(customerRepository.findById("xxx")).thenReturn(null);
 
         Customer result = customerService.findOne("xxx");
         assertThat(result, is(nullValue()));

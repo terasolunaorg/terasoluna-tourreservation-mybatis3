@@ -30,7 +30,7 @@ public class ReservationUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(
             String username) throws UsernameNotFoundException {
-        Customer customer = customerRepository.findOne(username);
+        Customer customer = customerRepository.findById(username);
         if (customer == null) {
             throw new UsernameNotFoundException(username + " is not found.");
         }
