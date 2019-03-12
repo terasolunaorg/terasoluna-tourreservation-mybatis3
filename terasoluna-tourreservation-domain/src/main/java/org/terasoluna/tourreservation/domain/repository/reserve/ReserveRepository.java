@@ -16,12 +16,13 @@
 package org.terasoluna.tourreservation.domain.repository.reserve;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.terasoluna.tourreservation.domain.model.Reserve;
 
 public interface ReserveRepository {
 
-    Reserve findById(String reserveNo);
+    Optional<Reserve> findById(String reserveNo);
 
     void insert(Reserve reserve);
 

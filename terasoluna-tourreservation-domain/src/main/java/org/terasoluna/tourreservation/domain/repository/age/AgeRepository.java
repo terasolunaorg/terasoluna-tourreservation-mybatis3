@@ -15,10 +15,12 @@
  */
 package org.terasoluna.tourreservation.domain.repository.age;
 
+import java.util.Optional;
+
 import org.terasoluna.tourreservation.domain.model.Age;
 
 public interface AgeRepository {
 
-    Age findById(String ageCode);
+    Optional<Age> findById(String ageCode);
 
 }

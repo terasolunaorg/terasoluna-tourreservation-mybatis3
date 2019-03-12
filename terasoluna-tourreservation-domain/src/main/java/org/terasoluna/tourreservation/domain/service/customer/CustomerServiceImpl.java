@@ -34,7 +34,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer findOne(String customerCode) {
-        return customerRepository.findById(customerCode);
+        return customerRepository.findById(customerCode).orElse(null);
     }
 
     @Override

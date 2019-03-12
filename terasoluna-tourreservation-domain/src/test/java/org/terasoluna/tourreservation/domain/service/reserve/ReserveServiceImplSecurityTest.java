@@ -36,6 +36,7 @@ import javax.inject.Inject;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.Optional;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.nullValue;
@@ -251,7 +252,7 @@ public class ReserveServiceImplSecurityTest {
         reserve.setCustomer(new Customer(customerCode));
         reserve.setTourInfo(new TourInfo("01"));
 
-        when(mockReserveRepository.findById(reserveNo)).thenReturn(reserve);
+        when(mockReserveRepository.findById(reserveNo)).thenReturn(Optional.of(reserve));
         when(mockReserveRepository.findOneForUpdate(reserveNo)).thenReturn(
                 reserve);
 

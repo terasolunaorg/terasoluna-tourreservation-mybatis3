@@ -23,6 +23,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,7 +54,7 @@ public class CustomerServiceImplTest {
     @Test
     public void testFindOne01() {
         Customer c = new Customer();
-        when(customerRepository.findById("xxx")).thenReturn(c);
+        when(customerRepository.findById("xxx")).thenReturn(Optional.of(c));
 
         Customer result = customerService.findOne("xxx");
         assertThat(result, is(c));
@@ -60,7 +62,7 @@ public class CustomerServiceImplTest {
 
     @Test
     public void testFindOne02() {
-        when(customerRepository.findById("xxx")).thenReturn(null);
+        when(customerRepository.findById("xxx")).thenReturn(Optional.empty());
 
         Customer result = customerService.findOne("xxx");
         assertThat(result, is(nullValue()));
