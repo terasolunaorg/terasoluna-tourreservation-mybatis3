@@ -252,7 +252,8 @@ public class ReserveServiceImplSecurityTest {
         reserve.setCustomer(new Customer(customerCode));
         reserve.setTourInfo(new TourInfo("01"));
 
-        when(mockReserveRepository.findById(reserveNo)).thenReturn(Optional.of(reserve));
+        when(mockReserveRepository.findById(reserveNo)).thenReturn(Optional.of(
+                reserve));
         when(mockReserveRepository.findOneForUpdate(reserveNo)).thenReturn(
                 reserve);
 
