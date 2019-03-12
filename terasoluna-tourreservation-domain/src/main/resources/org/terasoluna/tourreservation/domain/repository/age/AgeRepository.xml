@@ -10,7 +10,7 @@
     <result column="age_rate" property="ageRate" />
   </resultMap>
 
-  <select id="findOne" parameterType="string" resultMap="ageResultMap">
+  <select id="findById" parameterType="string" resultMap="ageResultMap">
     SELECT
     age_code,
     age_name,

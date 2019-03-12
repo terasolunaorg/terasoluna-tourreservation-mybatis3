@@ -16,18 +16,19 @@
 package org.terasoluna.tourreservation.domain.repository.reserve;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.terasoluna.tourreservation.domain.model.Reserve;
 
 public interface ReserveRepository {
 
-    Reserve findOne(String reserveNo);
+    Optional<Reserve> findById(String reserveNo);
 
     void insert(Reserve reserve);
 
     void update(Reserve reserve);
 
-    void delete(String reserveNo);
+    void deleteById(String reserveNo);
 
     Reserve findOneForUpdate(String reserveNo);
 

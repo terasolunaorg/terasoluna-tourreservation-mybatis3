@@ -17,7 +17,7 @@
     <result property="customerAdd" column="customer_add" />
   </resultMap>
 
-  <select id="findOne" parameterType="string" resultMap="customerResultMap">
+  <select id="findById" parameterType="string" resultMap="customerResultMap">
     SELECT
     customer_code,
     customer_name,
