@@ -70,7 +70,6 @@ public class ReserveServiceImplTest {
 
     DateTime now = new DateTime();
 
-    @SuppressWarnings("unchecked")
     @Before
     public void setUp() throws Exception {
         reserveService = new ReserveServiceImpl();
