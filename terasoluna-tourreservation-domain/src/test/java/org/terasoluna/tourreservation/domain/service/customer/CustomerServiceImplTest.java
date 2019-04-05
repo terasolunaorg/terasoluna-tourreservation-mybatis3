@@ -36,7 +36,6 @@ public class CustomerServiceImplTest {
 
     CustomerRepository customerRepository;
 
-    @SuppressWarnings("unchecked")
     @Before
     public void setUp() throws Exception {
         customerService = new CustomerServiceImpl();
