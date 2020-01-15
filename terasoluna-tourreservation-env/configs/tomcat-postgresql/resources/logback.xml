@@ -65,15 +65,6 @@
     <level value="debug" />
   </logger>
 
-  <logger name="jdbc.sqltiming">
-    <level value="debug" />
-  </logger>
-
-  <!-- only for development -->
-  <logger name="jdbc.resultsettable">
-    <level value="debug" />
-  </logger>
-
   <root level="warn">
     <appender-ref ref="STDOUT" />
     <appender-ref ref="APPLICATION_LOG_FILE" />
