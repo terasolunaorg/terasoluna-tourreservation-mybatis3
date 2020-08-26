@@ -22,10 +22,10 @@ package org.terasoluna.tourreservation.domain.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.joda.time.DateTime;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import org.joda.time.DateTime;
 
 @Data
 @NoArgsConstructor
