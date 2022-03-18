@@ -5,8 +5,6 @@ This application shows **how an IDEAL project configuration and package structur
 
 **This sample uses MyBatis3.**
 
-[![Build Status for master](https://travis-ci.org/terasolunaorg/terasoluna-tourreservation-mybatis3.svg?branch=master)](https://travis-ci.org/terasolunaorg/terasoluna-tourreservation-mybatis3)
-
 ### Getting started
 
 #### Download
